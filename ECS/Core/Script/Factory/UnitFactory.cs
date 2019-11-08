@@ -2,10 +2,11 @@ namespace ECS.Factory
 {
     using UniRx;
     using GUnit = ECS.Entity.Unit;
-    using Game.Tool;
     using Data;
     using System.Linq;
     using ECS;
+    using ECS.Common;
+    using ECS.Entity;
 
     public sealed class UnitFactory
     {
@@ -21,12 +22,12 @@ namespace ECS.Factory
                 WorldManager.Instance.Unit.ClearCache(unitData.tag);
             }
 
-            PoolTool.ReleaseUnit(unit);
+            UnitPool.Release(unit);
         }
 
         public GUnit CreateUnit()
         {
-            var unit = PoolTool.GetUnit();
+            var unit = UnitPool.Get();
 
             var unitData = unit.GetData<UnitData>();
             unitData.disposable = new CompositeDisposable();

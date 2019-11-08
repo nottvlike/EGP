@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using UniRx;
-    using Data;
-    using Game.Tool;
+    using ECS.Data;
     using ECS.Common;
 
     internal class Util
@@ -33,7 +32,7 @@
         {
             UnitId = Util.GetUnionId();
 
-            var unitData = PoolTool.GetData<UnitData>();
+            var unitData = DataPool.Get<UnitData>();
             unitData.stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
             _dataDictionary.Add(unitData.GetType(), unitData);
         }
@@ -86,7 +85,7 @@
             var poolObject = data as IPoolObject;
             if (poolObject != null)
             {
-                PoolTool.ReleaseData(poolObject);
+                DataPool.Release(poolObject);
             }
 
             RemoveData(data);
@@ -116,7 +115,7 @@
             }
 #endif
 
-            data = PoolTool.GetData(typeof(T)) as T;
+            data = DataPool.Get<T>();
             AddData(data);
             return data;
         }

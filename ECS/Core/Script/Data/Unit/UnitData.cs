@@ -1,7 +1,7 @@
 ﻿namespace ECS.Data
 {
     using UniRx;
-    using Game.Tool;
+    using ECS.Common;
 
     public enum UnitStateType
     {
