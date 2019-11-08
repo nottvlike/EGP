@@ -29,10 +29,10 @@
                 return;
             }
 
+            _moduleGroupTypeConfig = moduleGroupTypeConfig;
+
             _isInited = true;
             RegisterCoreModule();
-
-            _moduleGroupTypeConfig = moduleGroupTypeConfig;
         }
 
         public void Register(Module module)
