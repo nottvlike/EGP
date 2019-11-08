@@ -9,7 +9,6 @@ export ECS_REFERENCES=-r:$UNITY_PATH/Contents/Managed/UnityEngine.dll,\
 $UNITY_PATH/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll,\
 $UNITY_PATH/Contents/Managed/UnityEditor.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libUniRx.dll,\
-$CURENT_DIR/../../Assets/EGP/Plugins/libCommon.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libECSCore.dll
 
 export ECS_DEFINES="-d:DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"

@@ -14,10 +14,7 @@ function build_dir()
 export inputPath=$1
 
 if [ $inputPath == "All" ]; then
-	./build_common.sh
 	build_dir Core
-elif [ $inputPath == "Common" ]; then
-    ./build_common.sh
 elif [[ $inputPath == "Core" ]]; then
     build_dir $inputPath
 fi
