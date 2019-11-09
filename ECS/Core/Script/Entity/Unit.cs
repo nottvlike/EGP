@@ -20,13 +20,7 @@
         public long UnitId { get; private set; }
 
         Dictionary<Type, IData> _dataDictionary = new Dictionary<Type, IData>();
-        public IReadOnlyDictionary<Type, IData> DataDictionary 
-        { 
-            get
-            {
-                return _dataDictionary;
-            }
-        }
+        public IReadOnlyDictionary<Type, IData> DataDictionary => _dataDictionary;
 
         public Unit()
         {

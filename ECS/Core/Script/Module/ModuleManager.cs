@@ -6,7 +6,8 @@
 
     public sealed partial class ModuleManager
     {
-        public List<Module> ModuleList { get; private set; } = new List<Module>();
+        public IReadOnlyList<Module> ModuleList => _moduleList;
+        List<Module> _moduleList = new List<Module>();
 
         LayerMaskConfig _moduleGroupTypeConfig;
 
@@ -44,14 +45,14 @@
                 return;
             }
 
-            if (ModuleList.IndexOf(module) != -1)
+            if (_moduleList.IndexOf(module) != -1)
             {
                 Log.W("Module {0} has been registered!", module.GetType());
                 return;
             }
 #endif
 
-            ModuleList.Add(module);
+            _moduleList.Add(module);
         }
 
         void RegisterCoreModule()

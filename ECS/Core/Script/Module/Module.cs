@@ -25,7 +25,7 @@
         }
 
         List<long> _unitIdList = new List<long>();
-        public IReadOnlyList<long> UnitIdList { get { return _unitIdList; } }
+        public IReadOnlyList<long> UnitIdList => _unitIdList;
 
         public void Add(GUnit unit)
         {
