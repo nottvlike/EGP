@@ -66,7 +66,7 @@
             }
 #endif
 
-            _dataDictionary.Remove(data.GetType());
+            _dataDictionary.Remove(type);
             RemoveDataSubject.OnNext(data);
         }
 
@@ -102,9 +102,9 @@
             return data;
         }
 
-        public T AddData<T>() where T : class, IData, new()
+        public T AddData<T>() where T : IData
         {
-            T data = null;
+            T data;
 
 #if DEBUG
             data = GetData<T>();
@@ -114,13 +114,13 @@
                 return data;
             }
 #endif
-
-            data = DataPool.Get<T>();
+            
+            data = (T)DataPool.Get(typeof(T));
             AddData(data);
             return data;
         }
 
-        public void RemoveData<T>() where T : class, IData
+        public void RemoveData<T>() where T : IData
         {
 #if DEBUG
             if (GetData<T>() == null)

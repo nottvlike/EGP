@@ -20,9 +20,9 @@
             return GetImpl(objType);
         }
 
-        public static T Get<T>() where T : IPoolObject
+        public static T Get<T>() where T : class, IPoolObject
         {
-            return (T)Get(typeof(T));
+            return Get(typeof(T)) as T;
         }
 
         public static void Release(IPoolObject poolObject)
