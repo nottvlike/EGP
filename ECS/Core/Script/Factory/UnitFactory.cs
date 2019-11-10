@@ -40,12 +40,12 @@ namespace ECS.Factory
                         WorldManager.Instance.Unit.AddCache(unitData.tag, unit);
                     }
 
+                    unit.AddDataSubject.Merge(unit.RemoveDataSubject)
+                        .Subscribe(data => UpdateMeetModuleList(unit)).AddTo(unitData.disposable);
+
                     UpdateMeetModuleList(unit);
                 }
             }).AddTo(unitData.disposable);
-
-            unit.AddDataSubject.Merge(unit.RemoveDataSubject)
-                .Subscribe(_ => UpdateMeetModuleList(unit)).AddTo(unitData.disposable);
             return unit;
         }
 

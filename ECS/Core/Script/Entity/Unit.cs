@@ -34,9 +34,9 @@
         public Subject<IData> AddDataSubject = new Subject<IData>();
         public Subject<IData> RemoveDataSubject = new Subject<IData>();
 
-        public void AddData(IData data)
+        public void AddData(IData data, Type key = null)
         {
-            var type = data.GetType();
+            var type = key == null ? data.GetType() : key;
 #if DEBUG
             var tmpData = GetData(type);
             if (tmpData != null)
