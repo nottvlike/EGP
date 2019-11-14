@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using URandom = UnityEngine.Random;
 
-public class AssetTest : GameStart
+public class AssetSpawnTest : GameStart
 {
     CompositeDisposable disposables = new CompositeDisposable();
 
