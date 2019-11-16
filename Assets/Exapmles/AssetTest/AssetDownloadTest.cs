@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using UnityEngine;
 using Asset;
 using UniRx;
 using ECS.Common;
