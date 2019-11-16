@@ -1,10 +1,6 @@
 using ECS.Common;
 using Asset;
 using UniRx;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using URandom = UnityEngine.Random;
 
 public class AssetManifestTest : GameStart
 {
