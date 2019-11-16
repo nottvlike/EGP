@@ -10,7 +10,19 @@ $UNITY_PATH/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll,\
 $UNITY_PATH/Contents/Managed/UnityEditor.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libUniRx.dll,\
 
-export ECS_DEFINES="-d:DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"
+export ECS_DEFINES="-d:UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;\
+UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;\
+UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2018_4_0;UNITY_2018_4;UNITY_2018;\
+NET_STANDARD_2_0;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER"
+
+export ProductType=$1
+
+if [ "$ProductType" != "release" ]; then
+    echo 'debug mode'
+    ECS_DEFINES=${ECS_DEFINES}";DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"
+else
+    echo 'release mode'
+fi
 
 #生成需要编译的c#文件列表
 function search_path() 

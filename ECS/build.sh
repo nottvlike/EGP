@@ -1,12 +1,14 @@
 #!/bin/bash
 
+export productType=$2
+
 #生成需要编译的c#文件列表
 function build_dir() 
 {
     cd ./$1
 
-    ./build.sh
-    ./build_editor.sh
+    ./build.sh $productType
+    ./build_editor.sh $productType
 
     cd ..
 }
