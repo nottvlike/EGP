@@ -74,7 +74,7 @@ namespace ECS.UI
             panelData.paramsList.Clear();
             panelData.paramsList.AddRange(args);
 
-            var panel = _uiData.panelDict[assetPath];
+            var panel = unit.GetData<Panel>();
 #if DEBUG
             if (!forceUpdateWhenShowed && IsShowed(assetPath))
             {
@@ -89,7 +89,6 @@ namespace ECS.UI
             }
             else
             {
-                // 关闭相同根面板的其它子面板
                 for (var i = 0; i < _uiData.showedList.Count;)
                 {
                     var showed = _uiData.showedList[i];
@@ -115,37 +114,23 @@ namespace ECS.UI
             }
         }
 
-        public IObservable<Unit> Hide(string assetPath)
+        public void Hide(string assetPath)
         {
 #if DEBUG
             if (_uiData.uiRoot == null)
             {
                 Log.E("Hide panel {0} failed, ui root is null!", assetPath);
-                return Observable.ReturnUnit();
+                return;
             }
 
             if (!IsShowed(assetPath))
             {
                 Log.W("Hide panel {0} failed, panel is not showed!", assetPath);
-                return Observable.ReturnUnit();
+                return;
             }
 #endif
-            var panel = _uiData.panelDict[assetPath];
-            if (panel.PanelMode != PanelMode.Alone)
-            {
-                HideImpl(assetPath);
-            }
-            else
-            {
-                // 关闭相同根面板的其它子面板
-                for (var i = 0; i < _uiData.showedList.Count;)
-                {
-                    var showed = _uiData.showedList[i];
-                    HideImpl(showed);
-                }
-            }
-
-            return Observable.ReturnUnit();
+            HideImpl(assetPath);
+            return;
         }
 
         void HideImpl(string assetPath)

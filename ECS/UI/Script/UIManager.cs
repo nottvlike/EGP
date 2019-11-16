@@ -23,9 +23,9 @@ namespace ECS.UI
                 .Finally(() => _instance.Show(assetPath, forceUpdateWhenShowed, args));
         }
 
-        public static IObservable<Unit> Hide(string assetPath)
+        public static void Hide(string assetPath)
         {
-            return _instance.Hide(assetPath);
+            _instance.Hide(assetPath);
         }
     }
 }

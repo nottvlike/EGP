@@ -34,7 +34,6 @@ namespace ECS.Factory
             }
 
             uiData.unitDict.Add(assetPath, unit);
-            uiData.panelDict.Add(assetPath, panel);
 
             unitData.stateTypeProperty.Value = UnitStateType.Init;
         }

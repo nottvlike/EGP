@@ -10,7 +10,6 @@
     public class UIData : IData
     {
         public Dictionary<string, GUnit> unitDict = new Dictionary<string, GUnit>();
-        public Dictionary<string, Panel> panelDict = new Dictionary<string, Panel>();
         public List<string> showedList = new List<string>();
         public GameObject uiRoot;
     }
