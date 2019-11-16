@@ -1,22 +1,17 @@
-﻿using ECS.Common;
-using ECS;
+﻿using ECS;
 using ECS.Config;
 using ECS.UI;
-using ECS.Module;
 using Asset;
 using UnityEngine;
 using UniRx;
-using System.Threading.Tasks;
-using System;
-
 public abstract class GameStart : MonoBehaviour
 {
-    void Awake() 
+    protected virtual void Awake() 
     {
         LoadGame();
     }
 
-    protected async void LoadGame()
+    protected async void LoadGame(bool isSimulate = true)
     {
         var moduleGroupTypeConfigPath = AssetPath.GetAssetPathFromResourcePath(AssetConstant.MODULE_GROUP_TYPE_CONFIG_PATH);
         var moduleGroupTypeConfig = Resources.Load<LayerMaskConfig>(moduleGroupTypeConfigPath);
@@ -30,7 +25,7 @@ public abstract class GameStart : MonoBehaviour
         worldMgr.Unit.Init(unitTypeConfig);
 
 #if UNITY_EDITOR
-        AssetManager.IsSimulate = true;
+        AssetManager.IsSimulate = isSimulate;
 #endif
         AssetManager.CDN = "http://localhost:8000/AssetBundles";
 
