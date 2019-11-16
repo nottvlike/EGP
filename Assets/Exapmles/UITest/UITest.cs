@@ -18,7 +18,7 @@ public class UITest : GameStart
             UIManager.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!").Subscribe();
             Observable.Timer(TimeSpan.FromSeconds(6)).Subscribe(_ =>
             {
-                UIManager.Hide("Prefabs/UI/SimpleTipsPanel").Subscribe();
+                UIManager.Hide("Prefabs/UI/SimpleTipsPanel");
             });
         });
     }
