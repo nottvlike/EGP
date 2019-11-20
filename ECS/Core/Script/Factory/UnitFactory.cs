@@ -17,6 +17,8 @@ namespace ECS.Factory
             unitData.disposable?.Dispose();
             unitData.disposable = null;
 
+            ClearModuleList(unit);
+            
             if (!string.IsNullOrEmpty(unitData.tag))
             {
                 WorldManager.Instance.Unit.ClearCache(unitData.tag);
@@ -47,6 +49,21 @@ namespace ECS.Factory
                 }
             }).AddTo(unitData.disposable);
             return unit;
+        }
+
+        static void ClearModuleList(GUnit unit)
+        {
+            var unitData = unit.GetData<UnitData>();
+            var moduleList = WorldManager.Instance.Module.ModuleList.Where(_ => {
+                return ((int)_.Group & unitData.requiredModuleGroup) != 0;
+                });
+            foreach (var module in moduleList)
+            {
+                if (module.Contains(unit.UnitId))
+                {
+                    module.Remove(unit);
+                }
+            }
         }
 
         static void UpdateMeetModuleList(GUnit unit)
