@@ -32,10 +32,22 @@
             _unitData.stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
 
             _dataDictionary.Add(_unitData.GetType(), _unitData);
+
+            _addDataSubject = new Subject<IData>();
+            _removeDataSubject = new Subject<IData>();
         }
 
-        public Subject<IData> AddDataSubject = new Subject<IData>();
-        public Subject<IData> RemoveDataSubject = new Subject<IData>();
+        ~Unit()
+        {
+            _addDataSubject.OnCompleted();
+            _removeDataSubject.OnCompleted();
+        }
+
+        public IObservable<IData> ObserverAddData=> _addDataSubject;
+        public IObservable<IData> ObserverRemoveData => _removeDataSubject;
+
+        Subject<IData> _addDataSubject = new Subject<IData>();
+        Subject<IData> _removeDataSubject = new Subject<IData>();
 
         public void AddData(IData data, Type key = null)
         {
@@ -49,7 +61,7 @@
 #endif
 
             _dataDictionary.Add(type, data);
-            AddDataSubject.OnNext(data);
+            _addDataSubject.OnNext(data);
         }
 
         public void RemoveData(IData data)
@@ -64,7 +76,7 @@
 #endif
 
             _dataDictionary.Remove(type);
-            RemoveDataSubject.OnNext(data);
+            _removeDataSubject.OnNext(data);
         }
 
         public void RemoveData(Type type)

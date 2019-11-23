@@ -46,7 +46,7 @@ namespace ECS.Factory
                         WorldManager.Instance.Unit.AddCache(unitData.tag, unit);
                     }
 
-                    unit.AddDataSubject.Merge(unit.RemoveDataSubject)
+                    unit.ObserverAddData.Concat(unit.ObserverRemoveData)
                         .Subscribe(data => UpdateMeetModuleList(unit)).AddTo(unitData.disposable);
 
                     UpdateMeetModuleList(unit);
