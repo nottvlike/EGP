@@ -22,13 +22,16 @@
         Dictionary<Type, IData> _dataDictionary = new Dictionary<Type, IData>();
         public IReadOnlyDictionary<Type, IData> DataDictionary => _dataDictionary;
 
+        UnitData _unitData;
+
         public Unit()
         {
             UnitId = Util.GetUnionId();
 
-            var unitData = DataPool.Get<UnitData>();
-            unitData.stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
-            _dataDictionary.Add(unitData.GetType(), unitData);
+            _unitData = DataPool.Get(typeof(UnitData)) as UnitData;
+            _unitData.stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
+
+            _dataDictionary.Add(_unitData.GetType(), _unitData);
         }
 
         public Subject<IData> AddDataSubject = new Subject<IData>();
@@ -135,11 +138,8 @@
         public bool IsInUse { get; set; }
         public void Clear()
         {
-            var unitData = GetData<UnitData>();
-            unitData.Clear();
-
             _dataDictionary.Clear();
-            _dataDictionary.Add(unitData.GetType(), unitData);
+            _dataDictionary.Add(_unitData.GetType(), _unitData);
         }
     }
 }

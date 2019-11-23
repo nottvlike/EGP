@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using UnityEngine;
     using System.Linq;
     
     public interface IPoolObject
@@ -67,15 +66,10 @@
             }
             else
             {
-                for (var i = 0; i < poolObjectList.Count; i++)
+                poolObject = poolObjectList.Where(obj => !obj.IsInUse).FirstOrDefault();
+                if (poolObject != null)
                 {
-                    var tmp = poolObjectList[i];
-                    if (!tmp.IsInUse)
-                    {
-                        tmp.IsInUse = true;
-                        poolObject = tmp;
-                        break;
-                    }
+                    poolObject.IsInUse = true;
                 }
             }
 

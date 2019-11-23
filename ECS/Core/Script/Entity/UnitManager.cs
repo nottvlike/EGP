@@ -4,10 +4,12 @@
     using ECS.Common;
     using ECS.Config;
     using System.Collections.Generic;
-    using ECS.Factory;
+    using System.Linq;
 
     public sealed partial class UnitManager
     {
+        WorldManager worldMgr => WorldManager.Instance;
+
         LayerConfig _unitTypeConfig;
 
         public void Init(LayerConfig unitTypeConfig)
@@ -42,6 +44,8 @@
 
         #region unit dict
 
+        public IReadOnlyDictionary<long, Unit> UnitDIctionary => _unitDictionary;
+        
         Dictionary<long, Unit> _unitDictionary = new Dictionary<long, Unit>();
 
         public Unit GetUnit(long unitId)
@@ -117,8 +121,7 @@
                 return;
             }
 #endif
-            var unitData = unit.GetData<UnitData>();
-            unitData.tag = tag;
+
             _unitCacheDictionary[tag] = unit;
         }
 
