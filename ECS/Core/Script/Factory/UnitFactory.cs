@@ -24,8 +24,8 @@ namespace ECS.Factory
                 WorldManager.Instance.Unit.ClearCache(unitData.tag);
             }
             unitData.tag = string.Empty;
-            unitData.unitType = -1;
-            unitData.requiredModuleGroup = -1;
+            unitData.unitType = 0;
+            unitData.requiredModuleGroup = 0;
             unitData.stateTypeProperty.Value = UnitStateType.None;
 
             UnitPool.Release(unit);
