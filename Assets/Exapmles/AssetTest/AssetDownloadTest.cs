@@ -10,9 +10,9 @@ public class AssetDownloadTest : GameStart
     string[] assetBundleList = new string[]
     {
         "AssetBundles",
-        "prefabs_actor_cube1",
-        "prefabs_actor_plane1",
-        "prefabs_actor_sphere1",
+        "textures_indv_square",
+        "textures_indv_actor",
+        "prefabs_actor",
         "prefabs_ui"
     };
 
