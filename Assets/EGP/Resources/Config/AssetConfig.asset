@@ -21,3 +21,5 @@ MonoBehaviour:
     assetFullPath: Assets/EGP/Resources/Config/UnitTypeConfig.asset
   - assetPath: Config/ModuleGroupTypeConfig
     assetFullPath: Assets/EGP/Resources/Config/ModuleGroupTypeConfig.asset
+  - assetPath: Prefabs/UI/UIRoot
+    assetFullPath: Assets/EGP/Resources/Prefabs/UI/UIRoot.prefab
