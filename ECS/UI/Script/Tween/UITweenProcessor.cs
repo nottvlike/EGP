@@ -31,6 +31,11 @@ namespace Tween
             var tweenList = GetComponentsInChildren<UITween>(true);
             foreach (var tween in tweenList)
             {
+                if (tween.TriggerType != TweenTriggerType.None)
+                {
+                    continue;
+                }
+
                 var tweenGroupInfo = tweenGroupInfoList.Where(_ => _.groupName == tween.GroupName).FirstOrDefault();
                 if (tweenGroupInfo.tweenInfoList == null)
                 {
