@@ -46,12 +46,12 @@
         {
             panel.gameObject.SetActive(true);
             OnShow(unit, panel, panelData.paramsList.ToArray());
-            panel.UITweenProcessor.Play(UIConstant.OPEN_TWEEN_NAME);
+            panel.UITweenProcessor.PlayOpen();
         }
 
         void Hide(GUnit unit, Panel panel)
         {
-            panel.UITweenProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+            panel.UITweenProcessor.PlayClose(() => 
             {
                 OnHide(unit, panel);
                 panel.gameObject.SetActive(false);
