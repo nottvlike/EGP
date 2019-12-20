@@ -25,8 +25,6 @@ namespace Tween
     {
         public List<TweenGroupInfo> tweenGroupInfoList;
 
-        Dictionary<string, Sequence> _tweenDict = new Dictionary<string, Sequence>();
-
         void Reset() 
         {
             tweenGroupInfoList.Clear();
@@ -34,6 +32,11 @@ namespace Tween
             var tweenList = GetComponentsInChildren<UITween>(true);
             foreach (var tween in tweenList)
             {
+                if (tween.TriggerType != TweenTriggerType.None)
+                {
+                    continue;
+                }
+
                 var tweenGroupInfo = tweenGroupInfoList.Where(_ => _.groupName == tween.GroupName).FirstOrDefault();
                 if (tweenGroupInfo.tweenInfoList == null)
                 {
@@ -50,32 +53,8 @@ namespace Tween
             }
         }
 
-        public void PlayOpen(Action onComplete = null)
-        {
-            gameObject.SetActive(true);
-            Play(UIConstant.OPEN_TWEEN_NAME, () => 
-            {
-                onComplete?.Invoke();
-            });
-        }
-
-        public void PlayClose(Action onComplete = null)
-        {
-            Play(UIConstant.CLOSE_TWEEN_NAME, () => 
-            {
-                onComplete?.Invoke();
-                gameObject.SetActive(false);
-            });
-        }
-
         public void Play(string groupName, Action onComplete = null)
         {
-            if (_tweenDict.ContainsKey(groupName))
-            {
-                Kill(groupName);
-                _tweenDict.Remove(groupName);
-            }
-
             var sequence = DOTween.Sequence();
             var tweenGroupInfo = tweenGroupInfoList.Where(_ => _.groupName == groupName).FirstOrDefault();
             if (tweenGroupInfo.tweenInfoList != null)
@@ -90,54 +69,10 @@ namespace Tween
                 }
             }
 
-            _tweenDict.Add(groupName, sequence);
-
             sequence.Play().OnComplete(() => 
             {
-                _tweenDict.Remove(groupName);
                 onComplete?.Invoke();
             });
-        }
-
-        public void Pause(string groupName)
-        {
-            if (IsPlaying(groupName))
-            {
-                _tweenDict[groupName].Pause();
-            }
-        }
-
-        public void Kill(string groupName)
-        {
-            if (!_tweenDict.ContainsKey(groupName))
-            {
-                return;
-            }
-
-            var sequence = _tweenDict[groupName];
-            sequence.Kill();
-            _tweenDict.Remove(groupName);
-        }
-
-        public bool IsValid(string groupName)
-        {
-            var sequence = _tweenDict[groupName];
-            return sequence != null && sequence.IsActive();
-        }
-
-        public bool IsPaused(string groupName)
-        {
-            return IsValid(groupName) && !_tweenDict[groupName].IsPlaying();
-        }
-
-        public bool IsPlaying(string groupName)
-        {
-            return IsValid(groupName) && _tweenDict[groupName].IsPlaying();
-        }
-
-        public bool IsLoop(string groupName)
-        {
-            return IsValid(groupName) && _tweenDict[groupName].Loops() == -1;
         }
     }
 }

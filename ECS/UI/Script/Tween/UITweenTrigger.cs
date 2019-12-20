@@ -2,6 +2,7 @@ namespace Tween
 {
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using DG.Tweening;
 
     public enum TweenTriggerType
     {
@@ -13,29 +14,26 @@ namespace Tween
         PointerExitEvent,
     }
 
-    public sealed class UITweenTrigger : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    partial class UITween : IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
-        [SerializeField]
-        UITweenProcessor processor;
-
-        [SerializeField]
-        string groupName;
         [SerializeField]
         TweenTriggerType triggerType;
 
+        public TweenTriggerType TriggerType => triggerType;
+
         void OnEnable() 
         {
-            if (processor.IsPaused(groupName) || triggerType == TweenTriggerType.Auto)
+            if (IsPaused() || triggerType == TweenTriggerType.Auto)
             {
-                processor.Play(groupName);
+                Play();
             }
         }
 
         void OnDisable() 
         {
-            if (processor.IsPlaying(groupName))
+            if (IsPlaying())
             {
-                processor.Pause(groupName);
+                Pause();
             }
         }
 
@@ -43,19 +41,19 @@ namespace Tween
         {
             if (triggerType == TweenTriggerType.PointerDownEvent)
             {
-                processor.Play(groupName);
+                Play();
             }
         }
 
         public void OnPointerUp(PointerEventData data)
         {
-            if (processor.IsLoop(groupName) && triggerType == TweenTriggerType.PointerDownEvent)
+            if (IsLoop() && triggerType == TweenTriggerType.PointerDownEvent)
             {
-                processor.Pause(groupName);
+                Pause();
             }
             else if (triggerType == TweenTriggerType.PointerUpEvent)
             {
-                processor.Play(groupName);
+                Play();
             }
         }
 
@@ -63,19 +61,19 @@ namespace Tween
         {
             if (triggerType == TweenTriggerType.PointerEnterEvent)
             {
-                processor.Play(groupName);
+                Play();
             }
         }
 
         public void OnPointerExit(PointerEventData data)
         {
-            if (processor.IsLoop(groupName) && triggerType == TweenTriggerType.PointerEnterEvent)
+            if (IsLoop() && triggerType == TweenTriggerType.PointerEnterEvent)
             {
-                processor.Pause(groupName);
+                Pause();
             }
             else if (triggerType == TweenTriggerType.PointerExitEvent)
             {
-                processor.Play(groupName);
+                Play();
             }
         }
     }
