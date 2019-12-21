@@ -1,9 +1,11 @@
 namespace Animation 
 {
     using UnityEngine;
+    using UnityEngine.Events;
     using UnityEngine.EventSystems;
     using System;
     using System.Collections.Generic;
+    using UniRx;
 
     public enum AnimationValueType
     {
@@ -35,15 +37,29 @@ namespace Animation
 
     public sealed class UIAnimationTrigger : MonoBehaviour
     {
-        public Animator animator;
-        public AnimationTriggerType triggerType;
-        public List<AnimationData> animationDataList;
+        [SerializeField]
+        Animator animator;
+
+        [SerializeField]
+        string groupName;
+        [SerializeField]
+        AnimationTriggerType triggerType;
+        [SerializeField]
+        List<AnimationData> animationDataList;
+
+        public UnityEvent onPlay;
+        public UnityEvent onComplete;
+        public string GroupName => groupName;
+        public AnimationTriggerType TriggerType => triggerType;
+
+        ISubject<bool> _playSubject;
+        ISubject<bool> _completeSubject;
 
         void OnEnable()
         {
             if (triggerType == AnimationTriggerType.Auto)
             {
-                DoAnimation();
+                Play();
             }
         }
 
@@ -51,7 +67,7 @@ namespace Animation
         {
             if (triggerType == AnimationTriggerType.PointerDownEvent)
             {
-                DoAnimation();
+                Play();
             }
         }
 
@@ -59,7 +75,7 @@ namespace Animation
         {
             if (triggerType == AnimationTriggerType.PointerUpEvent)
             {
-                DoAnimation();
+                Play();
             }
         }
 
@@ -67,7 +83,7 @@ namespace Animation
         {
             if (triggerType == AnimationTriggerType.PointerEnterEvent)
             {
-                DoAnimation();
+                Play();
             }
         }
 
@@ -75,12 +91,44 @@ namespace Animation
         {
             if (triggerType == AnimationTriggerType.PointerExitEvent)
             {
-                DoAnimation();
+                Play();
             }
         }
 
-        public void DoAnimation()
+        public void OnAnimationPlay()
         {
+            if (_playSubject != null)
+            {
+                _playSubject.OnNext(true);
+                _playSubject.OnCompleted();
+                _playSubject = null;
+            }
+        }
+
+        public void OnAnimationCommpleted()
+        {
+            if (_completeSubject != null)
+            {
+                _completeSubject.OnNext(true);
+                _completeSubject.OnCompleted();
+                _completeSubject = null;
+            }
+        }
+
+        public void Play()
+        {
+            if (onComplete.GetPersistentEventCount() > 0)
+            {
+                if (_completeSubject != null)
+                {
+                    _completeSubject.OnCompleted();
+                    _completeSubject = null;
+                }
+
+                _completeSubject = new Subject<bool>();
+                _completeSubject.Subscribe(_ => onComplete.Invoke());
+            }
+
             foreach (var animationData in animationDataList)
             {
                 switch (animationData.type)
@@ -101,6 +149,18 @@ namespace Animation
                         animator.ResetTrigger(animationData.name);
                         break;
                 }
+            }
+
+            if (onPlay.GetPersistentEventCount() > 0)
+            {
+                if (_playSubject != null)
+                {
+                    _playSubject.OnCompleted();
+                    _playSubject = null;
+                }
+
+                _playSubject = new Subject<bool>();
+                _playSubject.Subscribe(_ => onPlay.Invoke());
             }
         }
     }
