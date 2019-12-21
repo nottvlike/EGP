@@ -72,7 +72,10 @@ namespace ECS.UI
             var unit = _uiData.unitDict[assetPath];
             var panelData = unit.GetData<PanelData>();
             panelData.paramsList.Clear();
-            panelData.paramsList.AddRange(args);
+            if (args != null)
+            {
+                panelData.paramsList.AddRange(args);
+            }
 
             var panel = unit.GetData<Panel>();
 #if DEBUG
@@ -92,7 +95,7 @@ namespace ECS.UI
                 for (var i = 0; i < _uiData.showedList.Count;)
                 {
                     var showed = _uiData.showedList[i];
-                    HideImpl(assetPath);
+                    HideImpl(showed);
                 }
 
                 ShowImpl(assetPath, panelData);
