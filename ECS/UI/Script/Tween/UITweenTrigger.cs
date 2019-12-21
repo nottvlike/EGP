@@ -23,7 +23,7 @@ namespace Tween
 
         void OnEnable() 
         {
-            if (IsPaused() || triggerType == TweenTriggerType.Auto)
+            if (IsPaused() && triggerType == TweenTriggerType.Auto)
             {
                 Play();
             }
