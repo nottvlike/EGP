@@ -253,5 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelMode: 2
   _order: 1000
-  _uiTweenProcessor: {fileID: 8405685833351008691}
+  _animationType: 1
+  _animationProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 8405685833351008691}
   message: {fileID: 3474778398329923868}
