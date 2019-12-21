@@ -5,6 +5,7 @@ namespace Tween
     using System;
     using System.Linq;
     using UnityEngine;
+    using UnityEngine.Events;
     using ECS.UI;
 
     [Serializable]
@@ -19,6 +20,8 @@ namespace Tween
     {
         public string groupName;
         public List<TweenInfo> tweenInfoList;
+        public UnityEvent onPlay;
+        public UnityEvent onComplete;
     }
 
     public class UITweenProcessor : MonoBehaviour
@@ -53,7 +56,21 @@ namespace Tween
             }
         }
 
-        public void Play(string groupName, Action onComplete = null)
+        // for unity event in inspector
+        public void Play(string groupName)
+        {
+            PlayImpl(groupName);
+        }
+
+        public void Play(string groupName, Action onComplete)
+        {
+            PlayImpl(groupName, () => 
+            {
+                onComplete?.Invoke();
+            });
+        }
+
+        void PlayImpl(string groupName, Action onComplete = null)
         {
             var sequence = DOTween.Sequence();
             var tweenGroupInfo = tweenGroupInfoList.Where(_ => _.groupName == groupName).FirstOrDefault();
@@ -69,8 +86,11 @@ namespace Tween
                 }
             }
 
+            tweenGroupInfo.onPlay?.Invoke();
+
             sequence.Play().OnComplete(() => 
             {
+                tweenGroupInfo.onComplete?.Invoke();
                 onComplete?.Invoke();
             });
         }
