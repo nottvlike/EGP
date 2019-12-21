@@ -13,18 +13,14 @@ public class UITest : GameStart
 {
     protected override void StartGame() 
     {
-        Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(time =>
-        {
-            UIManager.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!").Subscribe();
-            Observable.Timer(TimeSpan.FromSeconds(6)).Subscribe(_ =>
-            {
-                UIManager.Hide("Prefabs/UI/SimpleTipsPanel");
-            });
-        });
+        UIManager.Show("Prefabs/UI/UITestPanel", false, null).Subscribe();
     }
 
     protected override void RegisterGameModule()
     {
         WorldManager.Instance.Module.Register(new SimpleTipsPanel());
+        WorldManager.Instance.Module.Register(new UITestPanel());
+        WorldManager.Instance.Module.Register(new UITweenTriggerTestPanel());
+        WorldManager.Instance.Module.Register(new UIAnimationTriggerTestPanel());
     }
 }

@@ -175,10 +175,30 @@ MonoBehaviour:
     tweenInfoList:
     - tween: {fileID: 2632034173545004943}
       delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
   - groupName: close
     tweenInfoList:
     - tween: {fileID: 9027137531490219475}
       delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
 --- !u!114 &2632034173545004943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +214,9 @@ MonoBehaviour:
   groupName: open
   duration: 0.2
   ease: 21
+  loopType: 0
   loops: 1
+  triggerType: 0
   from: {x: 0, y: 0, z: 1}
   to: {x: 1, y: 1, z: 1}
 --- !u!114 &9027137531490219475
@@ -212,7 +234,9 @@ MonoBehaviour:
   groupName: close
   duration: 0.2
   ease: 20
+  loopType: 0
   loops: 1
+  triggerType: 0
   from: {x: 1, y: 1, z: 1}
   to: {x: 0, y: 0, z: 1}
 --- !u!114 &8299970788411204041
@@ -227,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4008b90ba331946aeb446930ef084a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panelMode: 3
-  _order: 0
+  _panelMode: 2
+  _order: 1000
   _uiTweenProcessor: {fileID: 8405685833351008691}
   message: {fileID: 3474778398329923868}
