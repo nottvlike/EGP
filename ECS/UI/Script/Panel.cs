@@ -2,7 +2,15 @@
 {
     using UnityEngine;
     using Tween;
+    using Animation;
     using ECS.Data;
+
+    public enum UIAnimationType
+    {
+        None,
+        Tween,
+        Animation,
+    }
 
     public class Panel : MonoBehaviour, IData
     {
@@ -13,12 +21,18 @@
         int _order;
 
         [SerializeField]
-        UITweenProcessor _uiTweenProcessor;
+        UIAnimationType _animationType;
+        [SerializeField]
+        UIAnimationProcessor _animationProcessor;
+        [SerializeField]
+        UITweenProcessor _tweenProcessor;
 
         public PanelMode PanelMode => _panelMode;
 
         public int Order => _order;
 
-        public UITweenProcessor UITweenProcessor => _uiTweenProcessor;
+        public UIAnimationType AnimationType => _animationType;
+        public UIAnimationProcessor AnimationProcessor=> _animationProcessor;
+        public UITweenProcessor TweenProcessor => _tweenProcessor;
     }
 }

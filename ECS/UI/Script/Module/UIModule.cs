@@ -4,6 +4,7 @@
     using GUnit = ECS.Entity.Unit;
     using ECS.Module;
     using ECS.Data;
+    using System;
 
     public abstract class UIModule : Module
     {
@@ -46,16 +47,42 @@
         {
             panel.gameObject.SetActive(true);
             OnShow(unit, panel, panelData.paramsList.ToArray());
-            panel.UITweenProcessor.Play(UIConstant.OPEN_TWEEN_NAME);
+            if (panel.AnimationType == UIAnimationType.Animation)
+            {
+                panel.AnimationProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
+            }
+            else if (panel.AnimationType == UIAnimationType.Tween)
+            {
+                panel.TweenProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
+            }
         }
 
         void Hide(GUnit unit, Panel panel)
         {
-            panel.UITweenProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+            Action hideAction = () => 
             {
                 OnHide(unit, panel);
                 panel.gameObject.SetActive(false);
-            });
+            };
+
+            if (panel.AnimationType == UIAnimationType.Animation && panel.AnimationProcessor != null)
+            {
+                panel.AnimationProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+                {
+                    hideAction.Invoke();
+                });
+            }
+            else if (panel.AnimationType == UIAnimationType.Tween && panel.TweenProcessor != null)
+            {
+                panel.TweenProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+                {
+                    hideAction.Invoke();
+                });
+            }
+            else
+            {
+                hideAction.Invoke();
+            }
         }
     }
 }
