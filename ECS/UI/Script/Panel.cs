@@ -2,7 +2,7 @@
 {
     using UnityEngine;
     using Tween;
-    using Animation;
+    using UIAnimation;
     using ECS.Data;
 
     public enum UIAnimationType
