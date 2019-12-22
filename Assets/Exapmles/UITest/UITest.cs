@@ -18,9 +18,8 @@ public class UITest : GameStart
 
     protected override void RegisterGameModule()
     {
+        WorldManager.Instance.Module.Register(new DefaultUIModule());
         WorldManager.Instance.Module.Register(new SimpleTipsPanel());
         WorldManager.Instance.Module.Register(new UITestPanel());
-        WorldManager.Instance.Module.Register(new UITweenTriggerTestPanel());
-        WorldManager.Instance.Module.Register(new UIAnimationTriggerTestPanel());
     }
 }

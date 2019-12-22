@@ -249,7 +249,6 @@ GameObject:
   - component: {fileID: 4532709601326815376}
   - component: {fileID: 8017862444953046433}
   - component: {fileID: 5541444409041500544}
-  - component: {fileID: 4730561253257604085}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -354,47 +353,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4730561253257604085}
-        m_MethodName: Play
-        m_Mode: 1
+      - m_Target: {fileID: 3173377855790599627}
+        m_MethodName: Show
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Prefabs/UI/UITestPanel
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!114 &4730561253257604085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884025015216019987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1410894794, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3124833455842977483}
-  groupName: 
-  triggerType: 0
-  animationDataList:
-  - type: 3
-    name: PanelMode
-    value: 2
-  onPlay:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onComplete:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &2737006586251195793
 GameObject:
@@ -637,7 +607,7 @@ GameObject:
   - component: {fileID: 4132319823151887919}
   - component: {fileID: 2515359952773291141}
   - component: {fileID: 4495558320905569844}
-  - component: {fileID: 7277935275384929308}
+  - component: {fileID: 8019696641794927596}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -742,7 +712,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7277935275384929308}
+      - m_Target: {fileID: 8019696641794927596}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -755,7 +725,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &7277935275384929308
+--- !u!114 &8019696641794927596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -764,7 +734,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4080132053207588598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1410894794, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1414024823, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3124833455842977483}
@@ -818,8 +788,9 @@ GameObject:
   - component: {fileID: 3934286519858091094}
   - component: {fileID: 8086015260966283385}
   - component: {fileID: 3124833455842977483}
-  - component: {fileID: 8628182153105045539}
-  - component: {fileID: 3120545026733816748}
+  - component: {fileID: 4132871516470758434}
+  - component: {fileID: 3173377855790599627}
+  - component: {fileID: 1676799072835531205}
   m_Layer: 5
   m_Name: UIAnimationTriggerTestPanel
   m_TagString: Untagged
@@ -907,7 +878,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8628182153105045539
+--- !u!114 &4132871516470758434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -916,29 +887,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 4430023566840614461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -398375455, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationTriggerList:
-  - {fileID: 4966325491976819573}
-  - {fileID: 7818570596456653788}
-  - {fileID: 7277935275384929308}
---- !u!114 &3120545026733816748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4430023566840614461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94b79e62f8a474feab49234c8a10195e, type: 3}
+  m_Script: {fileID: -1220043195, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panelMode: 1
   _order: 0
-  _uiTweenProcessor: {fileID: 0}
-  backButton: {fileID: 5541444409041500544}
+  _animationType: 0
+  _animationProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 0}
+--- !u!114 &3173377855790599627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430023566840614461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1106683727, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1676799072835531205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430023566840614461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -503388693, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationTriggerList:
+  - {fileID: 8019696641794927596}
 --- !u!1 &4436210407474678526
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,7 +933,7 @@ GameObject:
   - component: {fileID: 5876804613621662717}
   - component: {fileID: 2934172533217391947}
   - component: {fileID: 3947072225994112360}
-  - component: {fileID: 4966325491976819573}
+  - component: {fileID: 2540121717912439725}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1056,7 +1038,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4966325491976819573}
+      - m_Target: {fileID: 2540121717912439725}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -1069,7 +1051,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &4966325491976819573
+--- !u!114 &2540121717912439725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1078,7 +1060,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4436210407474678526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1410894794, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1414024823, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3124833455842977483}
@@ -1189,7 +1171,7 @@ GameObject:
   - component: {fileID: 6546899821454731282}
   - component: {fileID: 2326825356075189027}
   - component: {fileID: 4642340775411694929}
-  - component: {fileID: 7818570596456653788}
+  - component: {fileID: 5121241805647249109}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1294,7 +1276,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7818570596456653788}
+      - m_Target: {fileID: 5121241805647249109}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -1307,7 +1289,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &7818570596456653788
+--- !u!114 &5121241805647249109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1316,7 +1298,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7114435779158096187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1410894794, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1414024823, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3124833455842977483}

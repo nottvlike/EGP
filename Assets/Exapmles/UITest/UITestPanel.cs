@@ -20,12 +20,6 @@ namespace Game.UI
             var uiTestPanelData = unit.GetData<Panel>() as UITestPanelData;
             uiTestPanelData.showSimpleTipsPanelButton.onClick.RemoveAllListeners();
             uiTestPanelData.showSimpleTipsPanelButton.onClick.AddListener(ShowSimpleTipsPanel);
-
-            uiTestPanelData.showTweenTestPanelButton.onClick.RemoveAllListeners();
-            uiTestPanelData.showTweenTestPanelButton.onClick.AddListener(ShowTweenTestPanel);
-
-            uiTestPanelData.showAnimationTestPanelButton.onClick.RemoveAllListeners();
-            uiTestPanelData.showAnimationTestPanelButton.onClick.AddListener(ShowAnimationTestPanel);
         }
         
         void ShowSimpleTipsPanel()
@@ -35,16 +29,6 @@ namespace Game.UI
             {
                 UIManager.Hide("Prefabs/UI/SimpleTipsPanel");
             });
-        }
-
-        void ShowTweenTestPanel()
-        {
-            UIManager.Show("Prefabs/UI/UITweenTriggerTestPanel", false, null).Subscribe();
-        }
-
-        void ShowAnimationTestPanel()
-        {
-            UIManager.Show("Prefabs/UI/UIAnimationTriggerTestPanel", false, null).Subscribe();
         }
     }
 }
