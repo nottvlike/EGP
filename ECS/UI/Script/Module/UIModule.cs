@@ -5,6 +5,7 @@
     using ECS.Module;
     using ECS.Data;
     using System;
+    using System.Collections.Generic;
 
     public abstract class UIModule : Module
     {
@@ -27,13 +28,27 @@
                     Hide(unit, panel);
                 }
             }).AddTo(unitData.disposable);
-
+            
+            Preload(unit);
             Init(unit, panel);
         }
+
+        protected virtual void OnPreload(GUnit unit, List<IObservable<Unit>> taskList) { }
 
         protected virtual void OnInit(GUnit unit) { }
         protected virtual void OnShow(GUnit unit, Panel panel, params object[] args) { }
         protected virtual void OnHide(GUnit unit, Panel panel) { }
+
+        void Preload(GUnit unit)
+        {
+            var taskData = unit.GetData<TaskData>();
+            if (taskData == null)
+            {
+                return;
+            }
+
+            OnPreload(unit, taskData.taskList);
+        }
 
         void Init(GUnit unit, Panel panel)
         {

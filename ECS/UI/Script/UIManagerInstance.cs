@@ -59,7 +59,21 @@ namespace ECS.UI
             .Do(asset => 
             {
                 worldMgr.Factory.CreateUI(assetPath, asset, _uiData);
-            }).AsUnitObservable();
+            })
+            .ContinueWith(_ =>
+            {
+                var unit = _uiData.unitDict[assetPath];
+                var taskData = unit.GetData<TaskData>();
+                if (taskData != null && taskData.taskList.Count > 0)
+                {
+                    return taskData.taskList.Merge(5).AsUnitObservable();
+                }
+                else
+                {
+                    return Observable.ReturnUnit();
+                }
+            })
+            .AsUnitObservable();
         }
 
         public bool IsShowed(string assetPath)
