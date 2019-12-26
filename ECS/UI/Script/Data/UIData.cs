@@ -4,7 +4,7 @@
     using UnityEngine;
     using ECS.Common;
     using UniRx;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
     using ECS.Data;
 
     public class UIData : IData

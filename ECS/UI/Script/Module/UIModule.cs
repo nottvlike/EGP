@@ -1,7 +1,7 @@
 ﻿namespace ECS.UI
 {
     using UniRx;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
     using ECS.Module;
     using ECS.Data;
     using System;

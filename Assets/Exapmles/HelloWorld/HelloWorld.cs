@@ -3,7 +3,7 @@ using ECS.Common;
 using ECS.Data;
 using ECS.Module;
 using ECS.Factory;
-using EUnit = ECS.Entity.Unit;
+using EUnit = ECS.Unit.Unit;
 using UniRx;
 using System;
 

@@ -2,7 +2,7 @@ namespace Game.UI
 {
     using ECS.UI;
     using System;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
     using UniRx;
 
     public class UITestPanel : UIModule

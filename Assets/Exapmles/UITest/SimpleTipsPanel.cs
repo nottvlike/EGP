@@ -2,7 +2,7 @@
 {
     using ECS.UI;
     using System;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
 
     public class SimpleTipsPanel : UIModule
     {

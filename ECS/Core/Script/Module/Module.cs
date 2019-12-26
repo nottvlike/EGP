@@ -4,7 +4,7 @@
     using System;
     using System.Linq;
     using UniRx;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
 
     public abstract class Module
     {

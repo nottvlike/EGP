@@ -2,7 +2,7 @@
 {
     using Data;
     using System;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
     using UniRx;
     using UnityEngine;
 

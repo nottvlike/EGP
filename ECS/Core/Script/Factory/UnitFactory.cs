@@ -1,12 +1,11 @@
 namespace ECS.Factory
 {
     using UniRx;
-    using GUnit = ECS.Entity.Unit;
+    using GUnit = ECS.Unit.Unit;
     using Data;
     using System.Linq;
     using ECS;
-    using ECS.Common;
-    using ECS.Entity;
+    using ECS.Unit;
 
     public sealed class UnitFactory
     {

@@ -3,7 +3,7 @@
     using ECS.Common;
     using ECS.Config;
     using ECS.Module;
-    using ECS.Entity;
+    using ECS.Unit;
     using ECS.Factory;
 
     public sealed class WorldManager : Singleton<WorldManager>

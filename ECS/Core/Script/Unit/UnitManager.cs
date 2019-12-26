@@ -1,4 +1,4 @@
-﻿namespace ECS.Entity
+﻿namespace ECS.Unit
 {
     using ECS.Data;
     using ECS.Common;
