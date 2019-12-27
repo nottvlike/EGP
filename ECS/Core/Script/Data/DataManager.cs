@@ -59,7 +59,7 @@ namespace ECS.Data
             var dataKey = ValueTuple.Create(unitId, type);
             IData data = null;
             if (!_dataDictionary.TryGetValue(dataKey, out data)
-                || (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
             {
                 Log.W("Get data {0} failed, data doesn't exist in unit id : {1}!", type, unitId);
             }
@@ -72,7 +72,7 @@ namespace ECS.Data
             var dataKey = ValueTuple.Create(unitId, type);
             IData data;
             if (!_dataDictionary.TryGetValue(dataKey, out data)
-                || (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
             {
                 return null;
             }
