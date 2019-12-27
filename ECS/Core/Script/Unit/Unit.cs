@@ -8,8 +8,8 @@
 
     internal class Util
     {
-        static long uid = 1;
-        public static long GetUnionId()
+        static uint uid = 1;
+        public static uint GetUnionId()
         {
             return uid++;
         }
@@ -17,7 +17,7 @@
 
     public sealed class Unit : IPoolObject
     {
-        public long UnitId { get; private set; }
+        public uint UnitId { get; private set; }
 
         Dictionary<Type, IData> _dataDictionary = new Dictionary<Type, IData>();
         public IReadOnlyDictionary<Type, IData> DataDictionary => _dataDictionary;

@@ -44,11 +44,11 @@
 
         #region unit dict
 
-        public IReadOnlyDictionary<long, Unit> UnitDIctionary => _unitDictionary;
+        public IReadOnlyDictionary<uint, Unit> UnitDIctionary => _unitDictionary;
         
-        Dictionary<long, Unit> _unitDictionary = new Dictionary<long, Unit>();
+        Dictionary<uint, Unit> _unitDictionary = new Dictionary<uint, Unit>();
 
-        public Unit GetUnit(long unitId)
+        public Unit GetUnit(uint unitId)
         {
             Unit unit;
             if (!_unitDictionary.TryGetValue(unitId, out unit))
@@ -59,7 +59,7 @@
             return unit;
         }
 
-        internal void AddUnit(long unitId, Unit unit, bool replace = false)
+        internal void AddUnit(uint unitId, Unit unit, bool replace = false)
         {
 #if DEBUG
             if (_unitDictionary.ContainsKey(unitId) && !replace)
@@ -72,7 +72,7 @@
             _unitDictionary[unitId] = unit;
         }
 
-        internal void RemoveUnit(long unitId)
+        internal void RemoveUnit(uint unitId)
         {
 #if DEBUG
             if (!_unitDictionary.ContainsKey(unitId))
