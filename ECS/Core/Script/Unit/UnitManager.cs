@@ -30,11 +30,11 @@
 
         void InitGameCore()
         {
-            var gameCore = worldMgr.Factory.CreateUnit();
+            var requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
+            var gameCore = worldMgr.Factory.CreateUnit(requiredModuleGroup);
             gameCore.AddData(new SystemData());
 
             var unitData = gameCore.GetData<UnitData>();
-            unitData.requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
             unitData.unitType = TagToUnitType(Constant.SYSTEM_UNIT_TYPE_NAME);
             unitData.tag = Constant.GAME_CORE_UNIT_NAME;
             

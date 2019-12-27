@@ -66,10 +66,7 @@
 
         internal void UpdateMeetModuleList(GUnit unit)
         {
-            var unitData = unit.GetData<UnitData>();
-            var moduleList = _moduleList.Where(_ => {
-                return ((int)_.Group & unitData.requiredModuleGroup) != 0;
-                });
+            var moduleList = _moduleList.Where(_ => ((int)_.Group & unit.RequiredModuleGroup) != 0);
             foreach (var module in moduleList)
             {
                 var isMeet = module.IsMeet(unit.GetAllData(unit.UnitId));

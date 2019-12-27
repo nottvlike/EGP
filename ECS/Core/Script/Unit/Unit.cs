@@ -12,9 +12,12 @@
 
         public uint UnitId { get; private set; }
 
-        public Unit(uint unitId)
+        public int RequiredModuleGroup { get; private set; }
+
+        public Unit(uint unitId, int requiredModuleGroup)
         {
             UnitId = unitId;
+            RequiredModuleGroup = requiredModuleGroup;
         }
 
         public void AddData(IData data, Type key = null)
@@ -50,9 +53,9 @@
             RemoveData(typeof(T));
         }
 
-        public T GetData<T>() where T : IData
+        public T GetData<T>(bool includeDeleted = false) where T : IData
         {
-            return (T)GetData(typeof(T));
+            return (T)GetData(typeof(T), includeDeleted);
         }
 
         public IEnumerable<IData> GetAllData(uint unitId)

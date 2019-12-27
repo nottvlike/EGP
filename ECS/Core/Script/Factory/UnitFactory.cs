@@ -40,9 +40,9 @@ namespace ECS.Factory
             unitMgr.RemoveUnit(unit.UnitId);
         }
 
-        public GUnit CreateUnit()
+        public GUnit CreateUnit(int requiredModuleGroup)
         {
-            var unit = new GUnit(Util.GetUnionId());
+            var unit = new GUnit(Util.GetUnionId(), requiredModuleGroup);
             unitMgr.AddUnit(unit.UnitId, unit);
 
             var unitData = unit.AddData<UnitData>();

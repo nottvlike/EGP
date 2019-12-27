@@ -12,18 +12,18 @@ namespace ECS.Factory
         public static void CreateUI(this UnitFactory factory, string assetPath,
              GameObject asset, UIData uiData)
         {
-            var unit = factory.CreateUnit();
+            var moduleMgr = WorldManager.Instance.Module;
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME) 
+                | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
+            var unit = factory.CreateUnit(requiredModuleGroup);
 
             var obj = asset.Spawn();
             obj.transform.SetParent(uiData.uiRoot.transform);
             obj.transform.localPosition = asset.transform.localPosition;
             obj.transform.localScale = asset.transform.localScale;
 
-            var moduleMgr = WorldManager.Instance.Module;
             var unitData = unit.GetData<UnitData>();
             unitData.unitType = WorldManager.Instance.Unit.TagToUnitType(Constant.UI_UNIT_TYPE_NAME);
-            unitData.requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME) 
-                | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
 
             var panel = obj.GetComponent<Panel>();
             unit.AddData(panel, typeof(Panel));

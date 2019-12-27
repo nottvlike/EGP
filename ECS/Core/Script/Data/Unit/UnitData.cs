@@ -13,7 +13,6 @@
     {
         public string tag;
         public int unitType;
-        public int requiredModuleGroup;
         public IReactiveProperty<UnitStateType> stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
         public CompositeDisposable disposable;
 
@@ -22,7 +21,6 @@
         {
             tag = string.Empty;
             unitType = 0;
-            requiredModuleGroup = 0;
             stateTypeProperty.Value = UnitStateType.None;
         }
     }
