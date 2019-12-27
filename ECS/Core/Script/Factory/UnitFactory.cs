@@ -2,13 +2,25 @@ namespace ECS.Factory
 {
     using UniRx;
     using GUnit = ECS.Unit.Unit;
-    using Data;
-    using System.Linq;
-    using ECS;
+    using ECS.Data;
     using ECS.Unit;
+    using ECS;
+
+    internal class Util
+    {
+        static uint uid = 1;
+        public static uint GetUnionId()
+        {
+            return uid++;
+        }
+    }
 
     public sealed class UnitFactory
     {
+        WorldManager worldMgr => WorldManager.Instance;
+        DataManager dataMgr => worldMgr.Data;
+        UnitManager unitMgr => worldMgr.Unit;
+
         public void DestroyUnit(GUnit unit)
         {
             var unitData = unit.GetData<UnitData>();
@@ -16,25 +28,24 @@ namespace ECS.Factory
             unitData.disposable?.Dispose();
             unitData.disposable = null;
 
-            ClearModuleList(unit);
-            
+            dataMgr.ClearData(unit.UnitId);
+            unit.UpdateMeetModuleList();
+
             if (!string.IsNullOrEmpty(unitData.tag))
             {
-                WorldManager.Instance.Unit.ClearCache(unitData.tag);
+                unitMgr.ClearCache(unitData.tag);
             }
-            unitData.tag = string.Empty;
-            unitData.unitType = 0;
-            unitData.requiredModuleGroup = 0;
-            unitData.stateTypeProperty.Value = UnitStateType.None;
-
-            UnitPool.Release(unit);
+            
+            dataMgr.ClearRemovedData(unit.UnitId);
+            unitMgr.RemoveUnit(unit.UnitId);
         }
 
         public GUnit CreateUnit()
         {
-            var unit = UnitPool.Get();
+            var unit = new GUnit(Util.GetUnionId());
+            unitMgr.AddUnit(unit.UnitId, unit);
 
-            var unitData = unit.GetData<UnitData>();
+            var unitData = unit.AddData<UnitData>();
             unitData.disposable = new CompositeDisposable();
             
             unitData.stateTypeProperty.Subscribe(_ => {
@@ -42,53 +53,13 @@ namespace ECS.Factory
                 {
                     if (!string.IsNullOrEmpty(unitData.tag))
                     {
-                        WorldManager.Instance.Unit.AddCache(unitData.tag, unit);
+                        unitMgr.AddCache(unitData.tag, unit);
                     }
 
-                    unit.ObserverAddData.Concat(unit.ObserverRemoveData)
-                        .Subscribe(data => UpdateMeetModuleList(unit)).AddTo(unitData.disposable);
-
-                    UpdateMeetModuleList(unit);
+                    unit.UpdateMeetModuleList();
                 }
             }).AddTo(unitData.disposable);
             return unit;
-        }
-
-        static void ClearModuleList(GUnit unit)
-        {
-            var unitData = unit.GetData<UnitData>();
-            var moduleList = WorldManager.Instance.Module.ModuleList.Where(_ => {
-                return ((int)_.Group & unitData.requiredModuleGroup) != 0;
-                });
-            foreach (var module in moduleList)
-            {
-                if (module.Contains(unit.UnitId))
-                {
-                    module.Remove(unit);
-                }
-            }
-        }
-
-        static void UpdateMeetModuleList(GUnit unit)
-        {
-            var unitData = unit.GetData<UnitData>();
-            var moduleList = WorldManager.Instance.Module.ModuleList.Where(_ => {
-                return ((int)_.Group & unitData.requiredModuleGroup) != 0;
-                });
-            foreach (var module in moduleList)
-            {
-                var isMeet = module.IsMeet(unit.DataDictionary.Values);
-                var isContains = module.Contains(unit.UnitId);
-
-                if (!isContains && isMeet)
-                {
-                    module.Add(unit);
-                }
-                else if (isContains && !isMeet)
-                {
-                    module.Remove(unit);
-                }
-            }
         }
     } 
 }

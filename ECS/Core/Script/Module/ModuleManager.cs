@@ -3,7 +3,11 @@
     using System.Collections.Generic;
     using ECS.Common;
     using ECS.Config;
-
+    using ECS.Data;
+    using GUnit = ECS.Unit.Unit;
+    using UniRx;
+    using System.Linq;
+    
     public sealed partial class ModuleManager
     {
         public IReadOnlyList<Module> ModuleList => _moduleList;
@@ -58,6 +62,28 @@
         void RegisterCoreModule()
         {
             Register(new GameSystem());
+        }
+
+        internal void UpdateMeetModuleList(GUnit unit)
+        {
+            var unitData = unit.GetData<UnitData>();
+            var moduleList = _moduleList.Where(_ => {
+                return ((int)_.Group & unitData.requiredModuleGroup) != 0;
+                });
+            foreach (var module in moduleList)
+            {
+                var isMeet = module.IsMeet(unit.GetAllData(unit.UnitId));
+                var isContains = module.Contains(unit.UnitId);
+
+                if (!isContains && isMeet)
+                {
+                    module.Add(unit);
+                }
+                else if (isContains && !isMeet)
+                {
+                    module.Remove(unit);
+                }
+            }
         }
     }   
 }

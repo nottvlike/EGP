@@ -5,9 +5,12 @@
     using ECS.Module;
     using ECS.Unit;
     using ECS.Factory;
+    using ECS.Data;
 
     public sealed class WorldManager : Singleton<WorldManager>
     {
+        internal DataManager Data { get; private set; } = new DataManager();
+
         public ModuleManager Module { get; private set; } = new ModuleManager();
         
         public ConfigManager Config { get; private set; } = new ConfigManager();

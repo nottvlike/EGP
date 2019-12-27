@@ -4,7 +4,6 @@
     using ECS.Common;
     using ECS.Config;
     using System.Collections.Generic;
-    using System.Linq;
 
     public sealed partial class UnitManager
     {
@@ -31,11 +30,11 @@
 
         void InitGameCore()
         {
-            var gameCore = WorldManager.Instance.Factory.CreateUnit();
+            var gameCore = worldMgr.Factory.CreateUnit();
             gameCore.AddData(new SystemData());
 
             var unitData = gameCore.GetData<UnitData>();
-            unitData.requiredModuleGroup = WorldManager.Instance.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
+            unitData.requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
             unitData.unitType = TagToUnitType(Constant.SYSTEM_UNIT_TYPE_NAME);
             unitData.tag = Constant.GAME_CORE_UNIT_NAME;
             
@@ -93,15 +92,13 @@
 
         public Unit GetUnit(string tag)
         {
-#if DEBUG
-            if (!_unitCacheDictionary.ContainsKey(tag))
+            Unit unit;
+            if (!_unitCacheDictionary.TryGetValue(tag, out unit))
             {
                 Log.E("Unit named {0} doesn't cached!", tag);
-                return null;
             }
-#endif
 
-            return _unitCacheDictionary[tag];
+            return unit;
         }
 
         internal void ClearCache(string tag)

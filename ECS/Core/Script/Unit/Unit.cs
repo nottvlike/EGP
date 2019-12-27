@@ -2,143 +2,51 @@
 {
     using System;
     using System.Collections.Generic;
-    using UniRx;
     using ECS.Data;
-    using ECS.Common;
+    using ECS.Module;
 
-    internal class Util
+    public struct Unit
     {
-        static uint uid = 1;
-        public static uint GetUnionId()
-        {
-            return uid++;
-        }
-    }
+        ModuleManager moduleMgr => WorldManager.Instance.Module;
+        DataManager dataMgr => WorldManager.Instance.Data;
 
-    public sealed class Unit : IPoolObject
-    {
         public uint UnitId { get; private set; }
 
-        Dictionary<Type, IData> _dataDictionary = new Dictionary<Type, IData>();
-        public IReadOnlyDictionary<Type, IData> DataDictionary => _dataDictionary;
-
-        UnitData _unitData;
-
-        public Unit()
+        public Unit(uint unitId)
         {
-            UnitId = Util.GetUnionId();
-
-            _unitData = DataPool.Get(typeof(UnitData)) as UnitData;
-            _unitData.stateTypeProperty = new ReactiveProperty<UnitStateType>(UnitStateType.None);
-
-            _dataDictionary.Add(_unitData.GetType(), _unitData);
-
-            _addDataSubject = new Subject<IData>();
-            _removeDataSubject = new Subject<IData>();
+            UnitId = unitId;
         }
-
-        ~Unit()
-        {
-            _addDataSubject.OnCompleted();
-            _removeDataSubject.OnCompleted();
-        }
-
-        public IObservable<IData> ObserverAddData=> _addDataSubject;
-        public IObservable<IData> ObserverRemoveData => _removeDataSubject;
-
-        Subject<IData> _addDataSubject = new Subject<IData>();
-        Subject<IData> _removeDataSubject = new Subject<IData>();
 
         public void AddData(IData data, Type key = null)
         {
-            var type = key == null ? data.GetType() : key;
-#if DEBUG
-            var tmpData = GetData(type);
-            if (tmpData != null)
-            {
-                return;
-            }
-#endif
-
-            _dataDictionary.Add(type, data);
-            _addDataSubject.OnNext(data);
+            dataMgr.AddData(UnitId, data, key);
         }
 
         public void RemoveData(IData data)
         {
-            var type = data.GetType();
-#if DEBUG
-            var tmpData = GetData(type);
-            if (tmpData == null)
-            {
-                return;
-            }
-#endif
-
-            _dataDictionary.Remove(type);
-            _removeDataSubject.OnNext(data);
+            dataMgr.RemoveData(UnitId, data);
         }
 
         public void RemoveData(Type type)
         {
-#if DEBUG
-            var tmpData = GetData(type);
-            if (tmpData == null)
-            {
-                Log.W("Type {0} could not been found!", type);
-                return;
-            }
-#endif
-
             var data = GetData(type);
-            var poolObject = data as IPoolObject;
-            if (poolObject != null)
-            {
-                DataPool.Release(poolObject);
-            }
-
             RemoveData(data);
         }
 
-        public IData GetData(Type type)
+        public IData GetData(Type type, bool includeDeleted = false)
         {
-            IData data;
-            if (!_dataDictionary.TryGetValue(type, out data))
-            {
-                return null;
-            }
-
-            return data;
+            return dataMgr.GetData(UnitId, type, includeDeleted);;
         }
 
         public T AddData<T>() where T : IData
         {
-            T data;
-
-#if DEBUG
-            data = GetData<T>();
-            if (data != null)
-            {
-                Log.W("Type {0} has been added!", typeof(T));
-                return data;
-            }
-#endif
-            
-            data = (T)DataPool.Get(typeof(T));
+            var data = (T)DataPool.Get(typeof(T));
             AddData(data);
             return data;
         }
 
         public void RemoveData<T>() where T : IData
         {
-#if DEBUG
-            if (GetData<T>() == null)
-            {
-                Log.W("Type {0} could not been found!", typeof(T));
-                return;
-            }
-#endif
-
             RemoveData(typeof(T));
         }
 
@@ -147,11 +55,14 @@
             return (T)GetData(typeof(T));
         }
 
-        public bool IsInUse { get; set; }
-        public void Clear()
+        public IEnumerable<IData> GetAllData(uint unitId)
         {
-            _dataDictionary.Clear();
-            _dataDictionary.Add(_unitData.GetType(), _unitData);
+            return dataMgr.GetAllData(unitId);
+        }
+
+        public void UpdateMeetModuleList()
+        {
+            moduleMgr.UpdateMeetModuleList(this);            
         }
     }
 }
