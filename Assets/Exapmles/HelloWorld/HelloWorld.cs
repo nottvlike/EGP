@@ -54,15 +54,15 @@ public static class HelloWorldFactory
 {
     public static void CreateHelloWorld(this UnitFactory factory)
     {
-        var unit = factory.CreateUnit();
+        var requiredModuleGroup = WorldManager.Instance.Module
+            .TagToModuleGroupType(GameConstant.HELLO_WORLD_GROUP_TYPE);
+        var unit = factory.CreateUnit(requiredModuleGroup);
 
         var helloWorldData = new HelloWorldData();
         helloWorldData.helloWorld = "Hello World!";
         unit.AddData(helloWorldData);
 
         var unitData = unit.GetData<UnitData>();
-        unitData.requiredModuleGroup = WorldManager.Instance.Module
-            .TagToModuleGroupType(GameConstant.HELLO_WORLD_GROUP_TYPE);
         unitData.stateTypeProperty.Value = UnitStateType.Init;
     }
 }
