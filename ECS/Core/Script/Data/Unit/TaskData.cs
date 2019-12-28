@@ -7,11 +7,13 @@ namespace ECS.Data
 
     public class TaskData : IData, IPoolObject
     {
+        public int maxConcurrent = 8;
         public List<IObservable<Unit>> taskList = new List<IObservable<Unit>>();
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
+            maxConcurrent = 8;
             taskList.Clear();
         }
     }

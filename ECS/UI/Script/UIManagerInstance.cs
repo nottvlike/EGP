@@ -67,7 +67,7 @@ namespace ECS.UI
                 var taskData = unit.GetData<TaskData>();
                 if (taskData != null && taskData.taskList.Count > 0)
                 {
-                    return taskData.taskList.Merge(5).AsUnitObservable().Finally(() =>
+                    return taskData.taskList.Merge(taskData.maxConcurrent).AsUnitObservable().Finally(() =>
                     {
                         taskData.taskList.Clear();
                     });
