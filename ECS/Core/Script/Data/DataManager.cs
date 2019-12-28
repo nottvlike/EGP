@@ -8,8 +8,8 @@ namespace ECS.Data
 
     internal class DataManager
     {
-        public Dictionary<ValueTuple<uint, Type>, IData> _dataDictionary = new Dictionary<ValueTuple<uint, Type>, IData>();
-        public Dictionary<ValueTuple<uint, Type>, IData> _removedDataDictionary = new Dictionary<ValueTuple<uint, Type>, IData>();
+        Dictionary<ValueTuple<uint, Type>, IData> _dataDictionary = new Dictionary<ValueTuple<uint, Type>, IData>();
+        Dictionary<ValueTuple<uint, Type>, IData> _removedDataDictionary = new Dictionary<ValueTuple<uint, Type>, IData>();
 
         public void AddData(uint unitId, IData data, Type key = null)
         {

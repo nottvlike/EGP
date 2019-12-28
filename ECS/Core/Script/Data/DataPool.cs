@@ -5,9 +5,9 @@ namespace ECS.Data
 
     public sealed class DataPool
     {
-        public static T Get<T>() where T : class, IData, IPoolObject
+        public static T Get<T>() where T : class, IData
         {
-            return Pool.Get<T>();
+            return (T)Get(typeof(T));
         }
 
         public static IData Get(Type type)
