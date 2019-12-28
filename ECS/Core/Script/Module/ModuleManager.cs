@@ -43,7 +43,7 @@
         public void Register(Module module)
         {
 #if DEBUG
-            if (module.RequiredDataList.Length <= 0)
+            if (module.RequiredDataList.Length <= 0 || module.Group == 0)
             {
                 Log.W("Module {0} has no need to add!", module.GetType());
                 return;
