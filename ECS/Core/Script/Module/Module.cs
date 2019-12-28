@@ -19,13 +19,13 @@
             return union.Count() == RequiredDataList.Length;
         }
 
-        public bool Contains(long unitId)
+        public bool Contains(uint unitId)
         {
             return _unitIdList.IndexOf(unitId) != -1;
         }
 
-        List<long> _unitIdList = new List<long>();
-        public IReadOnlyList<long> UnitIdList => _unitIdList;
+        List<uint> _unitIdList = new List<uint>();
+        public IReadOnlyList<uint> UnitIdList => _unitIdList;
 
         public void Add(GUnit unit)
         {
