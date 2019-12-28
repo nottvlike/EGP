@@ -44,7 +44,7 @@ namespace ECS.UI
 
             return AssetManager.Load<GameObject>(UIConstant.UI_ROOT_ASSET_NAME).Do(root => 
             {
-                _uiData.uiRoot = root.Spawn() as GameObject;
+                _uiData.uiRoot = root.Spawn();
                 GameObject.DontDestroyOnLoad(_uiData.uiRoot);
             }).AsUnitObservable();
         }

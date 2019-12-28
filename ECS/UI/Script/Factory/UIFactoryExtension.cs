@@ -18,9 +18,7 @@ namespace ECS.Factory
             var unit = factory.CreateUnit(requiredModuleGroup);
 
             var obj = asset.Spawn();
-            obj.transform.SetParent(uiData.uiRoot.transform);
-            obj.transform.localPosition = asset.transform.localPosition;
-            obj.transform.localScale = asset.transform.localScale;
+            obj.transform.SetParent(uiData.uiRoot.transform, false);
 
             var unitData = unit.GetData<UnitData>();
             unitData.unitType = WorldManager.Instance.Unit.TagToUnitType(Constant.UI_UNIT_TYPE_NAME);
