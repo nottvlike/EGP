@@ -145,6 +145,14 @@ namespace ECS.UI
             }
 #endif
             HideImpl(assetPath);
+
+            if (_taskData.taskList.Count > 0)
+            {
+                _taskData.taskList.Merge(_taskData.maxConcurrent).AsUnitObservable().Finally(() =>
+                {
+                    _taskData.taskList.Clear();
+                }).Subscribe();
+            }
         }
 
         void HideImpl(string assetPath)
