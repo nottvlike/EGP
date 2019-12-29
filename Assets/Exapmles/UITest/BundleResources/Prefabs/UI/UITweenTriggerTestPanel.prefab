@@ -302,6 +302,9 @@ GameObject:
   - component: {fileID: 5939385912693233467}
   - component: {fileID: 4986136732119311142}
   - component: {fileID: 1729957365069533549}
+  - component: {fileID: 7732705312813239862}
+  - component: {fileID: 9212039701309120203}
+  - component: {fileID: 1851329851181754284}
   m_Layer: 5
   m_Name: UITweenTriggerTestPanel
   m_TagString: Untagged
@@ -384,9 +387,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelMode: 1
   _order: 0
-  _animationType: 0
+  _animationType: 1
   _animationProcessor: {fileID: 0}
-  _tweenProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 1851329851181754284}
 --- !u!114 &1729957365069533549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,6 +402,87 @@ MonoBehaviour:
   m_Script: {fileID: -1106683727, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7732705312813239862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273039307321647532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -467859313, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupName: close
+  duration: 0.5
+  ease: 20
+  loopType: 0
+  loops: 1
+  triggerType: 0
+  from: {x: 1, y: 1, z: 1}
+  to: {x: 0, y: 0, z: 0}
+--- !u!114 &9212039701309120203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273039307321647532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -467859313, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupName: open
+  duration: 0.5
+  ease: 21
+  loopType: 0
+  loops: 1
+  triggerType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 1, y: 1, z: 1}
+--- !u!114 &1851329851181754284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273039307321647532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2102437672, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenGroupInfoList:
+  - groupName: close
+    tweenInfoList:
+    - tween: {fileID: 7732705312813239862}
+      delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  - groupName: open
+    tweenInfoList:
+    - tween: {fileID: 9212039701309120203}
+      delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
 --- !u!1 &3530738334868830777
 GameObject:
   m_ObjectHideFlags: 0

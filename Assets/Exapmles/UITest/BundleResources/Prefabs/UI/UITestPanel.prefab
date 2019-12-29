@@ -626,6 +626,9 @@ GameObject:
   - component: {fileID: 4334498785018514497}
   - component: {fileID: 2406986598496918310}
   - component: {fileID: 3025194349872422445}
+  - component: {fileID: 1541337008475185863}
+  - component: {fileID: 1023377811562339618}
+  - component: {fileID: 6293414059396240646}
   m_Layer: 5
   m_Name: UITestPanel
   m_TagString: Untagged
@@ -718,9 +721,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelMode: 1
   _order: 0
-  _animationType: 0
+  _animationType: 1
   _animationProcessor: {fileID: 0}
-  _tweenProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 6293414059396240646}
   showSimpleTipsPanelButton: {fileID: 3108306291352622349}
-  showTweenTestPanelButton: {fileID: 0}
-  showAnimationTestPanelButton: {fileID: 0}
+--- !u!114 &1541337008475185863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777245518000086665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -467859313, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupName: open
+  duration: 0.5
+  ease: 14
+  loopType: 0
+  loops: 1
+  triggerType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 1, y: 1, z: 1}
+--- !u!114 &1023377811562339618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777245518000086665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -467859313, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupName: close
+  duration: 0.5
+  ease: 15
+  loopType: 0
+  loops: 1
+  triggerType: 0
+  from: {x: 1, y: 1, z: 1}
+  to: {x: 0, y: 0, z: 0}
+--- !u!114 &6293414059396240646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777245518000086665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2102437672, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenGroupInfoList:
+  - groupName: open
+    tweenInfoList:
+    - tween: {fileID: 1541337008475185863}
+      delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  - groupName: close
+    tweenInfoList:
+    - tween: {fileID: 1023377811562339618}
+      delay: 0
+    onPlay:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
