@@ -29,7 +29,6 @@
                 }
             }).AddTo(unitData.disposable);
             
-            Preload(unit);
             Init(unit, panel);
         }
 
@@ -38,17 +37,6 @@
         protected virtual void OnInit(GUnit unit) { }
         protected virtual void OnShow(GUnit unit, Panel panel, params object[] args) { }
         protected virtual void OnHide(GUnit unit, Panel panel) { }
-
-        void Preload(GUnit unit)
-        {
-            var taskData = unit.GetData<TaskData>();
-            if (taskData == null)
-            {
-                return;
-            }
-
-            OnPreload(unit, taskData.taskList);
-        }
 
         void Init(GUnit unit, Panel panel)
         {
@@ -59,6 +47,28 @@
         }
 
         void Show(GUnit unit, Panel panel, PanelData panelData)
+        {
+            var taskData = unit.GetData<TaskData>();
+            if (taskData != null)
+            {
+                OnPreload(unit, taskData.taskList);
+            }
+
+            if (taskData != null && taskData.taskList.Count > 0)
+            {
+                taskData.taskList.Merge(taskData.maxConcurrent).AsUnitObservable().Finally(() =>
+                {
+                    ShowImpl(unit, panel, panelData);
+                    taskData.taskList.Clear();
+                }).Subscribe();
+            }
+            else
+            {
+                ShowImpl(unit, panel, panelData);
+            }
+        }
+
+        void ShowImpl(GUnit unit, Panel panel, PanelData panelData)
         {
             panel.gameObject.SetActive(true);
             OnShow(unit, panel, panelData.paramsList.ToArray());
@@ -80,19 +90,22 @@
                 panel.gameObject.SetActive(false);
             };
 
+            var uiCore = WorldManager.Instance.Unit.GetUnit(UIConstant.UI_CORE_UNIT_NAME);
+            var taskData = uiCore.GetData<TaskData>();
+
             if (panel.AnimationType == UIAnimationType.Animation && panel.AnimationProcessor != null)
             {
-                panel.AnimationProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+                taskData.taskList.Add(panel.AnimationProcessor.PlayAsObserable(UIConstant.CLOSE_TWEEN_NAME).Do(_ =>
                 {
                     hideAction.Invoke();
-                });
+                }));
             }
             else if (panel.AnimationType == UIAnimationType.Tween && panel.TweenProcessor != null)
             {
-                panel.TweenProcessor.Play(UIConstant.CLOSE_TWEEN_NAME, () => 
+                taskData.taskList.Add(panel.TweenProcessor.PlayAsObserable(UIConstant.CLOSE_TWEEN_NAME).Do(_ => 
                 {
                     hideAction.Invoke();
-                });
+                }));
             }
             else
             {

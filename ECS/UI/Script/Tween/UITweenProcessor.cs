@@ -6,7 +6,7 @@ namespace Tween
     using System.Linq;
     using UnityEngine;
     using UnityEngine.Events;
-    using ECS.UI;
+    using UniRx;
 
     [Serializable]
     public struct TweenInfo
@@ -27,6 +27,8 @@ namespace Tween
     public class UITweenProcessor : MonoBehaviour
     {
         public List<TweenGroupInfo> tweenGroupInfoList;
+
+        ISubject<string> _playSubject = new Subject<string>();
 
         void Reset() 
         {
@@ -68,6 +70,15 @@ namespace Tween
             {
                 onComplete?.Invoke();
             });
+        }
+
+        public IObservable<Unit> PlayAsObserable(string groupName)
+        {
+            PlayImpl(groupName, () => 
+            {
+                _playSubject.OnNext(groupName);
+            });
+            return _playSubject.Where(_ => _ == groupName).First().AsUnitObservable();
         }
 
         void PlayImpl(string groupName, Action onComplete = null)

@@ -52,9 +52,6 @@ namespace UIAnimation
         public string GroupName => groupName;
         public AnimationTriggerType TriggerType => triggerType;
 
-        ISubject<bool> _playSubject;
-        ISubject<bool> _completeSubject;
-
         void OnEnable()
         {
             if (triggerType == AnimationTriggerType.Auto)
@@ -97,38 +94,16 @@ namespace UIAnimation
 
         public void OnAnimationPlay()
         {
-            if (_playSubject != null)
-            {
-                _playSubject.OnNext(true);
-                _playSubject.OnCompleted();
-                _playSubject = null;
-            }
+            onPlay.Invoke();
         }
 
         public void OnAnimationCommpleted()
         {
-            if (_completeSubject != null)
-            {
-                _completeSubject.OnNext(true);
-                _completeSubject.OnCompleted();
-                _completeSubject = null;
-            }
+            onComplete.Invoke();
         }
 
         public void Play()
         {
-            if (onComplete.GetPersistentEventCount() > 0)
-            {
-                if (_completeSubject != null)
-                {
-                    _completeSubject.OnCompleted();
-                    _completeSubject = null;
-                }
-
-                _completeSubject = new Subject<bool>();
-                _completeSubject.Subscribe(_ => onComplete.Invoke());
-            }
-
             foreach (var animationData in animationDataList)
             {
                 switch (animationData.type)
@@ -149,18 +124,6 @@ namespace UIAnimation
                         animator.ResetTrigger(animationData.name);
                         break;
                 }
-            }
-
-            if (onPlay.GetPersistentEventCount() > 0)
-            {
-                if (_playSubject != null)
-                {
-                    _playSubject.OnCompleted();
-                    _playSubject = null;
-                }
-
-                _playSubject = new Subject<bool>();
-                _playSubject.Subscribe(_ => onPlay.Invoke());
             }
         }
     }

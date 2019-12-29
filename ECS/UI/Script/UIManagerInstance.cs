@@ -11,6 +11,7 @@ namespace ECS.UI
     internal class UIManagerInstance : Singleton<UIManagerInstance>
     {
         UIData _uiData { get; set; }
+        TaskData _taskData { get; set; }
 
         WorldManager worldMgr => WorldManager.Instance;
 
@@ -20,8 +21,8 @@ namespace ECS.UI
                 | worldMgr.Module.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME);
             var unit = worldMgr.Factory.CreateUnit(requiredModuleGroup);
 
-            _uiData = new UIData();
-            unit.AddData(_uiData);
+            _uiData = unit.AddData<UIData>();
+            _taskData = unit.AddData<TaskData>();
 
             var unitData = unit.GetData<UnitData>();
             unitData.unitType = worldMgr.Unit.TagToUnitType(Constant.UI_UNIT_TYPE_NAME);
@@ -60,22 +61,6 @@ namespace ECS.UI
             .Do(asset => 
             {
                 worldMgr.Factory.CreateUI(assetPath, asset, _uiData);
-            })
-            .ContinueWith(_ =>
-            {
-                var unit = _uiData.unitDict[assetPath];
-                var taskData = unit.GetData<TaskData>();
-                if (taskData != null && taskData.taskList.Count > 0)
-                {
-                    return taskData.taskList.Merge(taskData.maxConcurrent).AsUnitObservable().Finally(() =>
-                    {
-                        taskData.taskList.Clear();
-                    });
-                }
-                else
-                {
-                    return Observable.ReturnUnit();
-                }
             })
             .AsUnitObservable();
         }
@@ -116,10 +101,19 @@ namespace ECS.UI
                     HideImpl(showed);
                 }
 
-                ShowImpl(assetPath, panelData);
+                if (_taskData.taskList.Count > 0)
+                {
+                    _taskData.taskList.Merge(_taskData.maxConcurrent).AsUnitObservable().Finally(() =>
+                    {
+                        _taskData.taskList.Clear();
+                        ShowImpl(assetPath, panelData);
+                    }).Subscribe();
+                }
+                else
+                {
+                    ShowImpl(assetPath, panelData);
+                }
             }
-
-            return;
         }
 
        void ShowImpl(string assetPath, PanelData panelData)
@@ -151,7 +145,6 @@ namespace ECS.UI
             }
 #endif
             HideImpl(assetPath);
-            return;
         }
 
         void HideImpl(string assetPath)

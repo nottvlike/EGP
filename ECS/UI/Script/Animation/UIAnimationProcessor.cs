@@ -4,12 +4,15 @@ namespace UIAnimation
     using UnityEngine.Events;
     using System.Collections.Generic;
     using UniRx;
+    using System;
     using System.Linq;
     using ECS.Common;
 
     public sealed class UIAnimationProcessor : MonoBehaviour
     {
         public List<UIAnimationTrigger> animationTriggerList;
+
+        ISubject<string> _playSubject = new Subject<string>();
 
         void Reset() 
         {
@@ -32,11 +35,22 @@ namespace UIAnimation
 
             if (onComplete != null)
             {
-                animationTrigger.onComplete.RemoveAllListeners();
+                UnityAction onCompleteAction = null;
+                onCompleteAction = () => 
+                {
+                    onComplete.Invoke();
+                    animationTrigger.onComplete.RemoveListener(onCompleteAction);
+                };
                 animationTrigger.onComplete.AddListener(onComplete);
             }
 
             animationTrigger.Play();
+        }
+
+        public IObservable<Unit> PlayAsObserable(string groupName)
+        {
+            Play(groupName);
+            return _playSubject.Where(_ => _ == groupName).First().AsUnitObservable();
         }
 
         public void OnAnimationPlay(string groupName)
@@ -49,6 +63,8 @@ namespace UIAnimation
         {
             var animationTrigger = animationTriggerList.Where(_ => _.GroupName == groupName).FirstOrDefault();
             animationTrigger.OnAnimationCommpleted();
+
+            _playSubject.OnNext(groupName);
         }
     }
 }
