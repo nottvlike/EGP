@@ -81,7 +81,6 @@ namespace ECS.UI
                 panelData.paramsList.AddRange(args);
             }
 
-            var panel = unit.GetData<Panel>();
 #if DEBUG
             if (!forceUpdateWhenShowed && IsShowed(assetPath))
             {
@@ -89,6 +88,14 @@ namespace ECS.UI
                 return;
             }
 #endif
+            panelData.stateTypeProperty.Value = PanelStateType.Preload;
+        }
+
+        public void ShowImmediate(string assetPath)
+        {
+            var unit = _uiData.unitDict[assetPath];
+            var panel = unit.GetData<Panel>();
+            var panelData = unit.GetData<PanelData>();
 
             if (panel.PanelMode != PanelMode.Alone)
             {
@@ -109,7 +116,7 @@ namespace ECS.UI
             }
         }
 
-       void ShowImpl(string assetPath, PanelData panelData)
+        void ShowImpl(string assetPath, PanelData panelData)
         {
             if (_uiData.showedList.IndexOf(assetPath) !=-1)
             {

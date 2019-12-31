@@ -47,8 +47,6 @@ namespace ECS.Factory
                 panelData.stateTypeProperty = new ReactiveProperty<PanelStateType>(PanelStateType.None);
             }
 
-            unit.AddData<TaskData>();
-
             uiData.unitDict.Add(assetPath, unit);
 
             unitData.stateTypeProperty.Value = UnitStateType.Init;

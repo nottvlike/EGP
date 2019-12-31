@@ -19,7 +19,18 @@
             var panel = unit.GetData<Panel>();
             panelData.stateTypeProperty.Subscribe(state => 
             {
-                if (state == PanelStateType.Show)
+                if (state == PanelStateType.Preload)
+                {
+                    var taskData = DataPool.Get<TaskData>();
+                    OnPreload(unit, taskData.taskList);
+                    TaskModule.Start(taskData, () =>
+                    {
+                        DataPool.Release(taskData);
+
+                        UIManagerInstance.Instance.ShowImmediate(panelData.assetPath);
+                    });
+                }
+                else if (state == PanelStateType.Show)
                 {
                     Show(unit, panel, panelData);
                 }
@@ -48,28 +59,6 @@
 
         void Show(GUnit unit, Panel panel, PanelData panelData)
         {
-            var taskData = unit.GetData<TaskData>();
-            if (taskData != null)
-            {
-                OnPreload(unit, taskData.taskList);
-            }
-
-            if (taskData != null && taskData.taskList.Count > 0)
-            {
-                taskData.taskList.Merge(taskData.maxConcurrent).AsUnitObservable().Finally(() =>
-                {
-                    ShowImpl(unit, panel, panelData);
-                    taskData.taskList.Clear();
-                }).Subscribe();
-            }
-            else
-            {
-                ShowImpl(unit, panel, panelData);
-            }
-        }
-
-        void ShowImpl(GUnit unit, Panel panel, PanelData panelData)
-        {
             panel.gameObject.SetActive(true);
             OnShow(unit, panel, panelData.paramsList.ToArray());
             if (panel.AnimationType == UIAnimationType.Animation)
@@ -87,7 +76,7 @@
             Action hideAction = () => 
             {
                 OnHide(unit, panel);
-
+                
                 if (panel.DestroyWhenHide)
                 {
                     var unitData = unit.GetData<UnitData>();

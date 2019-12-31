@@ -17,6 +17,7 @@
     public enum PanelStateType
     {
         None,
+        Preload,
         Show,
         Hide,
     }
@@ -25,11 +26,14 @@
     {
         public ReactiveProperty<PanelStateType> stateTypeProperty;
         public List<object> paramsList = new List<object>();
+        public string assetPath;
+
         public bool IsInUse { get; set; }
         public void Clear()
         {
             stateTypeProperty.Value = PanelStateType.None;
             paramsList = null;
+            assetPath = string.Empty;
         }
     }
 }
