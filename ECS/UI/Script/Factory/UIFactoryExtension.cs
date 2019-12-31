@@ -4,6 +4,7 @@ namespace ECS.Factory
     using Data;
     using UnityEngine;
     using ECS.UI;
+    using ECS.Common;
     using GUnit = ECS.Unit.Unit;
     using Asset;
 
@@ -35,7 +36,7 @@ namespace ECS.Factory
                 {
                     factory.DestroyUIUnit(unit, uiData);
                 }
-            });
+            }).AddTo(unitData.disposable);
 
             var panel = obj.GetComponent<Panel>();
             unit.AddData(panel, typeof(Panel));

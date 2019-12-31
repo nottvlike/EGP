@@ -32,7 +32,7 @@
         public void Clear()
         {
             stateTypeProperty.Value = PanelStateType.None;
-            paramsList = null;
+            paramsList.Clear();
             assetPath = string.Empty;
         }
     }
