@@ -41,6 +41,11 @@
             return dataMgr.GetData(UnitId, type, includeDeleted);;
         }
 
+        public IData TryGetData(Type type, bool includeDeleted = false)
+        {
+            return dataMgr.TryGetData(UnitId, type, includeDeleted);;
+        }
+
         public T AddData<T>() where T : IData
         {
             var data = (T)DataPool.Get(typeof(T));
@@ -56,6 +61,11 @@
         public T GetData<T>(bool includeDeleted = false) where T : IData
         {
             return (T)GetData(typeof(T), includeDeleted);
+        }
+
+        public T TryGetData<T>(bool includeDeleted = false) where T : IData
+        {
+            return (T)TryGetData(typeof(T), includeDeleted);
         }
 
         public IEnumerable<IData> GetAllData(uint unitId)
