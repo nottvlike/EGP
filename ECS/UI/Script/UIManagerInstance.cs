@@ -3,6 +3,7 @@ namespace ECS.UI
     using ECS.Common;
     using ECS.Data;
     using ECS.Factory;
+    using ECS.Module;
     using UniRx;
     using System;
     using Asset;
@@ -101,18 +102,10 @@ namespace ECS.UI
                     HideImpl(showed);
                 }
 
-                if (_taskData.taskList.Count > 0)
-                {
-                    _taskData.taskList.Merge(_taskData.maxConcurrent).AsUnitObservable().Finally(() =>
-                    {
-                        _taskData.taskList.Clear();
-                        ShowImpl(assetPath, panelData);
-                    }).Subscribe();
-                }
-                else
+                TaskModule.Start(_taskData, () =>
                 {
                     ShowImpl(assetPath, panelData);
-                }
+                });
             }
         }
 
@@ -146,13 +139,7 @@ namespace ECS.UI
 #endif
             HideImpl(assetPath);
 
-            if (_taskData.taskList.Count > 0)
-            {
-                _taskData.taskList.Merge(_taskData.maxConcurrent).AsUnitObservable().Finally(() =>
-                {
-                    _taskData.taskList.Clear();
-                }).Subscribe();
-            }
+            TaskModule.Start(_taskData);
         }
 
         void HideImpl(string assetPath)
