@@ -19,6 +19,8 @@
         
         [SerializeField]
         int _order;
+        [SerializeField]
+        bool _destroyWhenHide;
 
         [SerializeField]
         UIAnimationType _animationType;
@@ -30,6 +32,7 @@
         public PanelMode PanelMode => _panelMode;
 
         public int Order => _order;
+        public bool DestroyWhenHide => _destroyWhenHide;
 
         public UIAnimationType AnimationType => _animationType;
         public UIAnimationProcessor AnimationProcessor=> _animationProcessor;

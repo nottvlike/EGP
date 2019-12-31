@@ -87,7 +87,16 @@
             Action hideAction = () => 
             {
                 OnHide(unit, panel);
-                panel.gameObject.SetActive(false);
+
+                if (panel.DestroyWhenHide)
+                {
+                    var unitData = unit.GetData<UnitData>();
+                    unitData.stateTypeProperty.Value = UnitStateType.Destroy;
+                }
+                else
+                {
+                    panel.gameObject.SetActive(false);
+                }
             };
 
             var uiCore = WorldManager.Instance.Unit.GetUnit(UIConstant.UI_CORE_UNIT_NAME);
