@@ -7,6 +7,7 @@
     {
         None = 0,
         Init,
+        Destroy,
     }
     
     public class UnitData : IData, IPoolObject
