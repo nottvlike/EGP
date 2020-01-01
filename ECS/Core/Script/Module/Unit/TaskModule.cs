@@ -20,7 +20,7 @@ namespace ECS.Module
             }
             else
             {
-                onFinished.Invoke();
+                onFinished?.Invoke();
             }
         }
     }
