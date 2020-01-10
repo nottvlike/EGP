@@ -5,25 +5,7 @@ namespace UIAnimation
     using UnityEngine.EventSystems;
     using System;
     using System.Collections.Generic;
-    using UniRx;
-
-    public enum AnimationValueType
-    {
-        None,
-        Bool,
-        Float,
-        Integer,
-        Trigger,
-        ResetTrigger,
-    }
-
-    [Serializable]
-    public struct AnimationData
-    {
-        public AnimationValueType type;
-        public string name;
-        public string value;
-    }
+    using ECS.Data;
 
     public enum AnimationTriggerType
     {
@@ -45,7 +27,7 @@ namespace UIAnimation
         [SerializeField]
         AnimationTriggerType triggerType;
         [SerializeField]
-        List<AnimationData> animationDataList;
+        List<AnimationValueInfo> animationValueInfoList;
 
         public UnityEvent onPlay;
         public UnityEvent onComplete;
@@ -104,24 +86,24 @@ namespace UIAnimation
 
         public void Play()
         {
-            foreach (var animationData in animationDataList)
+            foreach (var animationValueInfo in animationValueInfoList)
             {
-                switch (animationData.type)
+                switch (animationValueInfo.type)
                 {
                     case AnimationValueType.Bool:
-                        animator.SetBool(animationData.name, Convert.ToBoolean(animationData.value));
+                        animator.SetBool(animationValueInfo.name, Convert.ToBoolean(animationValueInfo.value));
                         break;
                     case AnimationValueType.Float:
-                        animator.SetFloat(animationData.name, (float)Convert.ToDouble(animationData.value));
+                        animator.SetFloat(animationValueInfo.name, (float)Convert.ToDouble(animationValueInfo.value));
                         break;
                     case AnimationValueType.Integer:
-                        animator.SetInteger(animationData.name, Convert.ToInt32(animationData.value));
+                        animator.SetInteger(animationValueInfo.name, Convert.ToInt32(animationValueInfo.value));
                         break;
                     case AnimationValueType.Trigger:
-                        animator.SetTrigger(animationData.name);
+                        animator.SetTrigger(animationValueInfo.name);
                         break;
                     case AnimationValueType.ResetTrigger:
-                        animator.ResetTrigger(animationData.name);
+                        animator.ResetTrigger(animationValueInfo.name);
                         break;
                 }
             }
