@@ -2,24 +2,23 @@ namespace ECS.Object.Data
 {
     using ECS.Data;
     using ECS.Common;
-    using System.Collections.Generic;
 
-    public struct AttributeInfo
+    public struct ObjectAttributeInfo
     {
         public int type;
         public float baseValue;
-        public float modifyValue;
-        public float finalValue;
+        public float basePercent;
+        public float allValue;
     }
 
     public class ObjectAttributeData : IData, IPoolObject
     {
-        public List<AttributeInfo> attributeInfoList;
+        public ObjectAttributeInfo[] attributeInfoList;
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
-            attributeInfoList.Clear();
+            attributeInfoList = null;
         }
     }
 }
