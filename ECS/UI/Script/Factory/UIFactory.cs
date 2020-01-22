@@ -8,7 +8,7 @@ namespace ECS.Factory
     using GUnit = ECS.Unit.Unit;
     using Asset;
 
-    public static class UIFactoryExtension
+    public static class UIFactory
     {
         public static void CreateUI(this UnitFactory factory, string assetPath,
              GameObject asset, UIData uiData = null)
