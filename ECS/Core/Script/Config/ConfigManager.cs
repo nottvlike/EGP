@@ -7,38 +7,38 @@
 
     public sealed class ConfigManager
     {
-        Dictionary<Type, ScriptableObject> _configDict = new Dictionary<Type, ScriptableObject>();
+        Dictionary<string, ScriptableObject> _configDict = new Dictionary<string, ScriptableObject>();
 
-        public T Get<T>() where T : ScriptableObject
+        public T Get<T>(string name = null) where T : ScriptableObject
         {
-            var configType = typeof(T);
+            var configName = name != null ? name : typeof(T).ToString();
 #if DEBUG
-            if (!_configDict.ContainsKey(configType))
+            if (!_configDict.ContainsKey(configName))
             {
-                Log.E("failed to find config " + configType.ToString());
+                Log.E("failed to find config " + configName);
                 return null;
             }
 #endif
-            return _configDict[configType] as T;
+            return _configDict[configName] as T;
         }
 
-        public void LoadConfig(ScriptableObject config)
+        public void LoadConfig(ScriptableObject config, string name = null)
         {
-            var configType = config.GetType();
+            var configName = name != null ? name : config.GetType().ToString();
 #if DEBUG
-            if (_configDict.ContainsKey(configType))
+            if (_configDict.ContainsKey(configName))
             {
-                Log.W("duplicate config " + configType.ToString() + " will replac the old one!");
+                Log.W("duplicate config " + configName + " will replac the old one!");
             }
 #endif
-            _configDict[configType] = config;
+            _configDict[configName] = config;
         }
 
         public void LoadConfigGroup(ConfigGroup configGroup)
         {
-            foreach (var config in configGroup.configList)
+            foreach (var configGroupInfo in configGroup.configGroupInfoList)
             {
-                LoadConfig(config);
+                LoadConfig(configGroupInfo.config, configGroupInfo.name);
             }
         }
     }

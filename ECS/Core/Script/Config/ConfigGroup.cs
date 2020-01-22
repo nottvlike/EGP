@@ -4,21 +4,28 @@
     using ECS;
     using ECS.Common;
 
+    public struct ConfigGroupInfo
+    {
+        public string name;
+        public ScriptableObject config;
+    }
+
     [CreateAssetMenu(menuName = Constant.CONFIG_MENU_GROUP + "ConfigGroup")]
     public class ConfigGroup : ScriptableObject
     {
-        public ScriptableObject[] configList;
+        public ConfigGroupInfo[] configGroupInfoList;
 
-        public T Get<T>() where T : ScriptableObject
+        public T Get<T>(string name = null) where T : ScriptableObject
         {
-            for (var i = 0; i < configList.Length; i++)
+            var configName = string.IsNullOrEmpty(name) ? typeof(T).ToString() : name;
+            for (var i = 0; i < configGroupInfoList.Length; i++)
             {
-                var scriptableObject = configList[i];
-                if (scriptableObject.GetType() == typeof(T))
-                    return scriptableObject as T;
+                var configGroupInfo = configGroupInfoList[i];
+                if (configGroupInfo.name == configName)
+                    return configGroupInfo.config as T;
             }
 
-            Log.W("Failed to find config " + typeof(T));
+            Log.W("Failed to find config " + configName);
             return null;
         }
     }
