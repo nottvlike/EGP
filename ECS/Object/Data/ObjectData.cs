@@ -16,8 +16,7 @@ namespace ECS.Object.Data
         None,
         Self,
         Friend,
-        Enemy,
-        Neutral
+        Enemy
     }
 
     public class ObjectData : IData, IPoolObject
