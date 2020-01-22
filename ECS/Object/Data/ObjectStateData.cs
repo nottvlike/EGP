@@ -12,13 +12,13 @@ namespace ECS.Object.Data
         public bool isLoop;
         public float process;
 
-        public AnimationValueInfo[] startInfoList;
-        public AnimationValueInfo[] finishInfoList;
+        public AnimationValueInfo[] startList;
+        public AnimationValueInfo[] finishList;
     }
 
     public class ObjectStateData : IData, IPoolObject
     {
-        public List<StateInfo> stateInfoList;
+        public List<StateInfo> stateInfoList = new List<StateInfo>();
         public Animator animator;
 
         public bool IsInUse { get; set; }
