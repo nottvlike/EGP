@@ -10,7 +10,7 @@
     public abstract class UIModule : Module
     {
         public override int Group { get; protected set; } 
-            = WorldManager.Instance.Module.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME);
+            = WorldManager.Instance.Module.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
 
         protected override void OnAdd(GUnit unit)
         {

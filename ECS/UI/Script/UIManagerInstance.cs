@@ -19,14 +19,14 @@ namespace ECS.UI
         void InitUICore()
         {
             var requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME) 
-                | worldMgr.Module.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME);
+                | worldMgr.Module.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
             var unit = worldMgr.Factory.CreateUnit(requiredModuleGroup);
 
             _uiData = unit.AddData<UIData>();
             _taskData = unit.AddData<TaskData>();
 
             var unitData = unit.GetData<UnitData>();
-            unitData.unitType = worldMgr.Unit.TagToUnitType(Constant.UI_UNIT_TYPE_NAME);
+            unitData.unitType = worldMgr.Unit.TagToUnitType(UIConstant.UI_UNIT_TYPE_NAME);
             unitData.tag = UIConstant.UI_CORE_UNIT_NAME;
 
             unitData.stateTypeProperty.Value = UnitStateType.Init;

@@ -14,7 +14,7 @@ namespace ECS.Factory
              GameObject asset, UIData uiData = null)
         {
             var moduleMgr = WorldManager.Instance.Module;
-            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.UI_MODULE_GROUP_NAME) 
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME) 
                 | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
             var unit = factory.CreateUnit(requiredModuleGroup);
 
@@ -29,7 +29,7 @@ namespace ECS.Factory
             obj.transform.SetParent(uiData.uiRoot.transform, false);
 
             var unitData = unit.GetData<UnitData>();
-            unitData.unitType = unitMgr.TagToUnitType(Constant.UI_UNIT_TYPE_NAME);
+            unitData.unitType = unitMgr.TagToUnitType(UIConstant.UI_UNIT_TYPE_NAME);
             unitData.stateTypeProperty.Subscribe(_ => 
             {
                 if (_ == UnitStateType.Destroy)
