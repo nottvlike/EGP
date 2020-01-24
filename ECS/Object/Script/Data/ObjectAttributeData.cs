@@ -3,6 +3,16 @@ namespace ECS.Object.Data
     using ECS.Data;
     using ECS.Common;
 
+    public enum ObjectAttributeType
+    {
+        MaxHP,
+        MaxMP,
+        HP,
+        MP,
+        ATK,
+        DEF,
+    }
+
     public struct ObjectAttributeInfo
     {
         public int type;
