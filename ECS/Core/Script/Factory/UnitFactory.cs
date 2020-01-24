@@ -40,7 +40,7 @@ namespace ECS.Factory
             unitMgr.RemoveUnit(unit.UnitId);
         }
 
-        public GUnit CreateUnit(int requiredModuleGroup)
+        public GUnit CreateUnit(int requiredModuleGroup, bool subscribleDestroy = true)
         {
             var unit = new GUnit(Util.GetUnionId(), requiredModuleGroup);
             unitMgr.AddUnit(unit.UnitId, unit);
@@ -59,6 +59,17 @@ namespace ECS.Factory
                     unit.UpdateMeetModuleList();
                 }
             }).AddTo(unitData.disposable);
+
+            if (subscribleDestroy)
+            {
+                unitData.stateTypeProperty.Subscribe(_ => {
+                    if (_ == UnitStateType.Destroy)
+                    {
+                        DestroyUnit(unit);
+                    }
+                }).AddTo(unitData.disposable);
+            }
+
             return unit;
         }
     } 

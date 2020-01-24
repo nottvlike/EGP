@@ -16,7 +16,7 @@ namespace ECS.Factory
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME) 
                 | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
-            var unit = factory.CreateUnit(requiredModuleGroup);
+            var unit = factory.CreateUnit(requiredModuleGroup, false);
 
             var unitMgr = WorldManager.Instance.Unit;
             if (uiData == null)
@@ -34,7 +34,7 @@ namespace ECS.Factory
             {
                 if (_ == UnitStateType.Destroy)
                 {
-                    factory.DestroyUIUnit(unit, uiData);
+                    factory.DestroyUI(unit, uiData);
                 }
             }).AddTo(unitData.disposable);
 
@@ -53,7 +53,7 @@ namespace ECS.Factory
             unitData.stateTypeProperty.Value = UnitStateType.Init;
         }
 
-        public static void DestroyUIUnit(this UnitFactory factory, GUnit unit, UIData uiData = null)
+        public static void DestroyUI(this UnitFactory factory, GUnit unit, UIData uiData = null)
         {
             if (uiData == null)
             {
