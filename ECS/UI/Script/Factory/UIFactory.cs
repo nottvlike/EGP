@@ -4,8 +4,6 @@ namespace ECS.Factory
     using Data;
     using UnityEngine;
     using ECS.UI;
-    using ECS.Common;
-    using GUnit = ECS.Unit.Unit;
     using Asset;
 
     public static class UIFactory
@@ -16,7 +14,7 @@ namespace ECS.Factory
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME) 
                 | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
-            var unit = factory.CreateUnit(requiredModuleGroup, false);
+            var unit = factory.CreateUnit(requiredModuleGroup);
 
             var unitMgr = WorldManager.Instance.Unit;
             if (uiData == null)
@@ -34,7 +32,11 @@ namespace ECS.Factory
             {
                 if (_ == UnitStateType.Destroy)
                 {
-                    factory.DestroyUI(unit, uiData);
+                    var panelData1 = unit.GetData<PanelData>();   
+                    uiData.unitDict.Remove(panelData1.assetPath);
+
+                    var panel1 = unit.GetData<Panel>();
+                    panel1.gameObject.Despawn();
                 }
             }).AddTo(unitData.disposable);
 
@@ -51,23 +53,6 @@ namespace ECS.Factory
             uiData.unitDict.Add(assetPath, unit);
 
             unitData.stateTypeProperty.Value = UnitStateType.Init;
-        }
-
-        public static void DestroyUI(this UnitFactory factory, GUnit unit, UIData uiData = null)
-        {
-            if (uiData == null)
-            {
-                var uiCore = WorldManager.Instance.Unit.GetUnit(UIConstant.UI_CORE_UNIT_NAME);
-                uiData = uiCore.GetData<UIData>();
-            }
-
-            var panelData = unit.GetData<PanelData>();   
-            uiData.unitDict.Remove(panelData.assetPath);
-
-            var panel = unit.GetData<Panel>();
-            panel.gameObject.Despawn();
-
-            factory.DestroyUnit(unit);
         }
     }
 }
