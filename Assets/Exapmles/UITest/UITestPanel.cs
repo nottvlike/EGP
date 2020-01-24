@@ -1,6 +1,8 @@
 namespace Game.UI
 {
     using ECS.UI;
+    using ECS.UI.Data;
+    using ECS.UI.Module;
     using System;
     using GUnit = ECS.Unit.Unit;
     using UniRx;

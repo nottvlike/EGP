@@ -1,6 +1,6 @@
 namespace Game.UI
 {
-    using ECS.UI;
+    using ECS.UI.Data;
     using UnityEngine;
     using UnityEngine.UI;
     using System.Collections.Generic;

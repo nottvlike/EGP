@@ -1,12 +1,7 @@
 using ECS;
-using ECS.Common;
-using ECS.Data;
-using ECS.Module;
-using ECS.Factory;
 using ECS.UI;
-using EUnit = ECS.Unit.Unit;
+using ECS.UI.Module;
 using UniRx;
-using System;
 using Game.UI;
 
 public class UITest : GameStart
