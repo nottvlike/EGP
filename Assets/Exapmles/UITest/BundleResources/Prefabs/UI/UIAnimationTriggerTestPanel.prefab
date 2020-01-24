@@ -788,9 +788,9 @@ GameObject:
   - component: {fileID: 3934286519858091094}
   - component: {fileID: 8086015260966283385}
   - component: {fileID: 3124833455842977483}
-  - component: {fileID: 4132871516470758434}
   - component: {fileID: 3173377855790599627}
   - component: {fileID: 1676799072835531205}
+  - component: {fileID: 3965183860607088352}
   m_Layer: 5
   m_Name: UIAnimationTriggerTestPanel
   m_TagString: Untagged
@@ -878,23 +878,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4132871516470758434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4430023566840614461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1220043195, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _panelMode: 1
-  _order: 0
-  _animationType: 0
-  _animationProcessor: {fileID: 0}
-  _tweenProcessor: {fileID: 0}
 --- !u!114 &3173377855790599627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,6 +904,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationTriggerList:
   - {fileID: 8019696641794927596}
+--- !u!114 &3965183860607088352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430023566840614461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1666829396, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panelMode: 1
+  _order: 0
+  _destroyWhenHide: 0
+  _animationType: 0
+  _animationProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 0}
 --- !u!1 &4436210407474678526
 GameObject:
   m_ObjectHideFlags: 0

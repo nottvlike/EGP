@@ -300,11 +300,11 @@ GameObject:
   - component: {fileID: 3521573272333732718}
   - component: {fileID: 8070263688607408164}
   - component: {fileID: 5939385912693233467}
-  - component: {fileID: 4986136732119311142}
   - component: {fileID: 1729957365069533549}
   - component: {fileID: 7732705312813239862}
   - component: {fileID: 9212039701309120203}
   - component: {fileID: 1851329851181754284}
+  - component: {fileID: 5473657951320778135}
   m_Layer: 5
   m_Name: UITweenTriggerTestPanel
   m_TagString: Untagged
@@ -373,23 +373,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &4986136732119311142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3273039307321647532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1220043195, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _panelMode: 1
-  _order: 0
-  _animationType: 1
-  _animationProcessor: {fileID: 0}
-  _tweenProcessor: {fileID: 1851329851181754284}
 --- !u!114 &1729957365069533549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,6 +466,24 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+--- !u!114 &5473657951320778135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273039307321647532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1666829396, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panelMode: 1
+  _order: 0
+  _destroyWhenHide: 0
+  _animationType: 1
+  _animationProcessor: {fileID: 0}
+  _tweenProcessor: {fileID: 1851329851181754284}
 --- !u!1 &3530738334868830777
 GameObject:
   m_ObjectHideFlags: 0
