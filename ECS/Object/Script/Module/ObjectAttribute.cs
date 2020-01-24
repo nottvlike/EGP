@@ -4,7 +4,7 @@ namespace ECS.Object.Module
     using ECS.Module;
     using ECS.Object.Data;
 
-    public sealed class ObjectAttributeModule : Module
+    public sealed class ObjectAttribute : Module
     {
         public static void AddBase(GUnit unit, int type, float value)
         {
