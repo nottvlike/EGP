@@ -1,4 +1,4 @@
-﻿namespace ECS.UI
+﻿namespace ECS.UI.Data
 {
     using System.Collections.Generic;
     using UnityEngine;

@@ -4,6 +4,8 @@ namespace ECS.UI
     using ECS.Data;
     using ECS.Factory;
     using ECS.Module;
+    using ECS.UI.Factory;
+    using ECS.UI.Data;
     using UniRx;
     using System;
     using Asset;

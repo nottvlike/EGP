@@ -1,4 +1,4 @@
-﻿namespace ECS.UI
+﻿namespace ECS.UI.Data
 {
     using UnityEngine;
     using Tween;

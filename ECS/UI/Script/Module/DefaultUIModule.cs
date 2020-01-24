@@ -1,7 +1,8 @@
-namespace ECS.UI
+namespace ECS.UI.Module
 {
     using System;
-    
+    using ECS.UI.Data;
+
     public sealed class DefaultUIModule : UIModule
     {
         public DefaultUIModule()

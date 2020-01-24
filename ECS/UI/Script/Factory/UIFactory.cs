@@ -1,9 +1,11 @@
-namespace ECS.Factory
+namespace ECS.UI.Factory
 {
     using UniRx;
-    using Data;
+    using ECS.Data;
     using UnityEngine;
     using ECS.UI;
+    using ECS.UI.Data;
+    using ECS.Factory;
     using Asset;
 
     public static class UIFactory

@@ -1,9 +1,10 @@
-﻿namespace ECS.UI
+﻿namespace ECS.UI.Module
 {
     using UniRx;
     using GUnit = ECS.Unit.Unit;
     using ECS.Module;
     using ECS.Data;
+    using ECS.UI.Data;
     using System;
     using System.Collections.Generic;
 
