@@ -18,6 +18,7 @@ export inputPath=$1
 if [ $inputPath == "All" ]; then
 	build_dir Core
 	build_dir UI
-elif [[ $inputPath == "Core" || $inputPath == "UI" ]]; then
+	build_dir Object
+elif [[ $inputPath == "Core" || $inputPath == "UI" || $inputPath == "Object" ]]; then
     build_dir $inputPath
 fi
