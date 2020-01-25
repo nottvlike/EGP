@@ -4,28 +4,52 @@ namespace ECS.Object.Data
     using ECS.Common;
     using System.Collections.Generic;
     using UnityEngine;
+    using UniRx;
+    using System;
 
-    public struct StateInfo
+    public enum ObjectStateType
+    {
+        None,
+        Start,
+        Stop,
+        Finish
+    }
+
+    public abstract class ObjectStateData : IData, IPoolObject
     {
         public string name;
         public int priority;
         public bool isLoop;
         public float process;
 
-        public AnimationValueInfo[] startList;
-        public AnimationValueInfo[] finishList;
+        public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>();
+
+        public bool IsInUse { get; set; }
+        public virtual void Clear()
+        {
+            name = string.Empty;
+            priority = 0;
+            isLoop = false;
+            process = 0f;
+
+            stateTypeProperty.Value = ObjectStateType.None;
+        }
     }
 
-    public class ObjectStateData : IData, IPoolObject
+    public class ObjectStateProcessData : IData, IPoolObject
     {
-        public List<StateInfo> stateInfoList = new List<StateInfo>();
         public Animator animator;
+        public ObjectStateData currentState;
+        public List<ObjectStateData> stopStateList = new List<ObjectStateData>();
+        public IDisposable checkFinishDispose;
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
-            stateInfoList.Clear();
+            currentState = null;
             animator = null;
+            stopStateList.Clear();
+            checkFinishDispose = null;
         }
     }
 }

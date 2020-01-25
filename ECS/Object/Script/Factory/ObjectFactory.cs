@@ -33,8 +33,8 @@ namespace ECS.Object.Factory
 
         static void AttachAnimator(GUnit unit, GameObject gameObject)
         {
-            var stateData = unit.AddData<ObjectStateData>();
-            stateData.animator = gameObject.GetComponent<Animator>();
+            var stateProcessData = unit.AddData<ObjectStateProcessData>();
+            stateProcessData.animator = gameObject.GetComponent<Animator>();
         }
 
         static void AttachAttribute(GUnit unit)

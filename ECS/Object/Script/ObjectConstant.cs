@@ -5,6 +5,7 @@ namespace ECS.Object
         public const string OBJECT_UNIT_TYPE_NAME = "Object";
         public const string OBJECT_MODULE_GROUP_NAME = "Object";
         
-        public const string BUFF_MODULE_GROUP_NAME = "Object";
+        public const string BUFF_MODULE_GROUP_NAME = "Buff";
+        public const string STATE_MODULE_GROUP_NAME = "State";
     }
 }
