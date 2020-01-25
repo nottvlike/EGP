@@ -6,7 +6,6 @@ namespace ECS.Object.Factory
     using ECS.Factory;
     using ECS.Object;
     using ECS.Object.Data;
-    using ECS.Object.Config;
     using GUnit = ECS.Unit.Unit;
     using Asset.Factory;
 
@@ -39,16 +38,6 @@ namespace ECS.Object.Factory
 
         static void AttachAttribute(GUnit unit)
         {
-            var attributeData = unit.AddData<ObjectAttributeData>();
-
-            var attributeConfig = WorldManager.Instance.Config.Get<AttributeConfig>();
-            var attributeLength = attributeConfig.attributeInfoList.Length;
-
-            attributeData.attributeInfoList = new ObjectAttributeInfo[attributeLength];
-            for (var i = 0; i < attributeLength; i++)
-            {
-                attributeData.attributeInfoList[i] = new ObjectAttributeInfo() { type = i };
-            }
         }
 
         public static GUnit CreateDecoration(this UnitFactory factory, GameObject gameObject, int camp)

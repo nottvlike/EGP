@@ -3,32 +3,21 @@ namespace ECS.Object.Data
     using ECS.Data;
     using ECS.Common;
 
-    public enum ObjectAttributeType
+    public abstract class ObjectAttributeData : IData, IPoolObject
     {
-        MaxHP,
-        MaxMP,
-        HP,
-        MP,
-        ATK,
-        DEF,
-    }
+        public virtual string name { get; }
+        public virtual string description { get; }
 
-    public struct ObjectAttributeInfo
-    {
-        public int type;
         public float baseValue;
         public float basePercent;
-        public float allValue;
-    }
 
-    public class ObjectAttributeData : IData, IPoolObject
-    {
-        public ObjectAttributeInfo[] attributeInfoList;
+        public float allValue { get { return baseValue * basePercent; } }
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
-            attributeInfoList = null;
+            baseValue = 0f;
+            basePercent = 0f;
         }
     }
 }
