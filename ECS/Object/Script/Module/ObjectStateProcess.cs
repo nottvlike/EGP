@@ -2,12 +2,10 @@ namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
     using ECS.Module;
-    using ECS.Data;
     using ECS.Object.Data;
     using UniRx;
-    using System;
 
-    public abstract class ObjectStateProcess : Module
+    public class ObjectStateProcess : Module
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME);
