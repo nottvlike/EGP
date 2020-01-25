@@ -17,21 +17,16 @@ namespace ECS.Object.Data
 
     public abstract class ObjectStateData : IData, IPoolObject
     {
-        public string name;
-        public int priority;
-        public bool isLoop;
-        public float process;
+        public virtual string name { get; }
+        public virtual int priority { get; }
+        public virtual bool isLoop { get; }
+        public virtual bool isDefault { get; }
 
-        public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>();
+        public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
-            name = string.Empty;
-            priority = 0;
-            isLoop = false;
-            process = 0f;
-
             stateTypeProperty.Value = ObjectStateType.None;
         }
     }

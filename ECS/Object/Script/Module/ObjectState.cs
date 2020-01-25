@@ -31,11 +31,22 @@ namespace ECS.Object.Module
                     stateData.stateTypeProperty.Value = ObjectStateType.None;
                 }
             }).AddTo(unitData.disposable);
+
+            if (stateData.isDefault)
+            {
+                ObjectStateProcess.Start(unit, stateData);
+            }
         }
 
         protected override void OnRemove(GUnit unit)
         {
             var stateData = GetStateData(unit);
+            if (stateData.stateTypeProperty.Value == ObjectStateType.Stop)
+            {
+                var stateProcessData = unit.GetData<ObjectStateProcessData>();
+                stateProcessData.stopStateList.Remove(stateData);
+            }
+            
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
         }
 
