@@ -16,7 +16,6 @@ namespace ECS.Object.Data
     {
         public virtual ControlStateType controlStateType { get; }
         public virtual string stateName { get; }
-        public virtual Vector3 stateParam { get; }
         public virtual ObjectStateType stateType { get; }
 
         public bool IsInUse { get; set; }

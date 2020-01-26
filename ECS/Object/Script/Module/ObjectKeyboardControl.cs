@@ -6,11 +6,20 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using UniRx;
     using UnityEngine;
+    using System;
 
-    public abstract class ObjectKeyboardControl : Module
+    public abstract class ObjectKeyboardControl<T> : Module where T : ObjectKeyboardControlData
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.KEYBOARD_CONTROL_MODULE_GROUP_NAME);
+
+        public ObjectKeyboardControl()
+        {
+            RequiredDataList = new Type[]
+            {
+                typeof(T)
+            };
+        }
 
         protected override void OnAdd(GUnit unit)
         {
@@ -51,7 +60,7 @@ namespace ECS.Object.Module
         {
             if (controlData.stateType == ObjectStateType.Start)
             {
-                ObjectStateProcess.Start(unit, controlData.stateName, controlData.stateParam);
+                ObjectStateProcess.Start(unit, controlData.stateName, GetStateParam(unit));
             }
             else if (controlData.stateType == ObjectStateType.Finish)
             {
@@ -59,6 +68,11 @@ namespace ECS.Object.Module
             }
         }
 
-        protected abstract ObjectKeyboardControlData GetControlData(GUnit unit);
+        protected ObjectKeyboardControlData GetControlData(GUnit unit)
+        {
+            return unit.GetData<T>();
+        }
+
+        protected abstract Vector3 GetStateParam(GUnit unit);
     }
 }
