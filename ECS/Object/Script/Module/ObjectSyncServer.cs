@@ -11,7 +11,7 @@ namespace ECS.Object.Module
     public sealed class ObjectSyncServer : Module
     {
         public override int Group { get; protected set; } 
-            = WorldManager.Instance.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
+            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME);
 
         public ObjectSyncServer()
         {

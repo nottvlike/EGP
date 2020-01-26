@@ -11,6 +11,14 @@ namespace ECS.Object.Module
     {
         public static void Start(GUnit unit, string name, Vector3 param, bool sync = true)
         {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+            
+            if (!CanStart(stateProcessData, stateData))
+            {
+                return;
+            }
+
             if (sync && unit.GetData<ObjectSyncData>() == null)
             {
                 sync = false;
@@ -22,16 +30,21 @@ namespace ECS.Object.Module
             }
             else
             {
-                var stateProcessData = unit.GetData<ObjectStateProcessData>();
-                var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
                 stateData.param = param;
-
                 Start(stateProcessData, stateData);
             }
         }
 
         public static void Finish(GUnit unit, string name, bool sync = true)
         {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+
+            if (!CanFinish(stateProcessData, stateData))
+            {
+                return;
+            }
+
             if (sync && unit.GetData<ObjectSyncData>() == null)
             {
                 sync = false;
@@ -43,17 +56,18 @@ namespace ECS.Object.Module
             }
             else
             {
-                var stateProcessData = unit.GetData<ObjectStateProcessData>();
-                var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
                 Finish(stateProcessData, stateData);
             }
-
- 
         }
 
         static float GetCurrentStateProcess(ObjectStateProcessData stateData)
         {
             return 0f;
+        }
+
+        static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
+        {
+            return true;
         }
 
         static void Start(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
@@ -98,6 +112,11 @@ namespace ECS.Object.Module
 
             stateProcessData.stopStateList.Add(stateProcessData.currentState);
             stateProcessData.currentState = null;
+        }
+
+        static bool CanFinish(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
+        {
+            return true;
         }
 
         static void Finish(ObjectStateProcessData stateProcessData, ObjectStateData stateData = null)
