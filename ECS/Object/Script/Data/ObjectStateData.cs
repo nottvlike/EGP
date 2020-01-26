@@ -35,7 +35,6 @@ namespace ECS.Object.Data
 
     public class ObjectStateProcessData : IData, IPoolObject
     {
-        public Animator animator;
         public ObjectStateData currentState;
         public List<ObjectStateData> stopStateList = new List<ObjectStateData>();
         public List<ObjectStateData> allStateList = new List<ObjectStateData>();
@@ -45,7 +44,6 @@ namespace ECS.Object.Data
         public void Clear()
         {
             currentState = null;
-            animator = null;
             stopStateList.Clear();
             allStateList.Clear();
             checkFinishDispose = null;

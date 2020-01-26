@@ -11,13 +11,12 @@ namespace ECS.Object.Factory
 
     public static class ObjectFactory
     {
-        static GUnit CreateObject(GameObject gameObject, ObjectType objectType, int camp)
+        static GUnit CreateObject(int requiredModuleGroup, GameObject gameObject, ObjectType objectType, int camp)
         {
             var moduleMgr = WorldManager.Instance.Module;
             var factory = WorldManager.Instance.Factory;
-            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME) 
-                | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
-            var unit = factory.CreateAsset(requiredModuleGroup, gameObject);
+            var unit = factory.CreateAsset(requiredModuleGroup
+                 | moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME), gameObject);
 
             var objectData = unit.AddData<ObjectData>();
             objectData.type = objectType;
@@ -33,43 +32,10 @@ namespace ECS.Object.Factory
         static void AttachAnimator(GUnit unit, GameObject gameObject)
         {
             var stateProcessData = unit.AddData<ObjectStateProcessData>();
-            stateProcessData.animator = gameObject.GetComponent<Animator>();
         }
 
         static void AttachAttribute(GUnit unit)
         {
-        }
-
-        public static GUnit CreateDecoration(this UnitFactory factory, GameObject gameObject, int camp)
-        {
-            var unit = CreateObject(gameObject, ObjectType.Decoration, camp);
-            AttachAnimator(unit, gameObject);
-
-            var unitData = unit.GetData<UnitData>();
-            unitData.stateTypeProperty.Value = UnitStateType.Init;
-            return unit;
-        }
-
-        public static GUnit CreateTrap(this UnitFactory factory, GameObject gameObject, int camp)
-        {
-            var unit = CreateObject(gameObject, ObjectType.Decoration, camp);
-            AttachAnimator(unit, gameObject);
-            AttachAttribute(unit);
-
-            var unitData = unit.GetData<UnitData>();
-            unitData.stateTypeProperty.Value = UnitStateType.Init;
-            return unit;
-        }
-
-        public static GUnit CreateActor(this UnitFactory factory, GameObject gameObject, int camp)
-        {
-            var unit = CreateObject(gameObject, ObjectType.Decoration, camp);
-            AttachAnimator(unit, gameObject);
-            AttachAttribute(unit);
-
-            var unitData = unit.GetData<UnitData>();
-            unitData.stateTypeProperty.Value = UnitStateType.Init;
-            return unit;
         }
     }
 }
