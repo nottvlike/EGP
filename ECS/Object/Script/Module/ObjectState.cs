@@ -5,11 +5,21 @@ namespace ECS.Object.Module
     using ECS.Data;
     using ECS.Object.Data;
     using UniRx;
+    using System;
 
-    public abstract class ObjectState : Module
+    public abstract class ObjectState<T> : Module where T : ObjectStateData
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME);
+
+        public ObjectState()
+        {
+            RequiredDataList = new Type[]
+            {
+                typeof(T),
+                typeof(ObjectStateProcessData)
+            };
+        }
 
         protected override void OnAdd(GUnit unit)
         {
@@ -53,7 +63,10 @@ namespace ECS.Object.Module
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
         }
 
-        protected abstract ObjectStateData GetStateData(GUnit unit);
+        protected ObjectStateData GetStateData(GUnit unit)
+        {
+            return unit.GetData<T>();
+        }
 
         protected abstract void OnStart(GUnit unit, ObjectStateData stateData, ObjectStateProcessData stateProcessData);
         protected abstract void OnStop(GUnit unit, ObjectStateData stateData, ObjectStateProcessData stateProcessData);

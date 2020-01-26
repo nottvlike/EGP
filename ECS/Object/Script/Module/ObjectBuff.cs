@@ -5,11 +5,20 @@ namespace ECS.Object.Module
     using ECS.Data;
     using ECS.Object.Data;
     using UniRx;
+    using System;
 
-    public abstract class ObjectBuff : Module
+    public abstract class ObjectBuff<T> : Module where T : ObjectBuffData
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.BUFF_MODULE_GROUP_NAME);
+
+        public ObjectBuff()
+        {
+            RequiredDataList = new Type[]
+            {
+                typeof(T)
+            };
+        }
 
         protected override void OnAdd(GUnit unit)
         {
@@ -33,7 +42,10 @@ namespace ECS.Object.Module
             buffData.stateTypeProperty.Value = BuffStateType.Stop;
         }
 
-        protected abstract ObjectBuffData GetBuffData(GUnit unit);
+        protected ObjectBuffData GetBuffData(GUnit unit)
+        {
+            return unit.GetData<T>();
+        }
 
         protected abstract void OnStart(GUnit unit);
         protected abstract void OnStop(GUnit unit);
