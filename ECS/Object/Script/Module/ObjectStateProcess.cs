@@ -4,9 +4,22 @@ namespace ECS.Object.Module
     using ECS.Module;
     using ECS.Object.Data;
     using UniRx;
+    using UnityEngine;
+    using System.Linq;
 
-    public class ObjectStateProcess : Module
+    public sealed class ObjectStateProcess : Module
     {
+        public static void Start(GUnit unit, string name, Vector3 param)
+        {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+            if (stateData != null)
+            {
+                stateData.param = param;
+                Start(stateProcessData, stateData);
+            }
+        }
+
         public static void Start(GUnit unit, ObjectStateData stateData)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
