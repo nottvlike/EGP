@@ -22,11 +22,13 @@ namespace ECS.Object.Data
         public virtual bool isLoop { get; }
         public virtual bool isDefault { get; }
 
+        public Vector3 param = Vector3.zero;
         public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
+            param = Vector3.zero;
             stateTypeProperty.Value = ObjectStateType.None;
         }
     }
@@ -36,6 +38,7 @@ namespace ECS.Object.Data
         public Animator animator;
         public ObjectStateData currentState;
         public List<ObjectStateData> stopStateList = new List<ObjectStateData>();
+        public List<ObjectStateData> allStateList = new List<ObjectStateData>();
         public IDisposable checkFinishDispose;
 
         public bool IsInUse { get; set; }
@@ -44,6 +47,7 @@ namespace ECS.Object.Data
             currentState = null;
             animator = null;
             stopStateList.Clear();
+            allStateList.Clear();
             checkFinishDispose = null;
         }
     }

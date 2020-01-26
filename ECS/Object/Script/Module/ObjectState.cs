@@ -32,6 +32,8 @@ namespace ECS.Object.Module
                 }
             }).AddTo(unitData.disposable);
 
+            stateProcessData.allStateList.Add(stateData);
+
             if (stateData.isDefault)
             {
                 ObjectStateProcess.Start(unit, stateData);
@@ -41,12 +43,13 @@ namespace ECS.Object.Module
         protected override void OnRemove(GUnit unit)
         {
             var stateData = GetStateData(unit);
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
             if (stateData.stateTypeProperty.Value == ObjectStateType.Stop)
             {
-                var stateProcessData = unit.GetData<ObjectStateProcessData>();
                 stateProcessData.stopStateList.Remove(stateData);
             }
-            
+
+            stateProcessData.allStateList.Remove(stateData);
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
         }
 
