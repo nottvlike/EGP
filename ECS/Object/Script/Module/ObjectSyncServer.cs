@@ -93,13 +93,14 @@ namespace ECS.Object.Module
             return _syncData.syncSubject;
         }
 
-        public static void Add(GUnit unit, string stateName, Vector3 param)
+        public static void AddState(GUnit unit, string stateName, Vector3 param, ObjectStateType stateType)
         {
             _syncData.preparedSyncInfoList.Add(new ServerSyncStateInfo()
             {
                 unitId = unit.UnitId,
                 stateName = stateName,
-                stateParam = param
+                stateParam = param,
+                stateType = stateType
             });
         }
 
@@ -116,7 +117,8 @@ namespace ECS.Object.Module
                     internalFrame = _syncData.internalFrame,
 
                     stateName = serverSyncInfo.stateName,
-                    stateParam = serverSyncInfo.stateParam
+                    stateParam = serverSyncInfo.stateParam,
+                    stateType = serverSyncInfo.stateType
                 });
             }
 

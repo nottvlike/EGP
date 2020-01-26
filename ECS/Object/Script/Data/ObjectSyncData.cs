@@ -5,7 +5,6 @@ namespace ECS.Object.Data
     using UniRx;
     using UnityEngine;
     using System;
-    using System.Collections.Generic;
 
     public class ObjectSyncServerData : IData
     {
@@ -26,6 +25,7 @@ namespace ECS.Object.Data
         public uint unitId;
         public string stateName;
         public Vector3 stateParam;
+        public ObjectStateType stateType;
     }
 
     public struct SyncStateInfo
@@ -35,6 +35,7 @@ namespace ECS.Object.Data
 
         public string stateName;
         public Vector3 stateParam;
+        public ObjectStateType stateType;
     }
 
     public class ObjectSyncData : IData, IPoolObject

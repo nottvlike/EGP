@@ -36,7 +36,7 @@ namespace ECS.Object.Module
 
             if (stateData.isDefault)
             {
-                ObjectStateProcess.Start(unit, stateData);
+                ObjectStateProcess.Start(unit, stateData.name, stateData.param, false);
             }
         }
 

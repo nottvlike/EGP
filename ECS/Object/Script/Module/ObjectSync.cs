@@ -40,7 +40,14 @@ namespace ECS.Object.Module
                     var syncInfo = objectSyncData.stateSyncInfoList[0];
                     if (syncInfo.serverKeyFrame == frameInfo.Item1 && syncInfo.internalFrame == frameInfo.Item2)
                     {
-                        ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam);
+                        if (syncInfo.stateType == ObjectStateType.Start)
+                        {
+                            ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                        }
+                        else if (syncInfo.stateType == ObjectStateType.Finish)
+                        {
+                            ObjectStateProcess.Finish(unit, syncInfo.stateName, false);
+                        }
                         objectSyncData.stateSyncInfoList.RemoveAt(0);
                     }
                 });

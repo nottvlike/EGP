@@ -9,36 +9,46 @@ namespace ECS.Object.Module
 
     public sealed class ObjectStateProcess : Module
     {
-        public static void Start(GUnit unit, string name, Vector3 param)
+        public static void Start(GUnit unit, string name, Vector3 param, bool sync = true)
         {
-            var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
-            if (stateData != null)
+            if (sync && unit.GetData<ObjectSyncData>() == null)
             {
+                sync = false;
+            }
+
+            if (sync)
+            {
+                ObjectSyncServer.AddState(unit, name, param, ObjectStateType.Start);
+            }
+            else
+            {
+                var stateProcessData = unit.GetData<ObjectStateProcessData>();
+                var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
                 stateData.param = param;
+
                 Start(stateProcessData, stateData);
             }
         }
 
-        public static void Start(GUnit unit, ObjectStateData stateData)
+        public static void Finish(GUnit unit, string name, bool sync = true)
         {
-            var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            Start(stateProcessData, stateData);
-        }
+            if (sync && unit.GetData<ObjectSyncData>() == null)
+            {
+                sync = false;
+            }
 
-        public static void Finish(GUnit unit, ObjectStateData stateData, bool startNewState = true)
-        {
-            var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var currentState = stateData.stateTypeProperty.Value;
-            if (currentState == ObjectStateType.Start)
+            if (sync)
             {
-                Finish(stateProcessData, startNewState);
+                ObjectSyncServer.AddState(unit, name, Vector3.zero, ObjectStateType.Finish);
             }
-            else if (currentState == ObjectStateType.Stop)
+            else
             {
-                stateProcessData.stopStateList.Remove(stateData);
-                stateData.stateTypeProperty.Value = ObjectStateType.Finish;
+                var stateProcessData = unit.GetData<ObjectStateProcessData>();
+                var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+                Finish(stateProcessData, stateData);
             }
+
+ 
         }
 
         static float GetCurrentStateProcess(ObjectStateProcessData stateData)
@@ -68,7 +78,7 @@ namespace ECS.Object.Module
 
             if (!stateData.isLoop)
             {
-                stateProcessData.checkFinishDispose.Dispose();
+                stateProcessData.checkFinishDispose?.Dispose();
                 stateProcessData.checkFinishDispose = Observable.EveryUpdate().Do(_ => 
                 {
                     var process = GetCurrentStateProcess(stateProcessData);
@@ -90,23 +100,27 @@ namespace ECS.Object.Module
             stateProcessData.currentState = null;
         }
 
-        static void Finish(ObjectStateProcessData stateProcessData, bool startNewState = true)
+        static void Finish(ObjectStateProcessData stateProcessData, ObjectStateData stateData = null)
         {
-            if (stateProcessData.currentState == null || stateProcessData.currentState.isLoop)
+            var currentState = stateData == null ? stateProcessData.currentState : stateData;
+            if (currentState == null)
             {
                 return;
             }
 
-            var currentState = stateProcessData.currentState;
-            currentState.stateTypeProperty.Value = ObjectStateType.Finish;
-            stateProcessData.currentState = null;
-
-            if (startNewState)
+            stateData.stateTypeProperty.Value = ObjectStateType.Finish;
+            if (currentState.stateTypeProperty.Value == ObjectStateType.Start)
             {
-                var stateData = GetHighestPriorityState(stateProcessData);
-                stateProcessData.stopStateList.Remove(stateData);
+                stateProcessData.currentState = null;
 
-                Start(stateProcessData, stateData);
+                var newStateData = GetHighestPriorityState(stateProcessData);
+                stateProcessData.stopStateList.Remove(newStateData);
+
+                Start(stateProcessData, newStateData);
+            }
+            else if (currentState.stateTypeProperty.Value == ObjectStateType.Stop)
+            {
+                stateProcessData.stopStateList.Remove(stateData);
             }
         }
 
