@@ -5,5 +5,6 @@
         public int deltaTime;
         public long time;
         public int clientFrame;
+        public int serverFrame;
     }
 }
