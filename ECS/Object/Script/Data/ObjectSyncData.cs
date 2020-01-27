@@ -15,7 +15,7 @@ namespace ECS.Object.Data
         public int serverKeyFrame;
         public int currentKeyFrame;
         public int internalFrame;
-        public int internalFrameSize = 5;
+        public int internalFrameSize = 6;
 
         public ISubject<ValueTuple<int, int>> syncSubject = new Subject<ValueTuple<int, int>>();
     }
