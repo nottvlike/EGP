@@ -78,17 +78,13 @@ namespace ECS.Object.Module
                 return;
             }
 
-            if (stateProcessData.currentState == null)
-            {
-                stateProcessData.currentState = stateData;
-            }
-            else
+            if (stateProcessData.currentState != null)
             {
                 Stop(stateProcessData);
-
-                stateData.stateTypeProperty.Value = ObjectStateType.Start;
-                stateProcessData.currentState = stateData;
             }
+
+            stateData.stateTypeProperty.Value = ObjectStateType.Start;
+            stateProcessData.currentState = stateData;
 
             if (!stateData.isLoop)
             {
@@ -127,9 +123,9 @@ namespace ECS.Object.Module
                 return;
             }
 
-            stateData.stateTypeProperty.Value = ObjectStateType.Finish;
             if (currentState.stateTypeProperty.Value == ObjectStateType.Start)
             {
+                currentState.stateTypeProperty.Value = ObjectStateType.Finish;
                 stateProcessData.currentState = null;
 
                 var newStateData = GetHighestPriorityState(stateProcessData);
@@ -139,6 +135,7 @@ namespace ECS.Object.Module
             }
             else if (currentState.stateTypeProperty.Value == ObjectStateType.Stop)
             {
+                currentState.stateTypeProperty.Value = ObjectStateType.Finish;
                 stateProcessData.stopStateList.Remove(stateData);
             }
         }

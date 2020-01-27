@@ -20,7 +20,7 @@ namespace ECS.Object.Data
         public virtual string name { get; }
         public virtual int priority { get; }
         public virtual bool isLoop { get; }
-        public virtual bool isDefault { get; }
+        public virtual bool isDefault { get; } = false;
 
         public Vector3 param = Vector3.zero;
         public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);

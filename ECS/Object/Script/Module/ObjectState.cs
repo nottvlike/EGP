@@ -6,20 +6,12 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using UniRx;
     using System;
+    using Asset.Data;
 
     public abstract class ObjectState<T> : Module where T : ObjectStateData
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME);
-
-        public ObjectState()
-        {
-            RequiredDataList = new Type[]
-            {
-                typeof(T),
-                typeof(ObjectStateProcessData)
-            };
-        }
 
         protected override void OnAdd(GUnit unit)
         {
@@ -29,15 +21,15 @@ namespace ECS.Object.Module
             stateData.stateTypeProperty.Subscribe(_ => {
                 if (_ == ObjectStateType.Start)
                 {
-                    OnStart(unit, stateData, stateProcessData);
+                    OnStart(unit, stateData);
                 }
                 else if (_ == ObjectStateType.Stop)
                 {
-                    OnStop(unit, stateData, stateProcessData);
+                    OnStop(unit, stateData);
                 }
                 else if (_ == ObjectStateType.Finish)
                 {
-                    OnFinish(unit, stateData, stateProcessData);
+                    OnFinish(unit, stateData);
                     stateData.stateTypeProperty.Value = ObjectStateType.None;
                 }
             }).AddTo(unitData.disposable);
@@ -63,13 +55,13 @@ namespace ECS.Object.Module
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
         }
 
-        protected ObjectStateData GetStateData(GUnit unit)
+        protected T GetStateData(GUnit unit)
         {
             return unit.GetData<T>();
         }
 
-        protected abstract void OnStart(GUnit unit, ObjectStateData stateData, ObjectStateProcessData stateProcessData);
-        protected abstract void OnStop(GUnit unit, ObjectStateData stateData, ObjectStateProcessData stateProcessData);
-        protected abstract void OnFinish(GUnit unit, ObjectStateData stateData, ObjectStateProcessData stateProcessData);
+        protected abstract void OnStart(GUnit unit, T stateData);
+        protected abstract void OnStop(GUnit unit, T stateData);
+        protected abstract void OnFinish(GUnit unit, T stateData);
     }
 }
