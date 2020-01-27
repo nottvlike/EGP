@@ -7,6 +7,7 @@
 
     public struct Unit
     {
+        UnitManager unitMgr => WorldManager.Instance.Unit;
         ModuleManager moduleMgr => WorldManager.Instance.Module;
         DataManager dataMgr => WorldManager.Instance.Data;
 
@@ -71,6 +72,12 @@
         public IEnumerable<IData> GetAllData(uint unitId)
         {
             return dataMgr.GetAllData(unitId);
+        }
+
+        public void UpdateRequiredModuleGroup(int group)
+        {
+            RequiredModuleGroup |= group;
+            unitMgr.AddUnit(UnitId, this, true);
         }
 
         public void UpdateMeetModuleList()
