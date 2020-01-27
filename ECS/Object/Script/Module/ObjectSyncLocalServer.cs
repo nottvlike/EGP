@@ -1,4 +1,4 @@
-namespace Game.ObjectTest.Module
+namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
     using ECS;
@@ -8,7 +8,6 @@ namespace Game.ObjectTest.Module
     using ECS.Object.Data;
     using System;
     using UniRx;
-    using ECS.Common;
 
     public sealed class ObjectSyncLocalServer : Module
     {
