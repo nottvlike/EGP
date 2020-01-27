@@ -30,10 +30,10 @@ public class PlayerControlTest : GameStart
     protected override void RegisterGameModule()
     {
         var moduleMgr = WorldManager.Instance.Module;
+        moduleMgr.Register(new ObjectSyncLocalServer());
         moduleMgr.Register(new ObjectSyncServer());
         moduleMgr.Register(new ObjectSync());
 
-        moduleMgr.Register(new ObjectSyncLocalServer());
         moduleMgr.Register(new ObjectMoveLeft());
         moduleMgr.Register(new ObjectMoveRight());
         moduleMgr.Register(new ObjectFinishMoveLeft());
