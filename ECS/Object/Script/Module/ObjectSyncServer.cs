@@ -86,11 +86,6 @@ namespace ECS.Object.Module
             _syncData = null;
         }
 
-        public static void UpdateServerKeyFrame()
-        {
-            _syncData.serverKeyFrame += 1;
-        }
-
         public static void UpdateServerKeyFrame(int keyFrame)
         {
             if (_syncData.serverKeyFrame <= keyFrame)
