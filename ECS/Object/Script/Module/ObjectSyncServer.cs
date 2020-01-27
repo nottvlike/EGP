@@ -40,14 +40,14 @@ namespace ECS.Object.Module
                         if (currentInternalFrame >= _syncData.internalFrameSize)
                         {
                             currentInternalFrame = 0;
-                            _syncData.currentKeyFrame = Mathf.Min(_syncData.currentKeyFrame++, _syncData.serverKeyFrame);
+                            _syncData.currentKeyFrame = Mathf.Min(++_syncData.currentKeyFrame, _syncData.serverKeyFrame);
                         }
 
                         var currentFrame = _syncData.currentKeyFrame * _syncData.internalFrameSize + currentInternalFrame;
                         if (currentFrame > systemData.serverFrame)
                         {
                             systemData.serverFrame = currentFrame;
-                            _syncData.syncSubject.OnNext(ValueTuple.Create(currentFrame, currentInternalFrame));
+                            _syncData.syncSubject.OnNext(ValueTuple.Create(_syncData.currentKeyFrame, currentInternalFrame));
 
                             _syncData.internalFrame = currentInternalFrame;
                         }                        
@@ -78,6 +78,17 @@ namespace ECS.Object.Module
                     preparedDispose = null;
                 }
             }).AddTo(unitData.disposable);
+        }
+
+        protected override void OnRemove(GUnit unit)
+        {
+            _syncData.enable.Value = false;
+            _syncData = null;
+        }
+
+        public static void UpdateServerKeyFrame()
+        {
+            _syncData.serverKeyFrame += 1;
         }
 
         public static void UpdateServerKeyFrame(int keyFrame)
