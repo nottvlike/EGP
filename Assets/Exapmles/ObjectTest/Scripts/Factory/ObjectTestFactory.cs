@@ -22,6 +22,16 @@ namespace Game.ObjectTest.Factory
             _buffModuleList.Add(new ObjectSlowDownBuff());
         }
 
+        public static List<IObjectBuff> GetAllBuffModule(this UnitFactory factory)
+        {
+            if (_buffModuleList.Count == 0)
+            {
+                InitBuffModuleList();
+            }
+
+            return _buffModuleList;
+        }
+
         static List<IObjectKeyboardControl> _keyboardControlModuleList = new List<IObjectKeyboardControl>();
         static void InitKeyboardControlModuleList()
         {
@@ -107,7 +117,8 @@ namespace Game.ObjectTest.Factory
         static void AttachBuffData(GUnit unit)
         {
             var buffProcessData = unit.AddData<ObjectBuffProcessData>();
-            buffProcessData.allBuffModuleList.AddRange(_buffModuleList);
+            var factory = WorldManager.Instance.Factory;
+            buffProcessData.allBuffModuleList.AddRange(factory.GetAllBuffModule());
         }
     }
 }
