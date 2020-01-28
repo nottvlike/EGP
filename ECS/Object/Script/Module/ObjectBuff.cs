@@ -7,47 +7,31 @@ namespace ECS.Object.Module
     using UniRx;
     using System;
 
-    public abstract class ObjectBuff<T> : Module where T : ObjectBuffData
+    public interface IObjectBuff
     {
-        public override int Group { get; protected set; } 
-            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.BUFF_MODULE_GROUP_NAME);
+        string Name { get; }
+        void Start(GUnit unit, ObjectBuffData buffData);
+        void Stop(GUnit unit, ObjectBuffData buffData);
+    }
 
-        public ObjectBuff()
+    public abstract class ObjectBuff<T> : IObjectBuff where T : ObjectBuffData
+    {
+        public string Name { get { return typeof(T).ToString(); } }
+
+        public void Start(GUnit unit, ObjectBuffData buffData)
         {
-            RequiredDataList = new Type[]
-            {
-                typeof(T)
-            };
+            OnStart(unit, buffData as T);
         }
 
-        protected override void OnAdd(GUnit unit)
+        public void Stop(GUnit unit, ObjectBuffData buffData)
         {
-            var buffData = GetBuffData(unit);
-            var unitData = unit.GetData<UnitData>();
-            buffData.stateTypeProperty.Subscribe(_ => {
-                if (_ == BuffStateType.Start)
-                {
-                    OnStart(unit);
-                }
-                else if (_ == BuffStateType.Stop)
-                {
-                    OnStop(unit);
-                }
-            }).AddTo(unitData.disposable);
+            OnStop(unit, buffData as T);
+
+            var processData = unit.GetData<ObjectBuffProcessData>();
+            processData.currentBuffList.Remove(buffData);
         }
 
-        protected override void OnRemove(GUnit unit)
-        {
-            var buffData = GetBuffData(unit);
-            buffData.stateTypeProperty.Value = BuffStateType.Stop;
-        }
-
-        protected ObjectBuffData GetBuffData(GUnit unit)
-        {
-            return unit.GetData<T>();
-        }
-
-        protected abstract void OnStart(GUnit unit);
-        protected abstract void OnStop(GUnit unit);
+        protected abstract void OnStart(GUnit unit, T buffData);
+        protected abstract void OnStop(GUnit unit, T buffData);
     }
 }
