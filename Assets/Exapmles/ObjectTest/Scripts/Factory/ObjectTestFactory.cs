@@ -7,6 +7,7 @@ namespace Game.ObjectTest.Factory
     using ECS.Object.Module;
     using ECS.Factory;
     using ECS;
+    using ECS.Common;
     using Asset.Factory;
     using Game.ObjectTest.Data;
     using Game.ObjectTest.Module.Buff;
@@ -36,7 +37,7 @@ namespace Game.ObjectTest.Factory
             {
                 InitBuffModuleList();
             }
-            
+
             AttachStateData(unit);
             AttachAttributeData(unit);
             AttachControlData(unit);
@@ -61,10 +62,12 @@ namespace Game.ObjectTest.Factory
 
         static void AttachControlData(GUnit unit)
         {
-            unit.AddData<ObjectMoveLeftData>();
-            unit.AddData<ObjectMoveRightData>();
-            unit.AddData<ObjectFinishMoveLeftData>();
-            unit.AddData<ObjectFinishMoveRightData>();
+            var controlProcessData = unit.AddData<ObjectKeyboardControlProcessData>();
+            var controlDataList = controlProcessData.controlDataList;
+            controlDataList.Add(Pool.Get<ObjectMoveLeftData>());
+            controlDataList.Add(Pool.Get<ObjectMoveRightData>());
+            controlDataList.Add(Pool.Get<ObjectFinishMoveLeftData>());
+            controlDataList.Add(Pool.Get<ObjectFinishMoveRightData>());
         }
 
         static void AttachStateData(GUnit unit)

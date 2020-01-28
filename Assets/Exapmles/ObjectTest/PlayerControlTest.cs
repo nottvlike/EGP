@@ -2,7 +2,6 @@ using ECS;
 using ECS.Object.Data;
 using ECS.Object.Module;
 using ECS.Object;
-using Game.ObjectTest.Module.Control;
 using Game.ObjectTest.Module.State;
 using Game.ObjectTest.Module.Trap;
 using Game.ObjectTest.Factory;
@@ -39,13 +38,10 @@ public class PlayerControlTest : GameStart
         moduleMgr.Register(new ObjectSyncServer());
         moduleMgr.Register(new ObjectSync());
         moduleMgr.Register(new ObjectBuffProcess());
+        moduleMgr.Register(new ObjectKeyboardControlProcess());
 
         moduleMgr.Register(new SlowDownTrap());
         
-        moduleMgr.Register(new ObjectMoveLeft());
-        moduleMgr.Register(new ObjectMoveRight());
-        moduleMgr.Register(new ObjectFinishMoveLeft());
-        moduleMgr.Register(new ObjectFinishMoveRight());
         moduleMgr.Register(new ObjectIdle());
         moduleMgr.Register(new ObjectMove());
     }

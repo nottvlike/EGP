@@ -10,6 +10,8 @@ namespace Game.ObjectTest.Data
 
         public override ControlStateType controlStateType { get { return ControlStateType.Down; } }
         public override string stateName { get { return ObjectTestConstant.STATE_MOVE; } }
+        public override Vector3 stateParam { get { return Vector3.left; } }
+
         public override ObjectStateType stateType { get{ return ObjectStateType.Start; } }
     }
 
@@ -19,6 +21,7 @@ namespace Game.ObjectTest.Data
 
         public override ControlStateType controlStateType { get { return ControlStateType.Up; } }
         public override string stateName { get { return ObjectTestConstant.STATE_MOVE; } }
+        public override Vector3 stateParam { get { return Vector3.zero; } }
         public override ObjectStateType stateType { get{ return ObjectStateType.Finish; } }
     }
 
@@ -28,6 +31,7 @@ namespace Game.ObjectTest.Data
 
         public override ControlStateType controlStateType { get { return ControlStateType.Down; } }
         public override string stateName { get { return ObjectTestConstant.STATE_MOVE; } }
+        public override Vector3 stateParam { get { return Vector3.right; } }
         public override ObjectStateType stateType { get{ return ObjectStateType.Start; } }
     }
 
@@ -37,6 +41,7 @@ namespace Game.ObjectTest.Data
 
         public override ControlStateType controlStateType { get { return ControlStateType.Up; } }
         public override string stateName { get { return ObjectTestConstant.STATE_MOVE; } }
+        public override Vector3 stateParam { get { return Vector3.zero; } }
         public override ObjectStateType stateType { get{ return ObjectStateType.Finish; } }
     }
 }
