@@ -22,6 +22,22 @@ namespace Game.ObjectTest.Factory
             _buffModuleList.Add(new ObjectSlowDownBuff());
         }
 
+        static List<IObjectKeyboardControl> _keyboardControlModuleList = new List<IObjectKeyboardControl>();
+        static void InitKeyboardControlModuleList()
+        {
+            _keyboardControlModuleList.Add(new DefaultObjectKeyboardControl());
+        }
+
+        public static List<IObjectKeyboardControl> GetAllKeyboardControlModule(this UnitFactory factory)
+        {
+            if (_keyboardControlModuleList.Count == 0)
+            {
+                InitKeyboardControlModuleList();
+            }
+
+            return _keyboardControlModuleList;
+        }
+
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
         {
             var moduleMgr = WorldManager.Instance.Module;
@@ -68,6 +84,9 @@ namespace Game.ObjectTest.Factory
             controlDataList.Add(Pool.Get<ObjectMoveRightData>());
             controlDataList.Add(Pool.Get<ObjectFinishMoveLeftData>());
             controlDataList.Add(Pool.Get<ObjectFinishMoveRightData>());
+
+            var factory = WorldManager.Instance.Factory;
+            controlProcessData.allControlModuleList.AddRange(factory.GetAllKeyboardControlModule());
         }
 
         static void AttachStateData(GUnit unit)
