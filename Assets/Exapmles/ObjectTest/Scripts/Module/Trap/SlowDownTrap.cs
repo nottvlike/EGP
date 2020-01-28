@@ -38,7 +38,7 @@ namespace Game.ObjectTest.Module.Trap
                 if (colliderAssetData != null && colliderAssetData.unitId != 0)
                 {
                     var colliderUnit = WorldManager.Instance.Unit.GetUnit(colliderAssetData.unitId);
-                    var slowDownBuffData = BuffDataPool.Get<ObjectSlowDownBuffData>();
+                    var slowDownBuffData = Pool.Get<ObjectSlowDownBuffData>();
                     slowDownBuffData.value = 0.5f;
                     slowDownBuffData.duration = 2f;
                     
