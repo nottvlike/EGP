@@ -27,43 +27,29 @@ namespace ECS.Object.Module
             var processData = unit.GetData<ObjectKeyboardControlProcessData>();
             Observable.EveryUpdate().Subscribe(_ => 
             {
-                foreach (var controlData in processData.controlDataList)
+                foreach (var controlModule in processData.allControlModuleList)
                 {
-                    if (controlData.mouseButton == -1)
+                    foreach (var controlData in processData.controlDataList)
                     {
-                        if (controlData.controlStateType == ControlStateType.Down 
-                            && Input.GetKeyDown(controlData.key))
+                        if (controlModule.ControlType == controlData.controlType)
                         {
-                            DoState(unit, controlData);
-                        }
-                        else if (controlData.controlStateType == ControlStateType.Up 
-                            && Input.GetKeyUp(controlData.key))
-                        {
-                            DoState(unit, controlData);
-                        }
-                    }
-                    else
-                    {
-                        if (controlData.controlStateType == ControlStateType.Down 
-                            && Input.GetMouseButtonDown(controlData.mouseButton))
-                        {
-                            DoState(unit, controlData);
-                        }
-                        else if (controlData.controlStateType == ControlStateType.Up
-                            && Input.GetMouseButtonUp(controlData.mouseButton))
-                        {
-                            DoState(unit, controlData);
+                            var result = controlModule.UpdateKeyboardControl(controlData);
+                            if (result.Item1)
+                            {
+                                DoState(unit, controlData, result.Item2);
+                            }
                         }
                     }
                 }
+
             }).AddTo(unitData.disposable);
         }
 
-        void DoState(GUnit unit, ObjectControlData controlData)
+        void DoState(GUnit unit, ObjectControlData controlData, Vector3 param)
         {
             if (controlData.stateType == ObjectStateType.Start)
             {
-                ObjectStateProcess.Start(unit, controlData.stateName, controlData.stateParam);
+                ObjectStateProcess.Start(unit, controlData.stateName, param);
             }
             else if (controlData.stateType == ObjectStateType.Finish)
             {

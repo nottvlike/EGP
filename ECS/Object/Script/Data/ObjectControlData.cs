@@ -2,6 +2,7 @@ namespace ECS.Object.Data
 {
     using ECS.Data;
     using ECS.Common;
+    using ECS.Object.Module;
     using UnityEngine;
     using System.Collections.Generic;
 
@@ -27,6 +28,7 @@ namespace ECS.Object.Data
 
     public abstract class ObjectKeyboardControlData : ObjectControlData
     {
+        public virtual int controlType { get; } = ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE;
         public virtual int mouseButton { get; } = -1;
         public virtual KeyCode key { get; }
     }
@@ -34,6 +36,7 @@ namespace ECS.Object.Data
     public class ObjectKeyboardControlProcessData : IData, IPoolObject
     {
         public List<ObjectKeyboardControlData> controlDataList = new List<ObjectKeyboardControlData>();
+        public List<IObjectKeyboardControl> allControlModuleList = new List<IObjectKeyboardControl>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
@@ -43,6 +46,8 @@ namespace ECS.Object.Data
                 Pool.Release(controlData);
             }
             controlDataList.Clear();
+
+            allControlModuleList.Clear();
         }
     }
 }

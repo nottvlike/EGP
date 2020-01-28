@@ -9,5 +9,7 @@ namespace ECS.Object
         public const string STATE_MODULE_GROUP_NAME = "State";
         public const string SYNC_MODULE_GROUP_NAME = "Sync";
         public const string KEYBOARD_CONTROL_MODULE_GROUP_NAME = "KeyboardControl";
+
+        public const int DEFAULT_KEYBOARD_CONTROL_TYPE = 1;
     }
 }
