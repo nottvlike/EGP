@@ -1,11 +1,9 @@
 namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
-    using ECS.Module;
     using ECS.Data;
     using ECS.Object.Data;
-    using UniRx;
-    using System;
+    using ECS.Common;
 
     public interface IObjectBuff
     {
@@ -29,6 +27,7 @@ namespace ECS.Object.Module
 
             var processData = unit.GetData<ObjectBuffProcessData>();
             processData.currentBuffList.Remove(buffData);
+            DataPool.Release(buffData);
         }
 
         protected abstract void OnStart(GUnit unit, T buffData);

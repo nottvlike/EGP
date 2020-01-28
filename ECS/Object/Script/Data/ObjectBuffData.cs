@@ -37,7 +37,12 @@ namespace ECS.Object.Data
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
+            foreach (var buffData in currentBuffList)
+            {
+                Pool.Release(buffData);
+            }
             currentBuffList.Clear();
+            
             allBuffModuleList.Clear();
         }
     }
