@@ -12,11 +12,12 @@ namespace ECS.Object.Data
         Up
     }
 
-    public abstract class ObjectControlData : IData, IPoolObject
+    public abstract class ObjectControlData : IPoolObject
     {
         public virtual ControlStateType controlStateType { get; }
         public virtual string stateName { get; }
         public virtual ObjectStateType stateType { get; }
+        public virtual Vector3 stateParam { get; }
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
@@ -28,5 +29,20 @@ namespace ECS.Object.Data
     {
         public virtual int mouseButton { get; } = -1;
         public virtual KeyCode key { get; }
+    }
+
+    public class ObjectKeyboardControlProcessData : IData, IPoolObject
+    {
+        public List<ObjectKeyboardControlData> controlDataList = new List<ObjectKeyboardControlData>();
+
+        public bool IsInUse { get; set; }
+        public virtual void Clear()
+        {
+            foreach (var controlData in controlDataList)
+            {
+                Pool.Release(controlData);
+            }
+            controlDataList.Clear();
+        }
     }
 }
