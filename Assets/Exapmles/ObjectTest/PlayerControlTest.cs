@@ -2,9 +2,9 @@ using ECS;
 using ECS.Object.Data;
 using ECS.Object.Module;
 using ECS.Object;
-using Game.ObjectTest.Module;
 using Game.ObjectTest.Module.Control;
 using Game.ObjectTest.Module.State;
+using Game.ObjectTest.Module.Trap;
 using Game.ObjectTest.Factory;
 using UnityEngine;
 using UniRx;
@@ -20,9 +20,14 @@ public class PlayerControlTest : GameStart
         var syncServerData = gameCore.AddData<ObjectSyncServerData>();
         gameCore.UpdateMeetModuleList();
 
+        var factory = WorldManager.Instance.Factory;
+
+        var slowDownTrapObject = GameObject.Find("Ground/SlowDownTrap");
+        factory.CreateSlowDownTrap(slowDownTrapObject);
+
         AssetManager.Load<GameObject>("Prefabs/Cube").Subscribe(asset => 
         {
-            WorldManager.Instance.Factory.CreatePlayer(asset);
+            factory.CreatePlayer(asset);
             syncServerData.enable.Value = true;
         });
     }
@@ -33,7 +38,10 @@ public class PlayerControlTest : GameStart
         moduleMgr.Register(new ObjectSyncLocalServer());
         moduleMgr.Register(new ObjectSyncServer());
         moduleMgr.Register(new ObjectSync());
+        moduleMgr.Register(new ObjectBuffProcess());
 
+        moduleMgr.Register(new SlowDownTrap());
+        
         moduleMgr.Register(new ObjectMoveLeft());
         moduleMgr.Register(new ObjectMoveRight());
         moduleMgr.Register(new ObjectFinishMoveLeft());

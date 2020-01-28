@@ -4,14 +4,23 @@ namespace Game.ObjectTest.Factory
     using ECS.Data;
     using ECS.Object;
     using ECS.Object.Data;
+    using ECS.Object.Module;
     using ECS.Factory;
     using ECS;
     using Asset.Factory;
     using Game.ObjectTest.Data;
+    using Game.ObjectTest.Module.Buff;
     using UnityEngine;
+    using System.Collections.Generic;
 
     public static class ObjectTestFactory
     {
+        static List<IObjectBuff> _buffModuleList = new List<IObjectBuff>();
+        static void InitBuffModuleList()
+        {
+            _buffModuleList.Add(new ObjectSlowDownBuff());
+        }
+
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
         {
             var moduleMgr = WorldManager.Instance.Module;
@@ -23,9 +32,28 @@ namespace Game.ObjectTest.Factory
             var unit = factory.CreateAsset(requiredModuleGroup, gameObject);
             unit.AddData<ObjectSyncData>();
 
+            if (_buffModuleList.Count == 0)
+            {
+                InitBuffModuleList();
+            }
+            
             AttachStateData(unit);
             AttachAttributeData(unit);
             AttachControlData(unit);
+            AttachBuffData(unit);
+
+            var unitData = unit.GetData<UnitData>();
+            unitData.stateTypeProperty.Value = UnitStateType.Init;
+        }
+
+
+        public static void CreateSlowDownTrap(this UnitFactory factory, GameObject gameObject)
+        {
+            var moduleMgr = WorldManager.Instance.Module;
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME);
+            
+            var unit = factory.CreateAsset(requiredModuleGroup, gameObject, false);
+            unit.AddData<SlowDownTrapData>();
 
             var unitData = unit.GetData<UnitData>();
             unitData.stateTypeProperty.Value = UnitStateType.Init;
@@ -52,6 +80,12 @@ namespace Game.ObjectTest.Factory
             var moveSpeedData = unit.AddData<ObjectMoveSpeedData>();
             moveSpeedData.baseValue = 2500;
             moveSpeedData.basePercent = 1f;
+        }
+
+        static void AttachBuffData(GUnit unit)
+        {
+            var buffProcessData = unit.AddData<ObjectBuffProcessData>();
+            buffProcessData.allBuffModuleList.AddRange(_buffModuleList);
         }
     }
 }
