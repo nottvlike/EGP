@@ -7,10 +7,10 @@ namespace Game.ObjectTest.Factory
     using ECS.Object.Module;
     using ECS.Factory;
     using ECS;
-    using ECS.Common;
     using Asset.Factory;
     using Game.ObjectTest.Data;
     using Game.ObjectTest.Module.Buff;
+    using Game.ObjectTest.Module.Control;
     using UnityEngine;
     using System.Collections.Generic;
 
@@ -35,7 +35,7 @@ namespace Game.ObjectTest.Factory
         static List<IObjectKeyboardControl> _keyboardControlModuleList = new List<IObjectKeyboardControl>();
         static void InitKeyboardControlModuleList()
         {
-            _keyboardControlModuleList.Add(new DefaultObjectKeyboardControl());
+            _keyboardControlModuleList.Add(new MoveKeyboardControl());
         }
 
         public static List<IObjectKeyboardControl> GetAllKeyboardControlModule(this UnitFactory factory)
@@ -90,10 +90,7 @@ namespace Game.ObjectTest.Factory
         {
             var controlProcessData = unit.AddData<ObjectKeyboardControlProcessData>();
             var controlDataList = controlProcessData.controlDataList;
-            controlDataList.Add(Pool.Get<ObjectMoveLeftData>());
-            controlDataList.Add(Pool.Get<ObjectMoveRightData>());
-            controlDataList.Add(Pool.Get<ObjectFinishMoveLeftData>());
-            controlDataList.Add(Pool.Get<ObjectFinishMoveRightData>());
+            controlDataList.Add(new ObjectMoveKeyboardData());
 
             var factory = WorldManager.Instance.Factory;
             controlProcessData.allControlModuleList.AddRange(factory.GetAllKeyboardControlModule());
