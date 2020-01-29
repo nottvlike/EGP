@@ -13,20 +13,27 @@ namespace ECS.Object.Data
         Up
     }
 
-    public abstract class ObjectControlData : IPoolObject
+    public interface IObjectControlData
     {
-        public virtual ControlStateType controlStateType { get; }
-        public virtual string stateName { get; }
-        public virtual ObjectStateType stateType { get; }
-        public virtual Vector3 stateParam { get; }
-
-        public bool IsInUse { get; set; }
-        public virtual void Clear()
-        {
-        }
+        string stateName { get; }
+        ObjectStateType stateType { get; }
     }
 
-    public abstract class ObjectKeyboardControlData : ObjectControlData
+    public abstract class DefaultObjectControlData : IObjectControlData
+    {
+        public virtual string stateName { get; }
+        public virtual ObjectStateType stateType { get; }
+
+        public virtual ControlStateType controlStateType { get; }
+        public virtual Vector3 stateParam { get; }
+    }
+
+    public interface IObjectKeyboardControlData : IObjectControlData
+    {
+        int controlType { get; }
+    }
+
+    public abstract class DefaultObjectKeyboardControlData : DefaultObjectControlData, IObjectKeyboardControlData
     {
         public virtual int controlType { get; } = ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE;
         public virtual int mouseButton { get; } = -1;
@@ -35,16 +42,12 @@ namespace ECS.Object.Data
 
     public class ObjectKeyboardControlProcessData : IData, IPoolObject
     {
-        public List<ObjectKeyboardControlData> controlDataList = new List<ObjectKeyboardControlData>();
+        public List<IObjectKeyboardControlData> controlDataList = new List<IObjectKeyboardControlData>();
         public List<IObjectKeyboardControl> allControlModuleList = new List<IObjectKeyboardControl>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
-            foreach (var controlData in controlDataList)
-            {
-                Pool.Release(controlData);
-            }
             controlDataList.Clear();
 
             allControlModuleList.Clear();

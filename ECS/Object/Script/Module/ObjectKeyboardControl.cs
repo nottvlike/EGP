@@ -7,12 +7,48 @@ namespace ECS.Object.Module
     public interface IObjectKeyboardControl
     {
         int ControlType { get; }
-        ValueTuple<bool, Vector3> UpdateKeyboardControl(ObjectKeyboardControlData controlData);
+        ValueTuple<bool, Vector3> CheckControl(IObjectKeyboardControlData controlData);
     }
 
-    public abstract class ObjectKeyboardControl<T> : IObjectKeyboardControl where T : ObjectKeyboardControlData
+    public abstract class ObjectKeyboardControl<T> : IObjectKeyboardControl where T : class, IObjectKeyboardControlData
     {
-        public virtual int ControlType { get { return ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE; } }
-        public abstract ValueTuple<bool, Vector3> UpdateKeyboardControl(ObjectKeyboardControlData controlData);
+        public virtual int ControlType { get; }
+        
+        public ValueTuple<bool, Vector3> CheckControl(IObjectKeyboardControlData controlData)
+        {
+            return OnCheckControl(controlData as T);
+        }
+
+        protected abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData);
+    }
+
+    public sealed class DefaultObjectKeyboardControl : ObjectKeyboardControl<DefaultObjectKeyboardControlData>
+    {
+        public override int ControlType { get { return ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE; } }
+
+        protected override ValueTuple<bool, Vector3> OnCheckControl(DefaultObjectKeyboardControlData controlData)
+        {
+            if (controlData.mouseButton == -1)
+            {
+                if ((controlData.controlStateType == ControlStateType.Down 
+                    && Input.GetKeyDown(controlData.key))
+                    || (controlData.controlStateType == ControlStateType.Up 
+                    && Input.GetKeyUp(controlData.key)))
+                {
+                    return ValueTuple.Create(true, controlData.stateParam);
+                }
+            }
+            else
+            {
+                if ((controlData.controlStateType == ControlStateType.Down 
+                    && Input.GetMouseButtonDown(controlData.mouseButton))
+                    || controlData.controlStateType == ControlStateType.Up
+                    && Input.GetMouseButtonUp(controlData.mouseButton))
+                {
+                    return ValueTuple.Create(true, controlData.stateParam);
+                }
+            }
+            return ValueTuple.Create(false, Vector3.zero);
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace ECS.Object.Module
                     {
                         if (controlModule.ControlType == controlData.controlType)
                         {
-                            var result = controlModule.UpdateKeyboardControl(controlData);
+                            var result = controlModule.CheckControl(controlData);
                             if (result.Item1)
                             {
                                 DoState(unit, controlData, result.Item2);
@@ -45,7 +45,7 @@ namespace ECS.Object.Module
             }).AddTo(unitData.disposable);
         }
 
-        void DoState(GUnit unit, ObjectControlData controlData, Vector3 param)
+        void DoState(GUnit unit, IObjectKeyboardControlData controlData, Vector3 param)
         {
             if (controlData.stateType == ObjectStateType.Start)
             {
