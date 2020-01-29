@@ -6,7 +6,6 @@ namespace ECS.Object.Data
     public abstract class ObjectAttributeData : IData, IPoolObject
     {
         public virtual string name { get; }
-        public virtual string description { get; }
 
         public float baseValue;
         public float basePercent;
