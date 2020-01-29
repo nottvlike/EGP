@@ -55,18 +55,7 @@ namespace ECS.Object.Module
 
                     preparedDispose = _syncData.preparedSyncInfoList.ObserveAdd().Subscribe(stateInfo =>
                     {
-                        if (_syncData.nextFrameDispose != null)
-                        {
-                            return;
-                        }
-
-                        _syncData.nextFrameDispose = Observable.NextFrame().Subscribe(time =>
-                        {
-                            _syncData.nextFrameDispose.Dispose();
-                            _syncData.nextFrameDispose = null;
-
-                            SyncObjectState();
-                        });
+                        SyncObjectState();
                     });
                 }
                 else

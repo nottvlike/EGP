@@ -9,7 +9,6 @@ namespace ECS.Object.Data
     public class ObjectSyncServerData : IData
     {
         public ReactiveCollection<ServerSyncStateInfo> preparedSyncInfoList = new ReactiveCollection<ServerSyncStateInfo>();
-        public IDisposable nextFrameDispose;
 
         public ReactiveProperty<bool> enable = new ReactiveProperty<bool>(false);
         public int serverKeyFrame;
