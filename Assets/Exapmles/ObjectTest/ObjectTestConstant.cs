@@ -19,6 +19,5 @@ namespace Game
 
         // attribute
         public const string ATTRIBUTE_MOVE_SPEED_NAME = "Speed";
-        public const string ATTRIBUTE_MOVE_SPEED_DESCRIPTION = "Speed Description";
     }
 }

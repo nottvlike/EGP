@@ -6,6 +6,5 @@ namespace Game.ObjectTest.Data
     public class ObjectMoveSpeedData : ObjectAttributeData
     {
         public override string name { get { return ObjectTestConstant.ATTRIBUTE_MOVE_SPEED_NAME; } }
-        public override string description { get { return ObjectTestConstant.ATTRIBUTE_MOVE_SPEED_DESCRIPTION; } }
     }
 }
