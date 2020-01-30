@@ -6,7 +6,6 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using System;
     using System.Linq;
-    using System.Collections.Generic;
     using UniRx;
     using UnityEngine;
 
@@ -146,48 +145,6 @@ namespace ECS.Object.Module
             _syncData.preparedSyncInfoList.Add(syncStateInfo);
         }
 
-
-        public static bool CanIncreaseInternalFrame(int current, int delta = 1)
-        {
-            return current + delta < _syncData.internalFrameSize;
-        }
-
-        static List<SyncStateCountInfo> unitSyncList = new List<SyncStateCountInfo>();
-        static int Increase(uint unitId)
-        {
-            for (var i = 0; i < unitSyncList.Count; i++)
-            {
-                var unitSync = unitSyncList[i];
-                if (unitSync.unitId == unitId)
-                {
-                    if (unitSync.serverKeyFrame == _syncData.currentKeyFrame 
-                        && unitSync.internalFrame == _syncData.internalFrame)
-                    {
-                        unitSync.count += 1;
-                    }
-                    else
-                    {
-                        unitSync.serverKeyFrame = _syncData.currentKeyFrame;
-                        unitSync.internalFrame = _syncData.internalFrame;
-                        unitSync.count = 1;
-                    }
-
-                    unitSyncList[i] = unitSync;
-                    return unitSync.count;
-                }
-            }
-
-            var syncCountInfo = new SyncStateCountInfo()
-            {
-                serverKeyFrame = _syncData.currentKeyFrame,
-                internalFrame = _syncData.internalFrame,
-                unitId = unitId,
-                count = 1
-            };
-            unitSyncList.Add(syncCountInfo);
-            return syncCountInfo.count;
-        }
-
         static void SyncObjectState()
         {
             var offsetKeyFrame = 5;
@@ -201,13 +158,12 @@ namespace ECS.Object.Module
                     stateType = serverSyncInfo.stateType
                 };
 
-                var offset = Increase(serverSyncInfo.unitId);
-                var totalOffset = _syncData.internalFrame + offsetKeyFrame + offset;
+                var totalOffset = _syncData.internalFrame + offsetKeyFrame;
                 syncStateInfo.serverKeyFrame = _syncData.currentKeyFrame + totalOffset / _syncData.internalFrameSize;
                 syncStateInfo.internalFrame = totalOffset % _syncData.internalFrameSize;
 
                 var unit = WorldManager.Instance.Unit.GetUnit(serverSyncInfo.unitId);
-                ObjectSync.Add(unit, syncStateInfo);
+                ObjectSync.AddState(unit, syncStateInfo);
             }
 
             preparedSyncInfoList.Clear();

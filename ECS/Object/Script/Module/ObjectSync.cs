@@ -5,6 +5,7 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using UniRx;
     using System;
+    using ECS.Common;
 
     public sealed class ObjectSync : Module
     {
@@ -37,25 +38,48 @@ namespace ECS.Object.Module
                         return;
                     }
 
-                    var syncInfo = objectSyncData.stateSyncInfoList[0];
-                    if (syncInfo.serverKeyFrame == frameInfo.Item1 && syncInfo.internalFrame == frameInfo.Item2)
+                    var stateSyncInfoList = objectSyncData.stateSyncInfoList;
+                    for (var i = 0; i < stateSyncInfoList.Count;)
                     {
-                        if (syncInfo.stateType == ObjectStateType.Start)
+                        var syncInfo = objectSyncData.stateSyncInfoList[i];
+#if DEBUG
+                        if (syncInfo.serverKeyFrame < frameInfo.Item1
+                            || (syncInfo.serverKeyFrame == frameInfo.Item1 && syncInfo.internalFrame < frameInfo.Item2))
                         {
-                            ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                            Log.W("Sync {0} state {1} {2} failed!", syncInfo.stateType, 
+                                syncInfo.stateName, syncInfo.stateParam);
+                            objectSyncData.stateSyncInfoList.RemoveAt(i);
+                            return;
                         }
-                        else if (syncInfo.stateType == ObjectStateType.Update)
+#endif
+                        if (syncInfo.serverKeyFrame == frameInfo.Item1 && syncInfo.internalFrame == frameInfo.Item2)
                         {
-                            ObjectStateProcess.Update(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                            DoState(unit, syncInfo);
+                            objectSyncData.stateSyncInfoList.RemoveAt(i);
                         }
-                        else if (syncInfo.stateType == ObjectStateType.Finish)
+                        else
                         {
-                            ObjectStateProcess.Finish(unit, syncInfo.stateName, false);
+                            i++;
                         }
-                        objectSyncData.stateSyncInfoList.RemoveAt(0);
                     }
                 });
             });
+        }
+
+        void DoState(GUnit unit, SyncStateInfo syncInfo)
+        {
+            if (syncInfo.stateType == ObjectStateType.Start)
+            {
+                ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam, false);
+            }
+            else if (syncInfo.stateType == ObjectStateType.Update)
+            {
+                ObjectStateProcess.Update(unit, syncInfo.stateName, syncInfo.stateParam, false);
+            }
+            else if (syncInfo.stateType == ObjectStateType.Finish)
+            {
+                ObjectStateProcess.Finish(unit, syncInfo.stateName, false);
+            }
         }
 
         protected override void OnRemove(GUnit unit)
@@ -64,7 +88,7 @@ namespace ECS.Object.Module
             objectSyncData.checkSyncDispose?.Dispose();
         }
 
-        public static void Add(GUnit unit, SyncStateInfo syncInfo)
+        public static void AddState(GUnit unit, SyncStateInfo syncInfo)
         {
             var objectSyncData = unit.GetData<ObjectSyncData>();
             objectSyncData.stateSyncInfoList.Add(syncInfo);
