@@ -11,6 +11,7 @@ namespace ECS.Object.Data
     {
         None,
         Start,
+        Update,
         Stop,
         Finish
     }

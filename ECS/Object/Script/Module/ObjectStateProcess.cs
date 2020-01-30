@@ -9,12 +9,19 @@ namespace ECS.Object.Module
 
     public sealed class ObjectStateProcess : Module
     {
+        static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param)
+        {
+            return stateProcessData.currentState == null 
+                || (stateProcessData.currentState == stateData && stateData.param != param)
+                || (stateProcessData.currentState != stateData && stateData.priority >= stateProcessData.currentState.priority);
+        }
+
         public static void Start(GUnit unit, string name, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
             var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
-            
-            if (!CanStart(stateProcessData, stateData))
+
+            if (!CanStart(stateProcessData, stateData, param))
             {
                 return;
             }
@@ -33,6 +40,43 @@ namespace ECS.Object.Module
                 stateData.param = param;
                 Start(stateProcessData, stateData);
             }
+        }
+
+        static bool CanUpdate(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
+        {
+            // return stateProcessData.currentState == stateData 
+            //     || stateProcessData.stopStateList.IndexOf(stateData) != -1;
+            return true;
+        }
+
+        public static void Update(GUnit unit, string name, Vector3 param, bool sync = true)
+        {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+
+            if (!CanUpdate(stateProcessData, stateData))
+            {
+                return;
+            }
+
+            if (sync && unit.GetData<ObjectSyncData>() == null)
+            {
+                sync = false;
+            }
+
+            if (sync)
+            {
+                ObjectSyncServer.AddState(unit, name, param, ObjectStateType.Update);
+            }
+            else
+            {
+                stateData.param = param;
+            }
+        }
+
+        static bool CanFinish(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
+        {
+            return true;
         }
 
         public static void Finish(GUnit unit, string name, bool sync = true)
@@ -63,11 +107,6 @@ namespace ECS.Object.Module
         static float GetCurrentStateProcess(ObjectStateProcessData stateData)
         {
             return 0f;
-        }
-
-        static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
-        {
-            return true;
         }
 
         static void Start(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
@@ -108,11 +147,6 @@ namespace ECS.Object.Module
 
             stateProcessData.stopStateList.Add(stateProcessData.currentState);
             stateProcessData.currentState = null;
-        }
-
-        static bool CanFinish(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
-        {
-            return true;
         }
 
         static void Finish(ObjectStateProcessData stateProcessData, ObjectStateData stateData = null)
