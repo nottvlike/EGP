@@ -17,7 +17,8 @@ namespace ECS.Object.Module
         {
             RequiredDataList = new Type[]
             {
-                typeof(ObjectKeyboardControlProcessData)
+                typeof(ObjectKeyboardControlProcessData),
+                typeof(ObjectStateProcessData)
             };
         }
 
@@ -25,6 +26,7 @@ namespace ECS.Object.Module
         {
             var unitData = unit.GetData<UnitData>();
             var processData = unit.GetData<ObjectKeyboardControlProcessData>();
+            var stateProcerocessData = unit.GetData<ObjectStateProcessData>();
             Observable.EveryUpdate().Subscribe(_ => 
             {
                 foreach (var controlModule in processData.allControlModuleList)
@@ -33,7 +35,7 @@ namespace ECS.Object.Module
                     {
                         if (controlModule.ControlType == controlData.controlType)
                         {
-                            var result = controlModule.CheckControl(controlData);
+                            var result = controlModule.CheckControl(controlData, stateProcerocessData);
                             if (result.Item1)
                             {
                                 DoState(unit, controlData, result.Item2);
@@ -50,6 +52,10 @@ namespace ECS.Object.Module
             if (controlData.stateType == ObjectStateType.Start)
             {
                 ObjectStateProcess.Start(unit, controlData.stateName, param);
+            }
+            else if (controlData.stateType == ObjectStateType.Update)
+            {
+                ObjectStateProcess.Update(unit, controlData.stateName, param);
             }
             else if (controlData.stateType == ObjectStateType.Finish)
             {
