@@ -23,6 +23,8 @@ namespace ECS.Object.Data
         public virtual bool isLoop { get; }
         public virtual bool isDefault { get; } = false;
 
+        public virtual string[] excludeNameList { get; } = null;
+
         public Vector3 param = Vector3.zero;
         public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
 

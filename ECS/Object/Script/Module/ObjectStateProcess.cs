@@ -9,11 +9,30 @@ namespace ECS.Object.Module
 
     public sealed class ObjectStateProcess : Module
     {
+        static bool ContainExcludeState(string[] nameList, string stateName)
+        {
+            if (nameList == null)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < nameList.Length; i++)
+            {
+                if (nameList[i] == stateName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param)
         {
-            return stateProcessData.currentState == null 
-                || (stateProcessData.currentState == stateData && stateData.param != param)
-                || (stateProcessData.currentState != stateData && stateData.priority >= stateProcessData.currentState.priority);
+            return stateProcessData.currentState == null
+                || (!ContainExcludeState(stateProcessData.currentState.excludeNameList, stateData.name)
+                && ((stateProcessData.currentState == stateData && stateData.param != param)
+                || (stateProcessData.currentState != stateData && stateData.priority >= stateProcessData.currentState.priority)));
         }
 
         public static void Start(GUnit unit, string name, Vector3 param, bool sync = true)
