@@ -5,10 +5,12 @@ namespace ECS.Object.Data
     using UniRx;
     using UnityEngine;
     using System;
+    using System.Collections.Generic;
 
     public class ObjectSyncServerData : IData
     {
         public ReactiveCollection<ServerSyncStateInfo> preparedSyncInfoList = new ReactiveCollection<ServerSyncStateInfo>();
+        public List<ServerSyncStateInfo> cachedSyncInfoList = new List<ServerSyncStateInfo>();
 
         public ReactiveProperty<bool> enable = new ReactiveProperty<bool>(false);
         public int serverKeyFrame;
@@ -21,10 +23,21 @@ namespace ECS.Object.Data
 
     public struct ServerSyncStateInfo
     {
+        public int serverKeyFrame;
+
         public uint unitId;
         public string stateName;
         public Vector3 stateParam;
         public ObjectStateType stateType;
+    }
+
+    public struct SyncStateCountInfo
+    {
+        public int serverKeyFrame;
+        public int internalFrame;
+
+        public uint unitId;
+        public int count;
     }
 
     public struct SyncStateInfo

@@ -44,6 +44,10 @@ namespace ECS.Object.Module
                         {
                             ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam, false);
                         }
+                        else if (syncInfo.stateType == ObjectStateType.Update)
+                        {
+                            ObjectStateProcess.Update(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                        }
                         else if (syncInfo.stateType == ObjectStateType.Finish)
                         {
                             ObjectStateProcess.Finish(unit, syncInfo.stateName, false);

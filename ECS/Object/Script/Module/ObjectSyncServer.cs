@@ -5,6 +5,8 @@ namespace ECS.Object.Module
     using ECS.Data;
     using ECS.Object.Data;
     using System;
+    using System.Linq;
+    using System.Collections.Generic;
     using UniRx;
     using UnityEngine;
 
@@ -88,33 +90,124 @@ namespace ECS.Object.Module
             return _syncData.syncSubject;
         }
 
+        public static bool CanAddState(GUnit unit, string stateName, Vector3 param, ObjectStateType stateType)
+        {
+            var cachedSyncInfoList = _syncData.cachedSyncInfoList;
+            var currentKeyFrame = _syncData.currentKeyFrame;
+            for (var i = 0; i < cachedSyncInfoList.Count;)
+            {
+                var syncStateInfo = cachedSyncInfoList[i];
+                if (syncStateInfo.serverKeyFrame < currentKeyFrame
+                    && currentKeyFrame - syncStateInfo.serverKeyFrame > 2)
+                {
+                    cachedSyncInfoList.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            var hasSame = false;
+            var sameStateList = cachedSyncInfoList.Where(_ => _.stateName == stateName).ToList();
+            for (var i = 0; i < sameStateList.Count; i++)
+            {
+                var state = sameStateList[i];
+                if (!hasSame && state.stateType == stateType && state.stateParam == param)
+                {
+                    hasSame = true;
+                }
+                else if (hasSame && (state.stateType != stateType || state.stateParam != param))
+                {
+                    hasSame = false;
+                }
+            }
+
+            return !hasSame;
+        }
+
         public static void AddState(GUnit unit, string stateName, Vector3 param, ObjectStateType stateType)
         {
-            _syncData.preparedSyncInfoList.Add(new ServerSyncStateInfo()
+            if (!CanAddState(unit, stateName, param, stateType))
             {
+                return;
+            }
+
+            var syncStateInfo = new ServerSyncStateInfo()
+            {
+                serverKeyFrame = _syncData.currentKeyFrame,
                 unitId = unit.UnitId,
                 stateName = stateName,
                 stateParam = param,
                 stateType = stateType
-            });
+            };
+
+            _syncData.cachedSyncInfoList.Add(syncStateInfo);
+            _syncData.preparedSyncInfoList.Add(syncStateInfo);
         }
 
 
+        public static bool CanIncreaseInternalFrame(int current, int delta = 1)
+        {
+            return current + delta < _syncData.internalFrameSize;
+        }
+
+        static List<SyncStateCountInfo> unitSyncList = new List<SyncStateCountInfo>();
+        static int Increase(uint unitId)
+        {
+            for (var i = 0; i < unitSyncList.Count; i++)
+            {
+                var unitSync = unitSyncList[i];
+                if (unitSync.unitId == unitId)
+                {
+                    if (unitSync.serverKeyFrame == _syncData.currentKeyFrame 
+                        && unitSync.internalFrame == _syncData.internalFrame)
+                    {
+                        unitSync.count += 1;
+                    }
+                    else
+                    {
+                        unitSync.serverKeyFrame = _syncData.currentKeyFrame;
+                        unitSync.internalFrame = _syncData.internalFrame;
+                        unitSync.count = 1;
+                    }
+
+                    unitSyncList[i] = unitSync;
+                    return unitSync.count;
+                }
+            }
+
+            var syncCountInfo = new SyncStateCountInfo()
+            {
+                serverKeyFrame = _syncData.currentKeyFrame,
+                internalFrame = _syncData.internalFrame,
+                unitId = unitId,
+                count = 1
+            };
+            unitSyncList.Add(syncCountInfo);
+            return syncCountInfo.count;
+        }
+
         static void SyncObjectState()
         {
+            var offsetKeyFrame = 5;
             var preparedSyncInfoList = _syncData.preparedSyncInfoList;
             foreach (var serverSyncInfo in preparedSyncInfoList)
             {
-                var unit = WorldManager.Instance.Unit.GetUnit(serverSyncInfo.unitId);
-                ObjectSync.Add(unit, new SyncStateInfo()
+                var syncStateInfo = new SyncStateInfo()
                 {
-                    serverKeyFrame = _syncData.currentKeyFrame + 1,
-                    internalFrame = _syncData.internalFrame,
-
                     stateName = serverSyncInfo.stateName,
                     stateParam = serverSyncInfo.stateParam,
                     stateType = serverSyncInfo.stateType
-                });
+                };
+
+                var offset = Increase(serverSyncInfo.unitId);
+                var totalOffset = _syncData.internalFrame + offsetKeyFrame + offset;
+                syncStateInfo.serverKeyFrame = _syncData.currentKeyFrame + totalOffset / _syncData.internalFrameSize;
+                syncStateInfo.internalFrame = totalOffset % _syncData.internalFrameSize;
+
+                var unit = WorldManager.Instance.Unit.GetUnit(serverSyncInfo.unitId);
+                ObjectSync.Add(unit, syncStateInfo);
             }
 
             preparedSyncInfoList.Clear();
