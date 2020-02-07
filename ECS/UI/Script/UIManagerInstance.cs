@@ -2,7 +2,6 @@ namespace ECS.UI
 {
     using ECS.Common;
     using ECS.Data;
-    using ECS.Factory;
     using ECS.Module;
     using ECS.UI.Factory;
     using ECS.UI.Data;
