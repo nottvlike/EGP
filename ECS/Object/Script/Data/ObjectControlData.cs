@@ -15,13 +15,13 @@ namespace ECS.Object.Data
 
     public interface IObjectControlData
     {
-        string stateName { get; }
+        uint stateId { get; }
         ObjectStateType stateType { get; }
     }
 
     public abstract class DefaultObjectControlData : IObjectControlData
     {
-        public virtual string stateName { get; }
+        public virtual uint stateId { get; }
         public virtual ObjectStateType stateType { get; }
 
         public virtual ControlStateType controlStateType { get; }

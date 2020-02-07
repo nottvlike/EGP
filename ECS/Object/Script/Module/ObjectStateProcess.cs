@@ -9,7 +9,7 @@ namespace ECS.Object.Module
 
     public sealed class ObjectStateProcess : Module
     {
-        static bool ContainExcludeState(string[] nameList, string stateName)
+        static bool ContainExcludeState(uint[] nameList, uint id)
         {
             if (nameList == null)
             {
@@ -18,7 +18,7 @@ namespace ECS.Object.Module
 
             for (var i = 0; i < nameList.Length; i++)
             {
-                if (nameList[i] == stateName)
+                if (nameList[i] == id)
                 {
                     return true;
                 }
@@ -29,17 +29,30 @@ namespace ECS.Object.Module
 
         static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param)
         {
-            return stateProcessData.currentState == null
-                || stateData.isSupporting
-                || (!ContainExcludeState(stateProcessData.currentState.excludeNameList, stateData.name)
-                && ((stateProcessData.currentState == stateData && stateData.param != param)
-                || (stateProcessData.currentState != stateData && stateData.priority >= stateProcessData.currentState.priority)));
+            if (stateData is IndependentObjectStateData)
+            {
+                if (stateProcessData.currentState == null)
+                {
+                    return true;
+                }
+
+                var independentState = stateData as IndependentObjectStateData;
+                var isSameState = stateProcessData.currentState == independentState;
+                var containExcludeState = ContainExcludeState(stateProcessData.currentState.excludeIdList, stateData.id);
+                var higherPriority = independentState.priority >= stateProcessData.currentState.priority;
+                return isSameState && independentState.param != param
+                    || !isSameState && !containExcludeState && higherPriority;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public static void Start(GUnit unit, string name, Vector3 param, bool sync = true)
+        public static void Start(GUnit unit, uint id, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!CanStart(stateProcessData, stateData, param))
             {
@@ -53,7 +66,7 @@ namespace ECS.Object.Module
 
             if (sync)
             {
-                ObjectSyncServer.AddState(unit, name, param, ObjectStateType.Start);
+                ObjectSyncServer.AddState(unit, id, param, ObjectStateType.Start);
             }
             else
             {
@@ -64,15 +77,13 @@ namespace ECS.Object.Module
 
         static bool CanUpdate(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
         {
-            // return stateProcessData.currentState == stateData 
-            //     || stateProcessData.stopStateList.IndexOf(stateData) != -1;
             return true;
         }
 
-        public static void Update(GUnit unit, string name, Vector3 param, bool sync = true)
+        public static void Update(GUnit unit, uint id, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!CanUpdate(stateProcessData, stateData))
             {
@@ -86,7 +97,7 @@ namespace ECS.Object.Module
 
             if (sync)
             {
-                ObjectSyncServer.AddState(unit, name, param, ObjectStateType.Update);
+                ObjectSyncServer.AddState(unit, id, param, ObjectStateType.Update);
             }
             else
             {
@@ -99,10 +110,10 @@ namespace ECS.Object.Module
             return true;
         }
 
-        public static void Finish(GUnit unit, string name, bool sync = true)
+        public static void Finish(GUnit unit, uint id, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.name == name).FirstOrDefault();
+            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!CanFinish(stateProcessData, stateData))
             {
@@ -116,7 +127,7 @@ namespace ECS.Object.Module
 
             if (sync)
             {
-                ObjectSyncServer.AddState(unit, name, Vector3.zero, ObjectStateType.Finish);
+                ObjectSyncServer.AddState(unit, id, Vector3.zero, ObjectStateType.Finish);
             }
             else
             {
@@ -124,14 +135,9 @@ namespace ECS.Object.Module
             }
         }
 
-        static float GetCurrentStateProcess(ObjectStateProcessData stateData)
-        {
-            return 0f;
-        }
-
         static void Start(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
         {
-            if (!stateData.isSupporting)
+            if (stateData is IndependentObjectStateData)
             {
                 if (stateProcessData.currentState != null)
                 {
@@ -139,21 +145,7 @@ namespace ECS.Object.Module
                 }
 
                 stateData.stateTypeProperty.Value = ObjectStateType.Start;
-                stateProcessData.currentState = stateData;
-
-                if (!stateData.isLoop)
-                {
-                    stateProcessData.checkFinishDispose?.Dispose();
-                    stateProcessData.checkFinishDispose = Observable.EveryUpdate().Do(_ => 
-                    {
-                        var process = GetCurrentStateProcess(stateProcessData);
-                        if (process >= 1f)
-                        {
-                            Finish(stateProcessData);
-                            stateProcessData.checkFinishDispose.Dispose();
-                        }
-                    }).Subscribe();
-                }
+                stateProcessData.currentState = stateData as IndependentObjectStateData;
             }
             else
             {
@@ -166,7 +158,6 @@ namespace ECS.Object.Module
             var currentState = stateProcessData.currentState;
             currentState.stateTypeProperty.Value = ObjectStateType.Stop;
 
-            stateProcessData.stopStateList.Add(stateProcessData.currentState);
             stateProcessData.currentState = null;
         }
 
@@ -178,7 +169,7 @@ namespace ECS.Object.Module
                 return;
             }
 
-            if (!currentState.isSupporting)
+            if (currentState is IndependentObjectStateData)
             {
                 if (currentState.stateTypeProperty.Value == ObjectStateType.Start)
                 {
@@ -186,14 +177,11 @@ namespace ECS.Object.Module
                     stateProcessData.currentState = null;
 
                     var newStateData = GetHighestPriorityState(stateProcessData);
-                    stateProcessData.stopStateList.Remove(newStateData);
-
                     Start(stateProcessData, newStateData);
                 }
                 else if (currentState.stateTypeProperty.Value == ObjectStateType.Stop)
                 {
                     currentState.stateTypeProperty.Value = ObjectStateType.Finish;
-                    stateProcessData.stopStateList.Remove(stateData);
                 }
             }
             else
@@ -202,18 +190,24 @@ namespace ECS.Object.Module
             }
         }
 
-        static ObjectStateData GetHighestPriorityState(ObjectStateProcessData stateProcessData)
+        static IndependentObjectStateData GetHighestPriorityState(ObjectStateProcessData stateProcessData)
         {
-            var stopStateList = stateProcessData.stopStateList;
+            var stateList = stateProcessData.allStateList.Where(_ => _ is IndependentObjectStateData);
 
             var minPriority = 0;
-            ObjectStateData result = null;
-            foreach (var stateData in stopStateList)
+            IndependentObjectStateData result = null;
+            foreach (var stateData in stateList)
             {
-                if (stateData.priority >= minPriority)
+                if (stateData.stateTypeProperty.Value != ObjectStateType.Stop)
                 {
-                    minPriority = stateData.priority;
-                    result = stateData;
+                    continue;
+                }
+
+                var independentStateData = stateData as IndependentObjectStateData;
+                if (independentStateData.priority >= minPriority)
+                {
+                    minPriority = independentStateData.priority;
+                    result = independentStateData;
                 }
             }
 

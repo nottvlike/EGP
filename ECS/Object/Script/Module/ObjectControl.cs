@@ -16,9 +16,9 @@ namespace ECS.Object.Module
         
         public ValueTuple<bool, Vector3> CheckControl(IObjectControlData controlData, ObjectStateProcessData processData)
         {
-            return OnCheckControl(controlData as T, processData.currentState?.name);
+            return OnCheckControl(controlData as T, processData.currentState?.id);
         }
 
-        public abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData, string currentStateName);
+        public abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData, uint? currentStateId);
     }
 }

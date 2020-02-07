@@ -51,15 +51,15 @@ namespace ECS.Object.Module
         {
             if (controlData.stateType == ObjectStateType.Start)
             {
-                ObjectStateProcess.Start(unit, controlData.stateName, param);
+                ObjectStateProcess.Start(unit, controlData.stateId, param);
             }
             else if (controlData.stateType == ObjectStateType.Update)
             {
-                ObjectStateProcess.Update(unit, controlData.stateName, param);
+                ObjectStateProcess.Update(unit, controlData.stateId, param);
             }
             else if (controlData.stateType == ObjectStateType.Finish)
             {
-                ObjectStateProcess.Finish(unit, controlData.stateName);
+                ObjectStateProcess.Finish(unit, controlData.stateId);
             }
         }
     }

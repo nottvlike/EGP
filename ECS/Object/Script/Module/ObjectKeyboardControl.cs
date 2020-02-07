@@ -16,10 +16,10 @@ namespace ECS.Object.Module
         
         public ValueTuple<bool, Vector3> CheckControl(IObjectKeyboardControlData controlData, ObjectStateProcessData processData)
         {
-            return OnCheckControl(controlData as T, processData.currentState?.name);
+            return OnCheckControl(controlData as T, processData.currentState?.id);
         }
 
-        protected abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData, string currentStateName);
+        protected abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData, uint? currentStateId);
     }
 
     public sealed class DefaultObjectKeyboardControl : ObjectKeyboardControl<DefaultObjectKeyboardControlData>
@@ -27,7 +27,7 @@ namespace ECS.Object.Module
         public override int ControlType { get { return ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE; } }
 
         protected override ValueTuple<bool, Vector3> OnCheckControl(DefaultObjectKeyboardControlData controlData,
-             string currentStateName)
+             uint? currentStateId)
         {
             if (controlData.mouseButton == -1)
             {

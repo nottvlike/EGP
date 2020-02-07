@@ -89,7 +89,7 @@ namespace ECS.Object.Module
             return _syncData.syncSubject;
         }
 
-        public static bool CanAddState(GUnit unit, string stateName, Vector3 param, ObjectStateType stateType)
+        public static bool CanAddState(GUnit unit, uint stateId, Vector3 param, ObjectStateType stateType)
         {
             var cachedSyncInfoList = _syncData.cachedSyncInfoList;
             var currentKeyFrame = _syncData.currentKeyFrame;
@@ -108,7 +108,7 @@ namespace ECS.Object.Module
             }
 
             var hasSame = false;
-            var sameStateList = cachedSyncInfoList.Where(_ => _.stateName == stateName).ToList();
+            var sameStateList = cachedSyncInfoList.Where(_ => _.stateId == stateId).ToList();
             for (var i = 0; i < sameStateList.Count; i++)
             {
                 var state = sameStateList[i];
@@ -125,9 +125,9 @@ namespace ECS.Object.Module
             return !hasSame;
         }
 
-        public static void AddState(GUnit unit, string stateName, Vector3 param, ObjectStateType stateType)
+        public static void AddState(GUnit unit, uint stateId, Vector3 param, ObjectStateType stateType)
         {
-            if (!CanAddState(unit, stateName, param, stateType))
+            if (!CanAddState(unit, stateId, param, stateType))
             {
                 return;
             }
@@ -136,7 +136,7 @@ namespace ECS.Object.Module
             {
                 serverKeyFrame = _syncData.currentKeyFrame,
                 unitId = unit.UnitId,
-                stateName = stateName,
+                stateId = stateId,
                 stateParam = param,
                 stateType = stateType
             };
@@ -153,7 +153,7 @@ namespace ECS.Object.Module
             {
                 var syncStateInfo = new SyncStateInfo()
                 {
-                    stateName = serverSyncInfo.stateName,
+                    stateId = serverSyncInfo.stateId,
                     stateParam = serverSyncInfo.stateParam,
                     stateType = serverSyncInfo.stateType
                 };

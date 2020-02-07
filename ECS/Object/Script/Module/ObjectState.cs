@@ -36,9 +36,10 @@ namespace ECS.Object.Module
 
             stateProcessData.allStateList.Add(stateData);
 
-            if (stateData.isDefault)
+            var independentStateData = stateData as IndependentObjectStateData;
+            if (independentStateData != null && independentStateData.isDefault)
             {
-                ObjectStateProcess.Start(unit, stateData.name, stateData.param, false);
+                ObjectStateProcess.Start(unit, independentStateData.id, independentStateData.param, false);
             }
         }
 
@@ -46,13 +47,8 @@ namespace ECS.Object.Module
         {
             var stateData = GetStateData(unit);
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            if (stateData.stateTypeProperty.Value == ObjectStateType.Stop)
-            {
-                stateProcessData.stopStateList.Remove(stateData);
-            }
-
-            stateProcessData.allStateList.Remove(stateData);
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
+            stateProcessData.allStateList.Remove(stateData);
         }
 
         protected T GetStateData(GUnit unit)

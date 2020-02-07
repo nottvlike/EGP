@@ -18,16 +18,10 @@ namespace ECS.Object.Data
 
     public abstract class ObjectStateData : IData, IPoolObject
     {
-        public virtual string name { get; }
-        public virtual int priority { get; }
-        public virtual bool isLoop { get; }
-        public virtual bool isDefault { get; } = false;
-        public virtual bool isSupporting { get; } = false;
+        public virtual uint id { get; }
 
-        public virtual string[] excludeNameList { get; } = null;
-
-        public Vector3 param = Vector3.zero;
-        public ReactiveProperty<ObjectStateType> stateTypeProperty = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
+        public Vector3 param { get; set; } = Vector3.zero;
+        public ReactiveProperty<ObjectStateType> stateTypeProperty { get; } = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
@@ -37,21 +31,30 @@ namespace ECS.Object.Data
         }
     }
 
+    public abstract class IndependentObjectStateData : ObjectStateData
+    {
+        public virtual bool isDefault { get; }
+        public virtual bool isLoop { get; }
+
+        public virtual int priority { get; }
+
+        public virtual uint[] excludeIdList { get; private set; } = null;
+    }
+
+    public abstract class SupportObjectStateData : ObjectStateData
+    {
+    }
+
     public class ObjectStateProcessData : IData, IPoolObject
     {
-        public ObjectStateData currentState;
-        public List<ObjectStateData> supportingStateList = new List<ObjectStateData>();
-        public List<ObjectStateData> stopStateList = new List<ObjectStateData>();
+        public IndependentObjectStateData currentState;
         public List<ObjectStateData> allStateList = new List<ObjectStateData>();
-        public IDisposable checkFinishDispose;
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
             currentState = null;
-            stopStateList.Clear();
             allStateList.Clear();
-            checkFinishDispose = null;
         }
     }
 }

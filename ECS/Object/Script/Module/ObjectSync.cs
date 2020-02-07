@@ -47,7 +47,7 @@ namespace ECS.Object.Module
                             || (syncInfo.serverKeyFrame == frameInfo.Item1 && syncInfo.internalFrame < frameInfo.Item2))
                         {
                             Log.W("Sync {0} state {1} {2} failed!", syncInfo.stateType, 
-                                syncInfo.stateName, syncInfo.stateParam);
+                                syncInfo.stateId, syncInfo.stateParam);
                             objectSyncData.stateSyncInfoList.RemoveAt(i);
                             return;
                         }
@@ -70,15 +70,15 @@ namespace ECS.Object.Module
         {
             if (syncInfo.stateType == ObjectStateType.Start)
             {
-                ObjectStateProcess.Start(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                ObjectStateProcess.Start(unit, syncInfo.stateId, syncInfo.stateParam, false);
             }
             else if (syncInfo.stateType == ObjectStateType.Update)
             {
-                ObjectStateProcess.Update(unit, syncInfo.stateName, syncInfo.stateParam, false);
+                ObjectStateProcess.Update(unit, syncInfo.stateId, syncInfo.stateParam, false);
             }
             else if (syncInfo.stateType == ObjectStateType.Finish)
             {
-                ObjectStateProcess.Finish(unit, syncInfo.stateName, false);
+                ObjectStateProcess.Finish(unit, syncInfo.stateId, false);
             }
         }
 
