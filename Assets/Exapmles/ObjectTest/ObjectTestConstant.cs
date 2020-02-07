@@ -9,8 +9,8 @@ namespace Game
         public const int MOVE_KEYBOARD_CONTROL_TYPE = 2;
 
         // state
-        public const string STATE_IDLE = "Idle";
-        public const string STATE_MOVE = "Move";
+        public const uint STATE_IDLE = 1001;
+        public const uint STATE_MOVE = 1002;
 
         // animator param
         public const string ANIMATOR_PARAM_IDLE = "Idle";

@@ -11,7 +11,8 @@ namespace Game.ObjectTest.Module.Control
     {
         public override int ControlType { get { return ObjectTestConstant.MOVE_KEYBOARD_CONTROL_TYPE; } }
         
-        protected override ValueTuple<bool, Vector3> OnCheckControl(ObjectMoveKeyboardData controlData)
+        protected override ValueTuple<bool, Vector3> OnCheckControl(ObjectMoveKeyboardData controlData,
+         uint? currentStateId)
         {
             var param = Vector3.zero;
             if (Input.GetKey(controlData.leftKey))

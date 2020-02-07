@@ -10,7 +10,7 @@ namespace Game.ObjectTest.Data
         public KeyCode rightKey { get { return KeyCode.D; } }
 
         public int controlType { get {return ObjectTestConstant.MOVE_KEYBOARD_CONTROL_TYPE; } }
-        public string stateName { get { return ObjectTestConstant.STATE_MOVE; } }
+        public uint stateId { get { return ObjectTestConstant.STATE_MOVE; } }
         public Vector3 stateParam { get; set; }
 
         public ObjectStateType stateType { get; set; }
