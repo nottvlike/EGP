@@ -22,6 +22,7 @@ namespace ECS.Object.Data
         public virtual int priority { get; }
         public virtual bool isLoop { get; }
         public virtual bool isDefault { get; } = false;
+        public virtual bool isSupporting { get; } = false;
 
         public virtual string[] excludeNameList { get; } = null;
 
@@ -39,6 +40,7 @@ namespace ECS.Object.Data
     public class ObjectStateProcessData : IData, IPoolObject
     {
         public ObjectStateData currentState;
+        public List<ObjectStateData> supportingStateList = new List<ObjectStateData>();
         public List<ObjectStateData> stopStateList = new List<ObjectStateData>();
         public List<ObjectStateData> allStateList = new List<ObjectStateData>();
         public IDisposable checkFinishDispose;

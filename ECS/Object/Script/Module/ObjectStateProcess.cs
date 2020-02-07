@@ -30,6 +30,7 @@ namespace ECS.Object.Module
         static bool CanStart(ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param)
         {
             return stateProcessData.currentState == null
+                || stateData.isSupporting
                 || (!ContainExcludeState(stateProcessData.currentState.excludeNameList, stateData.name)
                 && ((stateProcessData.currentState == stateData && stateData.param != param)
                 || (stateProcessData.currentState != stateData && stateData.priority >= stateProcessData.currentState.priority)));
@@ -130,32 +131,33 @@ namespace ECS.Object.Module
 
         static void Start(ObjectStateProcessData stateProcessData, ObjectStateData stateData)
         {
-            if (stateProcessData.currentState == stateData || 
-                (stateProcessData.currentState != null && stateProcessData.currentState.priority > stateData.priority))
+            if (!stateData.isSupporting)
             {
-                return;
-            }
-
-            if (stateProcessData.currentState != null)
-            {
-                Stop(stateProcessData);
-            }
-
-            stateData.stateTypeProperty.Value = ObjectStateType.Start;
-            stateProcessData.currentState = stateData;
-
-            if (!stateData.isLoop)
-            {
-                stateProcessData.checkFinishDispose?.Dispose();
-                stateProcessData.checkFinishDispose = Observable.EveryUpdate().Do(_ => 
+                if (stateProcessData.currentState != null)
                 {
-                    var process = GetCurrentStateProcess(stateProcessData);
-                    if (process >= 1f)
+                    Stop(stateProcessData);
+                }
+
+                stateData.stateTypeProperty.Value = ObjectStateType.Start;
+                stateProcessData.currentState = stateData;
+
+                if (!stateData.isLoop)
+                {
+                    stateProcessData.checkFinishDispose?.Dispose();
+                    stateProcessData.checkFinishDispose = Observable.EveryUpdate().Do(_ => 
                     {
-                        Finish(stateProcessData);
-                        stateProcessData.checkFinishDispose.Dispose();
-                    }
-                }).Subscribe();
+                        var process = GetCurrentStateProcess(stateProcessData);
+                        if (process >= 1f)
+                        {
+                            Finish(stateProcessData);
+                            stateProcessData.checkFinishDispose.Dispose();
+                        }
+                    }).Subscribe();
+                }
+            }
+            else
+            {
+                stateData.stateTypeProperty.SetValueAndForceNotify(ObjectStateType.Start);
             }
         }
 
@@ -176,20 +178,27 @@ namespace ECS.Object.Module
                 return;
             }
 
-            if (currentState.stateTypeProperty.Value == ObjectStateType.Start)
+            if (!currentState.isSupporting)
             {
-                currentState.stateTypeProperty.Value = ObjectStateType.Finish;
-                stateProcessData.currentState = null;
+                if (currentState.stateTypeProperty.Value == ObjectStateType.Start)
+                {
+                    currentState.stateTypeProperty.Value = ObjectStateType.Finish;
+                    stateProcessData.currentState = null;
 
-                var newStateData = GetHighestPriorityState(stateProcessData);
-                stateProcessData.stopStateList.Remove(newStateData);
+                    var newStateData = GetHighestPriorityState(stateProcessData);
+                    stateProcessData.stopStateList.Remove(newStateData);
 
-                Start(stateProcessData, newStateData);
+                    Start(stateProcessData, newStateData);
+                }
+                else if (currentState.stateTypeProperty.Value == ObjectStateType.Stop)
+                {
+                    currentState.stateTypeProperty.Value = ObjectStateType.Finish;
+                    stateProcessData.stopStateList.Remove(stateData);
+                }
             }
-            else if (currentState.stateTypeProperty.Value == ObjectStateType.Stop)
+            else
             {
                 currentState.stateTypeProperty.Value = ObjectStateType.Finish;
-                stateProcessData.stopStateList.Remove(stateData);
             }
         }
 
