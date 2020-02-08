@@ -36,6 +36,8 @@ namespace ECS.Object.Module
 
             stateProcessData.allStateList.Add(stateData);
 
+            OnInit(unit, stateData);
+
             var independentStateData = stateData as IndependentObjectStateData;
             if (independentStateData != null && independentStateData.isDefault)
             {
@@ -55,6 +57,8 @@ namespace ECS.Object.Module
         {
             return unit.GetData<T>();
         }
+
+        protected virtual void OnInit(GUnit unit, T stateData) { }
 
         protected abstract void OnStart(GUnit unit, T stateData);
         protected abstract void OnStop(GUnit unit, T stateData);
