@@ -5,10 +5,16 @@ namespace ECS.Object.Module
     using ECS.Data;
     using ECS.Object.Data;
     using UniRx;
-    using System;
-    using Asset.Data;
+    using UnityEngine;
 
-    public abstract class ObjectState<T> : Module where T : ObjectStateData
+    public interface IObjectState
+    {
+        bool CanStart(GUnit unit, ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param);
+        bool CanUpdate(GUnit unit, ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param);
+        bool CanFinish(GUnit unit, ObjectStateProcessData stateProcessData, ObjectStateData stateData);
+    }
+
+    public abstract class ObjectState<T> : Module, IObjectState where T : ObjectStateData
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME);
@@ -58,7 +64,60 @@ namespace ECS.Object.Module
             return unit.GetData<T>();
         }
 
-        protected virtual void OnInit(GUnit unit, T stateData) { }
+        bool ContainExcludeState(uint[] nameList, uint id)
+        {
+            if (nameList == null)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < nameList.Length; i++)
+            {
+                if (nameList[i] == id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public virtual bool CanStart(GUnit unit, ObjectStateProcessData stateProcessData, ObjectStateData stateData, Vector3 param)
+        {
+            if (stateData is IndependentObjectStateData)
+            {
+                if (stateProcessData.currentState == null)
+                {
+                    return true;
+                }
+
+                var independentState = stateData as IndependentObjectStateData;
+                var isSameState = stateProcessData.currentState == independentState;
+                var containExcludeState = ContainExcludeState(stateProcessData.currentState.excludeIdList, stateData.id);
+                var higherPriority = independentState.priority >= stateProcessData.currentState.priority;
+                return isSameState && independentState.param != param
+                    || !isSameState && !containExcludeState && higherPriority;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public virtual bool CanUpdate(GUnit unit, ObjectStateProcessData processData, ObjectStateData stateData, Vector3 param)
+        {
+            return true;
+        }
+
+        public virtual bool CanFinish(GUnit unit, ObjectStateProcessData processData, ObjectStateData stateData)
+        {
+            return true;
+        }
+
+        protected virtual void OnInit(GUnit unit, T stateData)
+        {
+            stateData.objectState = this;
+        }
 
         protected abstract void OnStart(GUnit unit, T stateData);
         protected abstract void OnStop(GUnit unit, T stateData);

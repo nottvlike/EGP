@@ -2,10 +2,10 @@ namespace ECS.Object.Data
 {
     using ECS.Data;
     using ECS.Common;
+    using ECS.Object.Module;
     using System.Collections.Generic;
     using UnityEngine;
     using UniRx;
-    using System;
 
     public enum ObjectStateType
     {
@@ -22,6 +22,7 @@ namespace ECS.Object.Data
 
         public Vector3 param { get; set; } = Vector3.zero;
         public ReactiveProperty<ObjectStateType> stateTypeProperty { get; } = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
+        public IObjectState objectState;
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
