@@ -43,6 +43,32 @@ namespace ECS.Data
             _dataDictionary.Remove(dataKey);
         }
 
+        public IData GetData(uint unitId, Type type, bool includeDeleted = true)
+        {
+            var dataKey = ValueTuple.Create(unitId, type);
+            IData data = null;
+            if (!_dataDictionary.TryGetValue(dataKey, out data)
+                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+            {
+                Log.W("Get data {0} failed, data doesn't exist in unit id : {1}!", type, unitId);
+            }
+
+            return data;
+        }
+
+        public IData TryGetData(uint unitId, Type type, bool includeDeleted = true)
+        {
+            var dataKey = ValueTuple.Create(unitId, type);
+            IData data = null;
+            if (!_dataDictionary.TryGetValue(dataKey, out data)
+                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+            {
+                return null;
+            }
+
+            return data;
+        }
+
         public void ClearData(uint unitId)
         {
             var dataKeyList = _dataDictionary.Where(_ => _.Key.Item1 == unitId)
@@ -52,32 +78,6 @@ namespace ECS.Data
                 _removedDataDictionary.Add(dataKey, _dataDictionary[dataKey]);
                 _dataDictionary.Remove(dataKey);
             }
-        }
-
-        public IData GetData(uint unitId, Type type, bool includeDeleted = false)
-        {
-            var dataKey = ValueTuple.Create(unitId, type);
-            IData data = null;
-            if (!_dataDictionary.TryGetValue(dataKey, out data)
-                && (!includeDeleted || (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data))))
-            {
-                Log.W("Get data {0} failed, data doesn't exist in unit id : {1}!", type, unitId);
-            }
-
-            return data;
-        }
-
-        public IData TryGetData(uint unitId, Type type, bool includeDeleted = false)
-        {
-            var dataKey = ValueTuple.Create(unitId, type);
-            IData data;
-            if (!_dataDictionary.TryGetValue(dataKey, out data)
-                && (!includeDeleted || (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data))))
-            {
-                return null;
-            }
-
-            return data;
         }
 
         public void ClearRemovedData(uint unitId)

@@ -37,12 +37,12 @@
             RemoveData(data);
         }
 
-        public IData GetData(Type type, bool includeDeleted = false)
+        public IData GetData(Type type, bool includeDeleted = true)
         {
             return dataMgr.GetData(UnitId, type, includeDeleted);;
         }
 
-        public IData TryGetData(Type type, bool includeDeleted = false)
+        public IData TryGetData(Type type, bool includeDeleted = true)
         {
             return dataMgr.TryGetData(UnitId, type, includeDeleted);;
         }
@@ -59,12 +59,12 @@
             RemoveData(typeof(T));
         }
 
-        public T GetData<T>(bool includeDeleted = false) where T : IData
+        public T GetData<T>(bool includeDeleted = true) where T : IData
         {
             return (T)GetData(typeof(T), includeDeleted);
         }
 
-        public T TryGetData<T>(bool includeDeleted = false) where T : IData
+        public T TryGetData<T>(bool includeDeleted = true) where T : IData
         {
             return (T)TryGetData(typeof(T), includeDeleted);
         }
