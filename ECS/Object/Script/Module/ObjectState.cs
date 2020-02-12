@@ -54,6 +54,8 @@ namespace ECS.Object.Module
         protected override void OnRemove(GUnit unit)
         {
             var stateData = GetStateData(unit);
+            OnRelease(unit, stateData);
+
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
             stateData.stateTypeProperty.Value = ObjectStateType.Finish;
             stateProcessData.allStateList.Remove(stateData);
@@ -117,6 +119,10 @@ namespace ECS.Object.Module
         protected virtual void OnInit(GUnit unit, T stateData)
         {
             stateData.objectState = this;
+        }
+
+        protected virtual void OnRelease(GUnit unit, T stateData)
+        {
         }
 
         protected abstract void OnStart(GUnit unit, T stateData);
