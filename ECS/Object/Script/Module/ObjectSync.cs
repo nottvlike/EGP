@@ -1,6 +1,7 @@
 namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
+    using ECS.Data;
     using ECS.Module;
     using ECS.Object.Data;
     using UniRx;
@@ -21,6 +22,7 @@ namespace ECS.Object.Module
 
         protected override void OnAdd(GUnit unit)
         {
+            var unitData = unit.GetData<UnitData>();
             var objectSyncData = unit.GetData<ObjectSyncData>();
             objectSyncData.stateSyncInfoList.ObserveAdd().Subscribe(_ => 
             {
@@ -63,7 +65,7 @@ namespace ECS.Object.Module
                         }
                     }
                 });
-            });
+            }).AddTo(unitData.disposable);
         }
 
         void DoState(GUnit unit, SyncStateInfo syncInfo)
