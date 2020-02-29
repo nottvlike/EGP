@@ -16,20 +16,13 @@ namespace ECS.Object.Data
         Finish
     }
 
-    public abstract class ObjectStateData : IData, IPoolObject
+    public abstract class ObjectStateData : IData
     {
         public virtual uint id { get; }
 
         public Vector3 param { get; set; } = Vector3.zero;
         public ReactiveProperty<ObjectStateType> stateTypeProperty { get; } = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
         public IObjectState objectState;
-
-        public bool IsInUse { get; set; }
-        public virtual void Clear()
-        {
-            param = Vector3.zero;
-            stateTypeProperty.Value = ObjectStateType.None;
-        }
     }
 
     public abstract class IndependentObjectStateData : ObjectStateData

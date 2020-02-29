@@ -57,7 +57,6 @@ namespace ECS.Object.Module
             OnRelease(unit, stateData);
 
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            stateData.stateTypeProperty.Value = ObjectStateType.Finish;
             stateProcessData.allStateList.Remove(stateData);
         }
 
@@ -123,6 +122,13 @@ namespace ECS.Object.Module
 
         protected virtual void OnRelease(GUnit unit, T stateData)
         {
+            if (stateData.stateTypeProperty.Value == ObjectStateType.None
+                || stateData.stateTypeProperty.Value == ObjectStateType.Finish)
+            {
+                return;
+            }
+
+            stateData.stateTypeProperty.Value = ObjectStateType.Finish;
         }
 
         protected abstract void OnStart(GUnit unit, T stateData);
