@@ -24,13 +24,13 @@ namespace ECS.Factory
         public void DestroyUnit(GUnit unit)
         {
             var unitData = unit.GetData<UnitData>();
-            
-            unitData.disposable?.Dispose();
-            unitData.disposable = null;
 
             dataMgr.ClearData(unit.UnitId);
             unit.UpdateMeetModuleList();
 
+            unitData.disposable?.Dispose();
+            unitData.disposable = null;
+            
             if (!string.IsNullOrEmpty(unitData.tag))
             {
                 unitMgr.ClearCache(unitData.tag);
