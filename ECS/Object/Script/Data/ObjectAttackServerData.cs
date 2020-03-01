@@ -3,7 +3,6 @@
     using ECS.Data;
     using ECS.Common;
     using UniRx;
-    using System;
 
     public class AttackInfo : IPoolObject
     {

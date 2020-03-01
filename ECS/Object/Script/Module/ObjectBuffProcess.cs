@@ -7,7 +7,6 @@ namespace ECS.Object.Module
     using System;
     using System.Linq;
     using UniRx;
-    using ECS.Common;
 
     public sealed class ObjectBuffProcess : Module
     {

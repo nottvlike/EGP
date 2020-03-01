@@ -3,7 +3,6 @@ namespace ECS.Object.Module
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
     using ECS.Object.Data;
-    using ECS.Common;
 
     public interface IObjectBuff
     {
