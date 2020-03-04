@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export UNITY_PATH="/Volumes/ExtremeSSD/Applications/Unity/Unity.app"
-
 export CURENT_DIR=`pwd`
 export ECS_SRC=
 

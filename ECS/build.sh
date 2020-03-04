@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export UNITY_PATH="/Volumes/ExtremeSSD/Applications/UnityApp/2018.4.0f1/Unity.app"
+
 export productType=$2
 
 #生成需要编译的c#文件列表

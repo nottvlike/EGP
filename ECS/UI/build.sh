@@ -1,13 +1,10 @@
 #!/bin/bash
 
-export UNITY_PATH="/Volumes/ExtremeSSD/Applications/Unity/Unity.app"
-
 export CURENT_DIR=`pwd`
 export ECS_SRC=
 
 export ECS_REFERENCES=-r:$UNITY_PATH/Contents/Managed/UnityEngine.dll,\
 $UNITY_PATH/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll,\
-$UNITY_PATH/Contents/Managed/UnityEditor.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libUniRx.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libAssetManager.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libECSCore.dll,\
@@ -23,7 +20,7 @@ export ProductType=$1
 
 if [ "$ProductType" != "release" ]; then
     echo 'debug mode'
-    ECS_DEFINES=${ECS_DEFINES}";DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"
+    ECS_DEFINES=${ECS_DEFINES}";DEBUG"
 else
     echo 'release mode'
 fi

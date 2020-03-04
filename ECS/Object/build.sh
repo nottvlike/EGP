@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export UNITY_PATH="/Volumes/ExtremeSSD/Applications/Unity/Unity.app"
-
 export CURENT_DIR=`pwd`
 export ECS_SRC=
 
@@ -23,7 +21,7 @@ export ProductType=$1
 
 if [ "$ProductType" != "release" ]; then
     echo 'debug mode'
-    ECS_DEFINES=${ECS_DEFINES}";DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"
+    ECS_DEFINES=${ECS_DEFINES}";DEBUG"
 else
     echo 'release mode'
 fi
