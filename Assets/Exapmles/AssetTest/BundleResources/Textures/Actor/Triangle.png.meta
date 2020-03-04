@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b9cbc05cdb99344fa9ea2f8b2aaa7643
+guid: dfb027f70a16d428c9bd6c0639c9ac79
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -73,17 +73,15 @@ TextureImporter:
     serializedVersion: 2
     sprites: []
     outline:
-    - - {x: -2, y: -2}
-      - {x: -2, y: 2}
-      - {x: 2, y: 2}
-      - {x: 2, y: -2}
+    - - {x: 0, y: 2}
+      - {x: -1.7320508, y: -1.0000001}
+      - {x: 1.7320509, y: -0.9999998}
     physicsShape:
-    - - {x: -2, y: -2}
-      - {x: -2, y: 2}
-      - {x: 2, y: 2}
-      - {x: 2, y: -2}
+    - - {x: 0, y: 2}
+      - {x: -1.7320508, y: -1.0000001}
+      - {x: 1.7320509, y: -0.9999998}
     bones: []
-    spriteID: 7182b9267374941ec8da82e97bc4697d
+    spriteID: 910a8f8bf66c7410fb33c6816a1b0aae
     vertices: []
     indices: 
     edges: []
@@ -92,5 +90,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: textures_indv_square
+  assetBundleName: textures_actor_triangle
   assetBundleVariant: 
