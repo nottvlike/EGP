@@ -4,6 +4,7 @@ using ECS.UI;
 using Asset;
 using UnityEngine;
 using UniRx;
+
 public abstract class GameStart : MonoBehaviour
 {
     protected virtual void Awake() 
@@ -24,14 +25,16 @@ public abstract class GameStart : MonoBehaviour
 
         worldMgr.Unit.Init(unitTypeConfig);
 
+        IAssetLoader customLoader = null;
 #if UNITY_EDITOR
-        AssetManager.IsSimulate = isSimulate;
+        if (isSimulate)
+        {
+            customLoader = new AssetEditor.SimulateAssetLoader();
+        }
 #endif
-        AssetManager.CDN = "http://localhost:8000/AssetBundles";
 
-        var assetPath = AssetPath.GetAssetPathFromResourcePath(AssetConstant.ASSET_CONFIG_PATH);
-        var assetCofig = Resources.Load<AssetConfig>(assetPath);
-        await AssetManager.Init(assetCofig);
+        AssetManager.CDN = "http://localhost:8000/AssetBundles";
+        await AssetManager.Init(customLoader);
 
         UIManager.Init();
 

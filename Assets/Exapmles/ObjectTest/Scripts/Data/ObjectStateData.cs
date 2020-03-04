@@ -18,11 +18,5 @@ namespace Game.ObjectTest.Data
         public override bool isLoop { get { return true; } }
 
         public IDisposable moveDispose;
-
-        public override void Clear()
-        {
-            base.Clear();
-            moveDispose = null;
-        }
     }
 }
