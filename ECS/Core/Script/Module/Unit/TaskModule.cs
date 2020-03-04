@@ -12,11 +12,33 @@ namespace ECS.Module
         {
             if (taskData.taskList.Count > 0)
             {
+                var hasMinCheckFinishInterval = taskData.minCheckFinishInternal > 0;
+                var isFinish = false;
                 taskData.taskList.Merge(taskData.maxConcurrent).AsUnitObservable().Finally(() =>
                 {
                     taskData.taskList.Clear();
-                    onFinished?.Invoke();
+
+                    isFinish = true;
+                    if (!hasMinCheckFinishInterval)
+                    {
+                        onFinished?.Invoke();
+                    }
                 }).Subscribe();
+
+                if (hasMinCheckFinishInterval)
+                {
+                    taskData.checkFinishDispose = Observable.Interval(
+                        TimeSpan.FromMilliseconds(taskData.minCheckFinishInternal)).Subscribe(_ =>
+                    {
+                        if (isFinish)
+                        {
+                            taskData.checkFinishDispose?.Dispose();
+                            taskData.checkFinishDispose = null;
+
+                            onFinished?.Invoke();
+                        }
+                    });
+                }
             }
             else
             {
