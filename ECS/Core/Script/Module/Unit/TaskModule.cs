@@ -2,9 +2,7 @@ namespace ECS.Module
 {
     using Data;
     using System;
-    using GUnit = ECS.Unit.Unit;
     using UniRx;
-    using UnityEngine;
 
     public sealed class TaskModule : Module
     {
