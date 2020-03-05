@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 2011450597, guid: f62a56188bbda48cea64303166a0b231, type: 3}
   m_Name: AssetSetting
   m_EditorClassIdentifier: 
-  assetConfig: {fileID: 0}
+  assetConfig: {fileID: 11400000, guid: f1cf20a0da82640a3bae5ae805be138b, type: 2}
