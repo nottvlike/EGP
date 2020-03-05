@@ -721,6 +721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelMode: 1
   _order: 0
+  _destroyWhenHide: 0
   _animationType: 1
   _animationProcessor: {fileID: 0}
   _tweenProcessor: {fileID: 6293414059396240646}
