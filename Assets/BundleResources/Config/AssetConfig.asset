@@ -66,52 +66,52 @@ MonoBehaviour:
   - assetPath: Animations/Test1Close
     fullPath: 
     assetName: Test1Close
-    bundleName: animations
+    bundleName: animations_test1close
     isFromBundle: 1
   - assetPath: Animations/Test1Initial
     fullPath: 
     assetName: Test1Initial
-    bundleName: animations
+    bundleName: animations_test1initial
     isFromBundle: 1
   - assetPath: Animations/Test1Open
     fullPath: 
     assetName: Test1Open
-    bundleName: animations
+    bundleName: animations_test1open
     isFromBundle: 1
   - assetPath: Animations/Test2Close
     fullPath: 
     assetName: Test2Close
-    bundleName: animations
+    bundleName: animations_test2close
     isFromBundle: 1
   - assetPath: Animations/Test2Initial
     fullPath: 
     assetName: Test2Initial
-    bundleName: animations
+    bundleName: animations_test2initial
     isFromBundle: 1
   - assetPath: Animations/Test2Open
     fullPath: 
     assetName: Test2Open
-    bundleName: animations
+    bundleName: animations_test2open
     isFromBundle: 1
   - assetPath: Animations/Test3Close
     fullPath: 
     assetName: Test3Close
-    bundleName: animations
+    bundleName: animations_test3close
     isFromBundle: 1
   - assetPath: Animations/Test3Initial
     fullPath: 
     assetName: Test3Initial
-    bundleName: animations
+    bundleName: animations_test3initial
     isFromBundle: 1
   - assetPath: Animations/Test3Open
     fullPath: 
     assetName: Test3Open
-    bundleName: animations
+    bundleName: animations_test3open
     isFromBundle: 1
   - assetPath: Animations/TestController
     fullPath: 
     assetName: TestController
-    bundleName: animations
+    bundleName: animations_testcontroller
     isFromBundle: 1
   - assetPath: Prefabs/UI/PreloadItem
     fullPath: 
@@ -126,7 +126,7 @@ MonoBehaviour:
   - assetPath: Prefabs/UI/UIAnimationTriggerTestPanel
     fullPath: 
     assetName: UIAnimationTriggerTestPanel
-    bundleName: prefabs_ui
+    bundleName: prefabs_ui_uianimationtriggertestpanel
     isFromBundle: 1
   - assetPath: Prefabs/UI/UIPreloadItemPanel
     fullPath: 
@@ -174,4 +174,4 @@ MonoBehaviour:
     bundleName: textures_square
     isFromBundle: 1
   indvAssetPathList:
-  - Animation
+  - Assets/Examples/ObjectTest/BundleResources/Animation
