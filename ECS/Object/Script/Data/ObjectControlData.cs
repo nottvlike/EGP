@@ -3,6 +3,7 @@ namespace ECS.Object.Data
     using ECS.Data;
     using ECS.Common;
     using ECS.Object.Module;
+    using ECS.Object.Helper;
     using UnityEngine;
     using System.Collections.Generic;
 
@@ -50,6 +51,32 @@ namespace ECS.Object.Data
         {
             controlDataList.Clear();
 
+            allControlModuleList.Clear();
+        }
+    }
+
+    public abstract class ObjectUIControlData : IObjectControlData
+    {
+        public virtual int controlType { get; } = ObjectConstant.DEFAULT_UI_CONTROL_TYPE;
+        public ObjectControlHelper controlHelper { get; set; }
+
+        public virtual uint stateId { get; }
+        public virtual ObjectStateType stateType { get; set; }
+
+        public Vector3 stateParam { get; set; }
+    }
+
+    public class ObjectUIControlProcessData : IData, IPoolObject
+    {
+        public Dictionary<int, ControlStateType> currentState = new Dictionary<int, ControlStateType>();
+        public List<ObjectUIControlData> allControlDataList = new List<ObjectUIControlData>();
+        public List<IObjectUIControl> allControlModuleList = new List<IObjectUIControl>();
+
+        public bool IsInUse { get; set; }
+        public virtual void Clear()
+        {
+            currentState.Clear();
+            allControlDataList.Clear();
             allControlModuleList.Clear();
         }
     }
