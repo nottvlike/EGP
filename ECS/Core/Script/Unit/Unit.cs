@@ -69,9 +69,9 @@
             return (T)TryGetData(typeof(T), includeDeleted);
         }
 
-        public IEnumerable<IData> GetAllData(uint unitId)
+        public IEnumerable<IData> GetAllData()
         {
-            return dataMgr.GetAllData(unitId);
+            return dataMgr.GetAllData(UnitId);
         }
 
         public void UpdateRequiredModuleGroup(int group)

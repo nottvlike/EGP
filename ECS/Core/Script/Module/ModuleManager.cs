@@ -70,7 +70,7 @@
             var moduleList = _moduleList.Where(_ => ((int)_.Group & unit.RequiredModuleGroup) != 0);
             foreach (var module in moduleList)
             {
-                var isMeet = module.IsMeet(unit.GetAllData(unit.UnitId));
+                var isMeet = module.IsMeet(unit.GetAllData());
                 var isContains = module.Contains(unit.UnitId);
 
                 if (!isContains && isMeet)
