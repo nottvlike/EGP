@@ -33,6 +33,7 @@
             var requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);
             var gameCore = worldMgr.Factory.CreateUnit(requiredModuleGroup);
             gameCore.AddData(new SystemData());
+            gameCore.AddData(new GameStateData());
 
             var unitData = gameCore.GetData<UnitData>();
             unitData.unitType = TagToUnitType(Constant.SYSTEM_UNIT_TYPE_NAME);

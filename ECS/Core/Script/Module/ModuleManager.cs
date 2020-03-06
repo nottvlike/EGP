@@ -10,8 +10,8 @@
     
     public sealed partial class ModuleManager
     {
-        public IReadOnlyList<Module> ModuleList => _moduleList;
-        List<Module> _moduleList = new List<Module>();
+        public IReadOnlyList<IModule> ModuleList => _moduleList;
+        List<IModule> _moduleList = new List<IModule>();
 
         LayerMaskConfig _moduleGroupTypeConfig;
 
@@ -40,7 +40,7 @@
             RegisterCoreModule();
         }
 
-        public void Register(Module module)
+        public void Register(IModule module)
         {
 #if DEBUG
             if (module.RequiredDataList.Length <= 0 || module.Group == 0)
@@ -62,6 +62,7 @@
         void RegisterCoreModule()
         {
             Register(new GameSystem());
+            Register(new GameState());
         }
 
         internal void UpdateMeetModuleList(GUnit unit)

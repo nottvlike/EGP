@@ -1,4 +1,4 @@
-﻿namespace ECS.Module
+namespace ECS.Module
 {
     using System.Collections.Generic;
     using System;
@@ -6,7 +6,7 @@
     using UniRx;
     using GUnit = ECS.Unit.Unit;
 
-    public abstract class Module : IModule
+    public abstract class SingleModule : IModule
     {
         public Type[] RequiredDataList { get; protected set; }
 
@@ -21,21 +21,20 @@
 
         public bool Contains(uint unitId)
         {
-            return _unitIdList.IndexOf(unitId) != -1;
+            return _unitId == unitId;
         }
 
-        List<uint> _unitIdList = new List<uint>();
-        public IReadOnlyList<uint> UnitIdList => _unitIdList;
+        uint _unitId;
 
         public void Add(GUnit unit)
         {
-            _unitIdList.Add(unit.UnitId);
+            _unitId = unit.UnitId;
             OnAdd(unit);
         }
 
         public void Remove(GUnit unit)
         {
-            _unitIdList.Remove(unit.UnitId);
+            _unitId = 0;
             OnRemove(unit);
         }
 
