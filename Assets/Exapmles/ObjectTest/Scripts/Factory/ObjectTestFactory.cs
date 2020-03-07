@@ -6,6 +6,7 @@ namespace Game.ObjectTest.Factory
     using ECS.Object.Data;
     using ECS.Object.Module;
     using ECS.Factory;
+    using ECS.Common;
     using ECS;
     using Asset.Factory;
     using Game.ObjectTest.Data;
@@ -32,27 +33,28 @@ namespace Game.ObjectTest.Factory
             return _buffModuleList;
         }
 
-        static List<IObjectKeyboardControl> _keyboardControlModuleList = new List<IObjectKeyboardControl>();
-        static void InitKeyboardControlModuleList()
+        static List<IObjectControl> _controlModuleList = new List<IObjectControl>();
+        static void InitControlModuleList()
         {
-            _keyboardControlModuleList.Add(new MoveKeyboardControl());
+            _controlModuleList.Add(new MoveLeftControl());
+            _controlModuleList.Add(new MoveRightControl());
         }
 
-        public static List<IObjectKeyboardControl> GetAllKeyboardControlModule(this UnitFactory factory)
+        public static List<IObjectControl> GetAllKeyboardControlModule(this UnitFactory factory)
         {
-            if (_keyboardControlModuleList.Count == 0)
+            if (_controlModuleList.Count == 0)
             {
-                InitKeyboardControlModuleList();
+                InitControlModuleList();
             }
 
-            return _keyboardControlModuleList;
+            return _controlModuleList;
         }
 
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
         {
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME)
-                | moduleMgr.TagToModuleGroupType(ObjectConstant.KEYBOARD_CONTROL_MODULE_GROUP_NAME)
+                | moduleMgr.TagToModuleGroupType(ObjectConstant.CONTROL_MODULE_GROUP_NAME)
                 | moduleMgr.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME)
                 | moduleMgr.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME);
 
@@ -67,6 +69,7 @@ namespace Game.ObjectTest.Factory
             AttachStateData(unit);
             AttachAttributeData(unit);
             AttachControlData(unit);
+            AttachKeyboardControlData(unit);
             AttachBuffData(unit);
 
             var unitData = unit.GetData<UnitData>();
@@ -88,12 +91,39 @@ namespace Game.ObjectTest.Factory
 
         static void AttachControlData(GUnit unit)
         {
-            var controlProcessData = unit.AddData<ObjectKeyboardControlProcessData>();
-            var controlDataList = controlProcessData.controlDataList;
-            controlDataList.Add(new ObjectMoveKeyboardData());
+            var controlStateData = unit.AddData<ObjectControlStateData>();
+            var controlDataList = controlStateData.controlDataList;
+
+            var controlData = Pool.Get<ObjectControlData>();
+            controlData.controlType = ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE;
+            controlData.stateId = ObjectTestConstant.STATE_MOVE;
+            controlData.stateType = ObjectStateType.Start;
+            controlDataList.Add(controlData);
+
+            controlData = Pool.Get<ObjectControlData>();
+            controlData.controlType = ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE;
+            controlData.stateId = ObjectTestConstant.STATE_MOVE;
+            controlData.stateType = ObjectStateType.Start;
+            controlDataList.Add(controlData);
 
             var factory = WorldManager.Instance.Factory;
-            controlProcessData.allControlModuleList.AddRange(factory.GetAllKeyboardControlModule());
+            controlStateData.controlModuleList.AddRange(factory.GetAllKeyboardControlModule());
+        }
+
+        static void AttachKeyboardControlData(GUnit unit)
+        {
+            var controlProcessData = unit.AddData<ObjectKeyboardControlProcessData>();
+            var controlDataList = controlProcessData.controlDataList;
+
+            var controlData = Pool.Get<ObjectKeyboardControlData>();
+            controlData.controlType = ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE;
+            controlData.key = KeyCode.A;
+            controlDataList.Add(controlData);
+
+            controlData = Pool.Get<ObjectKeyboardControlData>();
+            controlData.controlType = ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE;
+            controlData.key = KeyCode.D;
+            controlDataList.Add(controlData);
         }
 
         static void AttachStateData(GUnit unit)

@@ -6,7 +6,8 @@ namespace Game
         public const int MSECOND_TO_SECOND = 1000;
 
         // control type
-        public const int MOVE_KEYBOARD_CONTROL_TYPE = 2;
+        public const int MOVE_LEFT_CONTROL_TYPE = 2;
+        public const int MOVE_RIGHT_CONTROL_TYPE = 3;
 
         // state
         public const uint STATE_IDLE = 1001;
