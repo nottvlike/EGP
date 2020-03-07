@@ -6,7 +6,7 @@
     using UniRx;
     using System;
 
-    public class ObjectControlHelper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class ObjectControlHelper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
         ISubject<PointerEventData> pointerDownSubject = new Subject<PointerEventData>();
         ISubject<PointerEventData> pointerUpSubject = new Subject<PointerEventData>();
@@ -33,6 +33,11 @@
         }
 
         public void OnPointerUp(PointerEventData eventData)
+        {
+            pointerUpSubject.OnNext(eventData);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
         {
             pointerUpSubject.OnNext(eventData);
         }

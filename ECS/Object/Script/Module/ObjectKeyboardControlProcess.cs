@@ -11,12 +11,13 @@ namespace ECS.Object.Module
     public sealed class ObjectKeyboardControlProcess : Module
     {
         public override int Group { get; protected set; } 
-            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.KEYBOARD_CONTROL_MODULE_GROUP_NAME);
+            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.CONTROL_MODULE_GROUP_NAME);
 
         public ObjectKeyboardControlProcess()
         {
             RequiredDataList = new Type[]
             {
+                typeof(ObjectControlStateData),
                 typeof(ObjectKeyboardControlProcessData),
                 typeof(ObjectStateProcessData)
             };
@@ -25,42 +26,29 @@ namespace ECS.Object.Module
         protected override void OnAdd(GUnit unit)
         {
             var unitData = unit.GetData<UnitData>();
-            var processData = unit.GetData<ObjectKeyboardControlProcessData>();
+            var controlStateData = unit.GetData<ObjectControlStateData>();
+            var controlProcessData = unit.GetData<ObjectKeyboardControlProcessData>();
             var stateProcerocessData = unit.GetData<ObjectStateProcessData>();
-            Observable.EveryUpdate().Subscribe(_ => 
+            GameSystem.ObserveEveryUpdate().Subscribe(_ => 
             {
-                foreach (var controlModule in processData.allControlModuleList)
+                foreach (var controlData in controlProcessData.controlDataList)
                 {
-                    foreach (var controlData in processData.controlDataList)
+                    if (Input.GetKeyDown(controlData.key))
                     {
-                        if (controlModule.ControlType == controlData.controlType)
-                        {
-                            var result = controlModule.CheckControl(controlData, stateProcerocessData);
-                            if (result.Item1)
-                            {
-                                DoState(unit, controlData, result.Item2);
-                            }
-                        }
+                        controlStateData.state[controlData.controlType] = ControlStateType.Down;
+                        ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                            stateProcerocessData);
+                    }
+                    else if (Input.GetKeyUp(controlData.key))
+                    {
+                        controlStateData.state[controlData.controlType] = ControlStateType.Up;
+                        ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                            stateProcerocessData);
+                        controlStateData.state[controlData.controlType] = ControlStateType.None;
                     }
                 }
 
             }).AddTo(unitData.disposable);
-        }
-
-        void DoState(GUnit unit, IObjectKeyboardControlData controlData, Vector3 param)
-        {
-            if (controlData.stateType == ObjectStateType.Start)
-            {
-                ObjectStateProcess.Start(unit, controlData.stateId, param);
-            }
-            else if (controlData.stateType == ObjectStateType.Update)
-            {
-                ObjectStateProcess.Update(unit, controlData.stateId, param);
-            }
-            else if (controlData.stateType == ObjectStateType.Finish)
-            {
-                ObjectStateProcess.Finish(unit, controlData.stateId);
-            }
         }
     }
 }

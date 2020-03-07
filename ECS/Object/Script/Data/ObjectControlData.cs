@@ -14,70 +14,89 @@ namespace ECS.Object.Data
         Up
     }
 
-    public interface IObjectControlData
+    public class ObjectControlData : IPoolObject
     {
-        uint stateId { get; }
-        ObjectStateType stateType { get; }
+        public int controlType { get; set; }
+
+        public uint stateId { get; set; }
+        public ObjectStateType stateType { get; set; }
+
+        public Vector3 stateParam { get; set; }
+
+        public bool IsInUse { get; set; }
+        public void Clear()
+        {
+            controlType = 0;
+
+            stateId = 0;
+            stateType = ObjectStateType.None;
+
+            stateParam = Vector3.zero;
+        }
     }
 
-    public abstract class DefaultObjectControlData : IObjectControlData
+    public class ObjectKeyboardControlData : IPoolObject
     {
-        public virtual uint stateId { get; }
-        public virtual ObjectStateType stateType { get; }
+        public virtual int controlType { get; set; }
+        public virtual KeyCode key { get; set; }
 
-        public virtual ControlStateType controlStateType { get; }
-        public virtual Vector3 stateParam { get; }
-    }
-
-    public interface IObjectKeyboardControlData : IObjectControlData
-    {
-        int controlType { get; }
-    }
-
-    public abstract class DefaultObjectKeyboardControlData : DefaultObjectControlData, IObjectKeyboardControlData
-    {
-        public virtual int controlType { get; } = ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE;
-        public virtual int mouseButton { get; } = -1;
-        public virtual KeyCode key { get; }
+        public bool IsInUse { get; set; }
+        public void Clear()
+        {
+            controlType = 0;
+            key = KeyCode.None;
+        }
     }
 
     public class ObjectKeyboardControlProcessData : IData, IPoolObject
     {
-        public List<IObjectKeyboardControlData> controlDataList = new List<IObjectKeyboardControlData>();
-        public List<IObjectKeyboardControl> allControlModuleList = new List<IObjectKeyboardControl>();
+        public List<ObjectKeyboardControlData> controlDataList = new List<ObjectKeyboardControlData>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
             controlDataList.Clear();
-
-            allControlModuleList.Clear();
         }
     }
 
-    public abstract class ObjectUIControlData : IObjectControlData
+    public class ObjectUIControlData : IPoolObject
     {
-        public virtual int controlType { get; } = ObjectConstant.DEFAULT_UI_CONTROL_TYPE;
+        public int controlType { get; set; }
         public ObjectControlHelper controlHelper { get; set; }
 
-        public virtual uint stateId { get; }
-        public virtual ObjectStateType stateType { get; set; }
-
-        public Vector3 stateParam { get; set; }
+        public bool IsInUse { get; set; }
+        public void Clear()
+        {
+            controlType = 0;
+            controlHelper = null;
+        }
     }
 
     public class ObjectUIControlProcessData : IData, IPoolObject
     {
-        public Dictionary<int, ControlStateType> currentState = new Dictionary<int, ControlStateType>();
-        public List<ObjectUIControlData> allControlDataList = new List<ObjectUIControlData>();
-        public List<IObjectUIControl> allControlModuleList = new List<IObjectUIControl>();
+        public List<ObjectUIControlData> controlDataList = new List<ObjectUIControlData>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
-            currentState.Clear();
-            allControlDataList.Clear();
-            allControlModuleList.Clear();
+            controlDataList.Clear();
+        }
+    }
+
+    public class ObjectControlStateData : IData, IPoolObject
+    {
+        public Dictionary<int, ControlStateType> state = new Dictionary<int, ControlStateType>();
+
+        public List<ObjectControlData> controlDataList = new List<ObjectControlData>();
+        public List<IObjectControl> controlModuleList = new List<IObjectControl>();
+
+        public bool IsInUse { get; set; }
+        public virtual void Clear()
+        {
+            state.Clear();
+
+            controlDataList.Clear();
+            controlModuleList.Clear();
         }
     }
 }

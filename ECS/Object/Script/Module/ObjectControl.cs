@@ -3,22 +3,39 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using UnityEngine;
     using System;
+    using System.Collections.Generic;
 
     public interface IObjectControl
     {
         int ControlType { get; }
-        ValueTuple<bool, Vector3> CheckControl(IObjectControlData controlData, ObjectStateProcessData processData);
+        ObjectControlData ControlData { get; }
+        List<int> ControlTypeList { get; }
+
+        void Bind(ObjectControlData controlData);
+
+        ValueTuple<bool, Vector3> CheckControl(ObjectControlStateData controlStateData,
+            ObjectStateProcessData stateProcessData);
     }
 
-    public abstract class ObjectControl<T> : IObjectControl where T : class, IObjectControlData
+    public abstract class ObjectControl : IObjectControl
     {
-        public int ControlType { get { return ObjectConstant.DEFAULT_KEYBOARD_CONTROL_TYPE; } }
-        
-        public ValueTuple<bool, Vector3> CheckControl(IObjectControlData controlData, ObjectStateProcessData processData)
+        public virtual int ControlType { get; }
+        public ObjectControlData ControlData { get; private set; }
+
+        public virtual List<int> ControlTypeList { get; }
+
+        public void Bind(ObjectControlData controlData)
         {
-            return OnCheckControl(controlData as T, processData.currentState?.id);
+            ControlData = controlData;
         }
 
-        public abstract ValueTuple<bool, Vector3> OnCheckControl(T controlData, uint? currentStateId);
+        public ValueTuple<bool, Vector3> CheckControl(ObjectControlStateData controlStateDatata,
+            ObjectStateProcessData stateProcessData)
+        {
+            return OnCheckControl(controlStateDatata, stateProcessData.currentState?.id);
+        }
+
+        protected abstract ValueTuple<bool, Vector3> OnCheckControl(ObjectControlStateData controlProcessData,
+            uint? currentStateId);
     }
 }
