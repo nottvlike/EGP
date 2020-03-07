@@ -7,6 +7,8 @@ namespace ECS.UI.Factory
     using ECS.UI.Data;
     using ECS.Factory;
     using Asset;
+    using Asset.Factory;
+    using Asset.Data;
 
     public static class UIFactory
     {
@@ -16,7 +18,7 @@ namespace ECS.UI.Factory
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME) 
                 | moduleMgr.TagToModuleGroupType(Constant.UNIT_MODULE_GROUP_NAME);
-            var unit = factory.CreateUnit(requiredModuleGroup);
+            var unit = factory.CreateAsset(requiredModuleGroup, asset);
 
             var unitMgr = WorldManager.Instance.Unit;
             if (uiData == null)
@@ -25,8 +27,8 @@ namespace ECS.UI.Factory
                 uiData = uiCore.GetData<UIData>();
             }
 
-            var obj = asset.Spawn();
-            obj.transform.SetParent(uiData.uiRoot.transform, false);
+            var assetData = unit.GetData<AssetData>();
+            assetData.transform.SetParent(uiData.uiRoot.transform, false);
 
             var unitData = unit.GetData<UnitData>();
             unitData.unitType = unitMgr.TagToUnitType(UIConstant.UI_UNIT_TYPE_NAME);
@@ -36,13 +38,11 @@ namespace ECS.UI.Factory
                 {
                     var panelData1 = unit.GetData<PanelData>();   
                     uiData.unitDict.Remove(panelData1.assetPath);
-
-                    var panel1 = unit.GetData<Panel>();
-                    panel1.gameObject.Despawn();
+                    uiData.showedList.Remove(panelData1.assetPath);
                 }
             }).AddTo(unitData.disposable);
 
-            var panel = obj.GetComponent<Panel>();
+            var panel = assetData.GetComponent<Panel>();
             unit.AddData(panel, typeof(Panel));
 
             var panelData = unit.AddData<PanelData>();
