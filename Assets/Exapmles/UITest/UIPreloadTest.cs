@@ -8,7 +8,7 @@ public class UIPreloadTest : GameStart
 {
     protected override void StartGame() 
     {
-        UIManager.Show("Prefabs/UI/UIPreloadTestPanel", false, null).Subscribe();
+        UIManager.Show("Prefabs/UI/UIPreloadTestPanel", false, null);
     }
 
     protected override void RegisterGameModule()

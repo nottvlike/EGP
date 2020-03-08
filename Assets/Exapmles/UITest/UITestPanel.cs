@@ -26,7 +26,7 @@ namespace Game.UI
         
         void ShowSimpleTipsPanel()
         {
-            UIManager.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!").Subscribe();
+            UIManager.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!");
             Observable.Timer(TimeSpan.FromSeconds(6)).Subscribe(_ =>
             {
                 UIManager.Hide("Prefabs/UI/SimpleTipsPanel");
