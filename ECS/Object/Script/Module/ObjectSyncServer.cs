@@ -9,7 +9,7 @@ namespace ECS.Object.Module
     using UniRx;
     using UnityEngine;
 
-    public sealed class ObjectSyncServer : Module
+    public sealed class ObjectSyncServer : SingleModule
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME);
@@ -35,13 +35,13 @@ namespace ECS.Object.Module
             {
                 if (_)
                 {
-                    updateDispose = Observable.EveryUpdate().Subscribe(time =>
+                    updateDispose = GameSystem.ObserveEveryUpdate().Subscribe(time =>
                     {
                         var currentInternalFrame = _syncData.internalFrame + 1;
                         if (currentInternalFrame >= _syncData.internalFrameSize)
                         {
                             currentInternalFrame = 0;
-                            _syncData.currentKeyFrame = Mathf.Min(++_syncData.currentKeyFrame, _syncData.serverKeyFrame);
+                            _syncData.currentKeyFrame += _syncData.currentKeyFrame > _syncData.serverKeyFrame ? 0 : 1;
                         }
 
                         var currentFrame = _syncData.currentKeyFrame * _syncData.internalFrameSize + currentInternalFrame;
@@ -74,14 +74,6 @@ namespace ECS.Object.Module
         {
             _syncData.enable.Value = false;
             _syncData = null;
-        }
-
-        public static void UpdateServerKeyFrame(int keyFrame)
-        {
-            if (_syncData.serverKeyFrame <= keyFrame)
-                return;
-
-            _syncData.serverKeyFrame = keyFrame;
         }
 
         public static IObservable<ValueTuple<int, int>> EverySyncUpdate()

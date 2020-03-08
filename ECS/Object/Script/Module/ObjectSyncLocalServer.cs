@@ -9,7 +9,7 @@ namespace ECS.Object.Module
     using System;
     using UniRx;
 
-    public sealed class ObjectSyncLocalServer : Module
+    public sealed class ObjectSyncLocalServer : SingleModule
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME);
@@ -20,19 +20,20 @@ namespace ECS.Object.Module
                 typeof(ObjectSyncServerData)
             };
         }
-        
+
+        ObjectSyncServerData _syncData;
         protected override void OnAdd(GUnit unit)
         {
             var unitData = unit.GetData<UnitData>();
-            var syncData = unit.GetData<ObjectSyncServerData>();
+            _syncData = unit.GetData<ObjectSyncServerData>();
             IDisposable updateServerKeyFrameDispose = null;
-            syncData.enable.Subscribe(_ => 
+            _syncData.enable.Subscribe(_ => 
             {
                 if (_)
                 {
                     updateServerKeyFrameDispose = Observable.Interval(TimeSpan.FromMilliseconds(100)).Subscribe(time =>
                     {
-                        syncData.serverKeyFrame++;
+                        _syncData.serverKeyFrame++;
                     });
                 }
                 else
@@ -45,8 +46,8 @@ namespace ECS.Object.Module
 
         protected override void OnRemove(GUnit unit)
         {
-            var syncData = unit.GetData<ObjectSyncServerData>();
-            syncData.enable.Value = false;
+            _syncData.enable.Value = false;
+            _syncData = null;
         }
     }
 }
