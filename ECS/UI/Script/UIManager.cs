@@ -17,10 +17,15 @@ namespace ECS.UI
             return _instance.IsShowed(assetPath);
         }
 
-        public static IObservable<Unit> Show(string assetPath, bool forceUpdateWhenShowed = false, params object[] args)
+        public static IObservable<Unit> ShowAsObservable(string assetPath, bool forceUpdateWhenShowed = false, params object[] args)
         {
             return _instance.LoadUIRoot().ContinueWith(_ => _instance.LoadUI(assetPath))
-                .Finally(() => _instance.Show(assetPath, forceUpdateWhenShowed, args));
+                .Do(_ => _instance.Show(assetPath, forceUpdateWhenShowed, args));
+        }
+
+        public static void Show(string assetPath, bool forceUpdateWhenShowed = false, params object[] args)
+        {
+            ShowAsObservable(assetPath, forceUpdateWhenShowed, args).Subscribe();
         }
 
         public static void Hide(string assetPath)

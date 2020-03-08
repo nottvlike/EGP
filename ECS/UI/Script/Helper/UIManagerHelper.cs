@@ -9,7 +9,7 @@ namespace Helper
     {
         public void Show(string assetPath)
         {
-            UIManager.Show(assetPath).Subscribe();
+            UIManager.Show(assetPath);
         }
 
         public void Hide(string assetPath)
