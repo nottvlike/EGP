@@ -81,7 +81,7 @@ namespace ECS.Object.Module
             return _syncData.syncSubject;
         }
 
-        public static bool CanAddState(GUnit unit, uint stateId, Vector3 param, ObjectStateType stateType)
+        public static bool CanAddState(GUnit unit, int stateId, Vector3 param, ObjectStateType stateType)
         {
             var cachedSyncInfoList = _syncData.cachedSyncInfoList;
             var currentKeyFrame = _syncData.currentKeyFrame;
@@ -117,7 +117,7 @@ namespace ECS.Object.Module
             return !hasSame;
         }
 
-        public static void AddState(GUnit unit, uint stateId, Vector3 param, ObjectStateType stateType)
+        public static void AddState(GUnit unit, int stateId, Vector3 param, ObjectStateType stateType)
         {
             if (!CanAddState(unit, stateId, param, stateType))
             {

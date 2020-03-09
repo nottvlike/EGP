@@ -26,7 +26,7 @@ namespace ECS.Object.Data
         public int serverKeyFrame;
 
         public uint unitId;
-        public uint stateId;
+        public int stateId;
         public Vector3 stateParam;
         public ObjectStateType stateType;
     }
@@ -45,7 +45,7 @@ namespace ECS.Object.Data
         public int serverKeyFrame;
         public int internalFrame;
 
-        public uint stateId;
+        public int stateId;
         public Vector3 stateParam;
         public ObjectStateType stateType;
     }

@@ -1,10 +1,12 @@
 namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
+    using ECS.Data;
     using ECS.Module;
     using ECS.Object.Data;
     using UnityEngine;
     using System;
+    using UniRx;
 
     public sealed class ObjectControlState : Module
     {
@@ -28,30 +30,50 @@ namespace ECS.Object.Module
                 {
                     if (controlModule.ControlType == controlData.controlType)
                     {
-                        controlModule.Bind(controlData);
+                        controlData.objectControl = controlModule;
                     }
                 }
 
-                controlStateData.state[controlData.controlType] = ControlStateType.None;
+                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
             }
+        }
+
+        protected override void OnRemove(GUnit unit)
+        {
+            var controlStateData = unit.GetData<ObjectControlStateData>();
+            controlStateData.stateType.Value = ObjectControlStateType.Finish;
         }
 
         public static void CheckAllControl(GUnit unit, int controlType, ObjectControlStateData controlStateData,
             ObjectStateProcessData stateProcessData)
         {
-            foreach (var controlModule in controlStateData.controlModuleList)
+            foreach (var controlData in controlStateData.controlDataList)
             {
-                if (controlModule.ControlTypeList.IndexOf(controlType) == -1)
+                if (!ContainsControlType(controlData.objectControl.ControlTypeList, controlType))
                 {
                     continue;
                 }
 
-                var result = controlModule.CheckControl(controlStateData, stateProcessData);
+                var controlModule = controlData.objectControl;
+                var result = controlModule.CheckControl(controlData, controlStateData, stateProcessData);
                 if (result.Item1)
                 {
-                    DoState(unit, controlModule.ControlData, result.Item2);
+                    DoState(unit, controlData, result.Item2);
                 }
             }
+        }
+
+        static bool ContainsControlType(int[] controlTypeList, int controlType)
+        {
+            foreach (var type in controlTypeList)
+            {
+                if (type == controlType)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         static void DoState(GUnit unit, ObjectControlData controlData, Vector3 param)

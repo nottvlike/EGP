@@ -5,9 +5,18 @@ namespace ECS.Object.Data
     using ECS.Object.Module;
     using ECS.Object.Helper;
     using UnityEngine;
+    using System;
     using System.Collections.Generic;
+    using UniRx;
 
-    public enum ControlStateType
+    public enum ObjectControlStateType
+    {
+        None,
+        Start,
+        Finish
+    }
+
+    public enum KeyStateType
     {
         None,
         Down,
@@ -18,10 +27,12 @@ namespace ECS.Object.Data
     {
         public int controlType { get; set; }
 
-        public uint stateId { get; set; }
+        public int stateId { get; set; }
         public ObjectStateType stateType { get; set; }
 
         public Vector3 stateParam { get; set; }
+
+        public ObjectControl objectControl { get; set; }
 
         public bool IsInUse { get; set; }
         public void Clear()
@@ -32,6 +43,8 @@ namespace ECS.Object.Data
             stateType = ObjectStateType.None;
 
             stateParam = Vector3.zero;
+
+            objectControl = null;
         }
     }
 
@@ -51,11 +64,13 @@ namespace ECS.Object.Data
     public class ObjectKeyboardControlProcessData : IData, IPoolObject
     {
         public List<ObjectKeyboardControlData> controlDataList = new List<ObjectKeyboardControlData>();
+        public IDisposable checkDispose;
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
             controlDataList.Clear();
+            checkDispose = null;
         }
     }
 
@@ -75,25 +90,31 @@ namespace ECS.Object.Data
     public class ObjectUIControlProcessData : IData, IPoolObject
     {
         public List<ObjectUIControlData> controlDataList = new List<ObjectUIControlData>();
+        public CompositeDisposable checkDispose;
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
             controlDataList.Clear();
+            checkDispose = null;
         }
     }
 
     public class ObjectControlStateData : IData, IPoolObject
     {
-        public Dictionary<int, ControlStateType> state = new Dictionary<int, ControlStateType>();
+        public ReactiveProperty<ObjectControlStateType> stateType = new ReactiveProperty<ObjectControlStateType>();
+
+        public Dictionary<int, KeyStateType> keyStateDict = new Dictionary<int, KeyStateType>();
 
         public List<ObjectControlData> controlDataList = new List<ObjectControlData>();
-        public List<IObjectControl> controlModuleList = new List<IObjectControl>();
+        public List<ObjectControl> controlModuleList = new List<ObjectControl>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
-            state.Clear();
+            stateType.Value = ObjectControlStateType.None;
+
+            keyStateDict.Clear();
 
             controlDataList.Clear();
             controlModuleList.Clear();

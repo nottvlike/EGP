@@ -16,39 +16,65 @@ namespace ECS.Object.Data
         Finish
     }
 
-    public abstract class ObjectStateData : IData
+    public abstract class ObjectStateData : IPoolObject
     {
-        public virtual uint id { get; }
+        public int id { get; set; }
 
-        public Vector3 param { get; set; } = Vector3.zero;
+        public Vector3 param { get; set; }
         public ReactiveProperty<ObjectStateType> stateTypeProperty { get; } = new ReactiveProperty<ObjectStateType>(ObjectStateType.None);
-        public IObjectState objectState;
+
+        public ObjectState objectState;
+
+        public bool IsInUse { get; set; }
+        public virtual void Clear()
+        {
+            id = 0;
+
+            param = Vector3.zero;
+            stateTypeProperty.Value = ObjectStateType.None;
+
+            objectState = null;
+        }
     }
 
-    public abstract class IndependentObjectStateData : ObjectStateData
+    public class IndependentObjectStateData : ObjectStateData
     {
-        public virtual bool isDefault { get; }
-        public virtual bool isLoop { get; }
+        public bool isDefault { get; set; }
+        public bool isLoop { get; set; }
 
-        public virtual int priority { get; }
+        public int priority { get; set; }
 
-        public virtual uint[] excludeIdList { get; private set; } = null;
+        public float duration { get; set; }
+
+        public override void Clear()
+        {
+            base.Clear();
+
+            isDefault = false;
+            isLoop = false;
+
+            priority = 0;
+
+            duration = 0f;
+        }
     }
 
-    public abstract class SupportObjectStateData : ObjectStateData
+    public class SupportObjectStateData : ObjectStateData
     {
     }
 
     public class ObjectStateProcessData : IData, IPoolObject
     {
         public IndependentObjectStateData currentState;
-        public List<ObjectStateData> allStateList = new List<ObjectStateData>();
+        public List<ObjectStateData> stateDataList = new List<ObjectStateData>();
+        public List<ObjectState> stateModuleList = new List<ObjectState>();
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
             currentState = null;
-            allStateList.Clear();
+            stateDataList.Clear();
+            stateModuleList.Clear();
         }
     }
 }

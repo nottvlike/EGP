@@ -5,14 +5,62 @@ namespace ECS.Object.Module
     using ECS.Object.Data;
     using UniRx;
     using UnityEngine;
+    using System;
     using System.Linq;
 
     public sealed class ObjectStateProcess : Module
     {
-        public static void Start(GUnit unit, uint id, Vector3 param, bool sync = true)
+        public override int Group { get; protected set; }
+            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME);
+
+        public ObjectStateProcess()
+        {
+            RequiredDataList = new Type[]
+            {
+                typeof(ObjectStateProcessData)
+            };
+        }
+
+        protected override void OnAdd(GUnit unit)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
+            foreach (var stateData in stateProcessData.stateDataList)
+            {
+                foreach (var stateModule in stateProcessData.stateModuleList)
+                {
+                    if (stateModule.Id == stateData.id)
+                    {
+                        stateData.objectState = stateModule;
+
+                        stateData.objectState.Init(unit, stateData);
+                    }
+                }
+            }
+        }
+
+        protected override void OnRemove(GUnit unit)
+        {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            foreach (var stateData in stateProcessData.stateDataList)
+            {
+                foreach (var stateModule in stateProcessData.stateModuleList)
+                {
+                    if (stateModule.Id == stateData.id)
+                    {
+                        stateData.objectState = stateModule;
+
+                        stateData.objectState.Release(unit, stateData);
+                        stateData.objectState = null;
+                    }
+                }
+            }
+        }
+
+
+        public static void Start(GUnit unit, int id, Vector3 param, bool sync = true)
+        {
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
+            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!stateData.objectState.CanStart(unit, stateProcessData, stateData, param))
             {
@@ -35,10 +83,10 @@ namespace ECS.Object.Module
             }
         }
 
-        public static void Update(GUnit unit, uint id, Vector3 param, bool sync = true)
+        public static void Update(GUnit unit, int id, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
+            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!stateData.objectState.CanUpdate(unit, stateProcessData, stateData, param))
             {
@@ -60,10 +108,10 @@ namespace ECS.Object.Module
             }
         }
 
-        public static void Finish(GUnit unit, uint id, bool sync = true)
+        public static void Finish(GUnit unit, int id, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.allStateList.Where(_ => _.id == id).FirstOrDefault();
+            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
 
             if (!stateData.objectState.CanFinish(unit, stateProcessData, stateData))
             {
@@ -142,7 +190,7 @@ namespace ECS.Object.Module
 
         static IndependentObjectStateData GetHighestPriorityState(GUnit unit, ObjectStateProcessData stateProcessData)
         {
-            var stateList = stateProcessData.allStateList.Where(_ => _ is IndependentObjectStateData);
+            var stateList = stateProcessData.stateDataList.Where(_ => _ is IndependentObjectStateData);
 
             var minPriority = 0;
             IndependentObjectStateData result = null;

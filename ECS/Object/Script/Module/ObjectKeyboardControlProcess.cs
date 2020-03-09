@@ -28,26 +28,36 @@ namespace ECS.Object.Module
             var unitData = unit.GetData<UnitData>();
             var controlStateData = unit.GetData<ObjectControlStateData>();
             var controlProcessData = unit.GetData<ObjectKeyboardControlProcessData>();
-            var stateProcerocessData = unit.GetData<ObjectStateProcessData>();
-            GameSystem.ObserveEveryUpdate().Subscribe(_ => 
-            {
-                foreach (var controlData in controlProcessData.controlDataList)
-                {
-                    if (Input.GetKeyDown(controlData.key))
-                    {
-                        controlStateData.state[controlData.controlType] = ControlStateType.Down;
-                        ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
-                            stateProcerocessData);
-                    }
-                    else if (Input.GetKeyUp(controlData.key))
-                    {
-                        controlStateData.state[controlData.controlType] = ControlStateType.Up;
-                        ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
-                            stateProcerocessData);
-                        controlStateData.state[controlData.controlType] = ControlStateType.None;
-                    }
-                }
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
 
+            controlStateData.stateType.Subscribe(controlStateType =>
+            {
+                if (controlStateType == ObjectControlStateType.Start)
+                {
+                    controlProcessData.checkDispose = GameSystem.ObserveEveryUpdate().Subscribe(_ =>
+                    {
+                        foreach (var controlData in controlProcessData.controlDataList)
+                        {
+                            if (Input.GetKeyDown(controlData.key))
+                            {
+                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Down;
+                                ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                                    stateProcessData);
+                            }
+                            else if (Input.GetKeyUp(controlData.key))
+                            {
+                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Up;
+                                ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                                    stateProcessData);
+                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
+                            }
+                        }
+                    });
+                }
+                else if (controlStateType == ObjectControlStateType.Finish)
+                {
+                    controlProcessData.checkDispose?.Dispose();
+                }
             }).AddTo(unitData.disposable);
         }
     }

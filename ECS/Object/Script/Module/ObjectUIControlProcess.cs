@@ -5,7 +5,6 @@ namespace ECS.Object.Module
     using ECS.Data;
     using ECS.Object.Data;
     using UniRx;
-    using UnityEngine;
     using System;
 
     public sealed class ObjectUIControlProcess : Module
@@ -28,24 +27,36 @@ namespace ECS.Object.Module
             var unitData = unit.GetData<UnitData>();
             var controlStateData = unit.GetData<ObjectControlStateData>();
             var controlProcessData = unit.GetData<ObjectUIControlProcessData>();
-            var stateProcerocessData = unit.GetData<ObjectStateProcessData>();
+            var stateProcessData = unit.GetData<ObjectStateProcessData>();
 
-            foreach (var controlData in controlProcessData.controlDataList)
+            controlStateData.stateType.Subscribe(controlStateType =>
             {
-                controlData.controlHelper.ObservePointerDown().Subscribe(_ =>
+                if (controlStateType == ObjectControlStateType.Start)
                 {
-                    controlStateData.state[controlData.controlType] = ControlStateType.Down;
-                    ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
-                        stateProcerocessData);
-                }).AddTo(unitData.disposable);
-                controlData.controlHelper.ObservePointerUp().Subscribe(_ =>
+                    controlProcessData.checkDispose = new CompositeDisposable();
+                    foreach (var controlData in controlProcessData.controlDataList)
+                    {
+                        controlData.controlHelper.ObservePointerDown().Subscribe(_ =>
+                        {
+                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Down;
+                            ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                                stateProcessData);
+                        }).AddTo(controlProcessData.checkDispose);
+
+                        controlData.controlHelper.ObservePointerUp().Subscribe(_ =>
+                        {
+                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Up;
+                            ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
+                                stateProcessData);
+                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
+                        }).AddTo(controlProcessData.checkDispose);
+                    }
+                }
+                else if (controlStateType == ObjectControlStateType.Finish)
                 {
-                    controlStateData.state[controlData.controlType] = ControlStateType.Up;
-                    ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
-                        stateProcerocessData);
-                    controlStateData.state[controlData.controlType] = ControlStateType.None;
-                }).AddTo(unitData.disposable);
-            }
+                    controlProcessData.checkDispose?.Dispose();
+                }
+            }).AddTo(unitData.disposable);
         }
     }
 }
