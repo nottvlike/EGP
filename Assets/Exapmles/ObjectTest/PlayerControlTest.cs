@@ -38,12 +38,10 @@ public class PlayerControlTest : GameStart
         moduleMgr.Register(new ObjectSyncServer());
         moduleMgr.Register(new ObjectSync());
         moduleMgr.Register(new ObjectBuffProcess());
+        moduleMgr.Register(new ObjectStateProcess());
         moduleMgr.Register(new ObjectControlState());
         moduleMgr.Register(new ObjectKeyboardControlProcess());
 
         moduleMgr.Register(new SlowDownTrap());
-        
-        moduleMgr.Register(new ObjectIdle());
-        moduleMgr.Register(new ObjectMove());
     }
 }

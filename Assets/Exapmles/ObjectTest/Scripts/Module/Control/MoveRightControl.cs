@@ -10,28 +10,28 @@ namespace Game.ObjectTest.Module.Control
     {
         public override int ControlType { get; } = ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE;
 
-        public override List<int> ControlTypeList { get; } = new List<int>()
+        public override int[] ControlTypeList { get; } = new int[]
         {
             ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE,
             ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE
         };
 
-        protected override ValueTuple<bool, Vector3> OnCheckControl(ObjectControlStateData cocntrolStateData,
-             uint? currentStateId)
+        protected override ValueTuple<bool, Vector3> OnCheckControl(ObjectControlData cocntrolData,
+            ObjectControlStateData cocntrolStateData, int? currentStateId)
         {
             var param = Vector3.zero;
-            var rightState = cocntrolStateData.state[ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE];
-            if (rightState == ControlStateType.Down)
+            var rightState = cocntrolStateData.keyStateDict[ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE];
+            if (rightState == KeyStateType.Down)
             {
-                ControlData.stateType = ObjectStateType.Start;
+                cocntrolData.stateType = ObjectStateType.Start;
                 param = Vector3.right;
             }
-            else if (rightState == ControlStateType.Up)
+            else if (rightState == KeyStateType.Up)
             {
-                ControlData.stateType = ObjectStateType.Finish;
+                cocntrolData.stateType = ObjectStateType.Finish;
             }
 
-            return ValueTuple.Create(rightState != ControlStateType.None, param);
+            return ValueTuple.Create(rightState != KeyStateType.None, param);
         }
     }
 }

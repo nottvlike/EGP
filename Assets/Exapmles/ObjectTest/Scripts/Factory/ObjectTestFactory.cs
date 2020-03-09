@@ -12,6 +12,7 @@ namespace Game.ObjectTest.Factory
     using Game.ObjectTest.Data;
     using Game.ObjectTest.Module.Buff;
     using Game.ObjectTest.Module.Control;
+    using Game.ObjectTest.Module.State;
     using UnityEngine;
     using System.Collections.Generic;
 
@@ -33,14 +34,14 @@ namespace Game.ObjectTest.Factory
             return _buffModuleList;
         }
 
-        static List<IObjectControl> _controlModuleList = new List<IObjectControl>();
+        static List<ObjectControl> _controlModuleList = new List<ObjectControl>();
         static void InitControlModuleList()
         {
             _controlModuleList.Add(new MoveLeftControl());
             _controlModuleList.Add(new MoveRightControl());
         }
 
-        public static List<IObjectControl> GetAllKeyboardControlModule(this UnitFactory factory)
+        public static List<ObjectControl> GetAllKeyboardControlModule(this UnitFactory factory)
         {
             if (_controlModuleList.Count == 0)
             {
@@ -48,6 +49,23 @@ namespace Game.ObjectTest.Factory
             }
 
             return _controlModuleList;
+        }
+
+        static List<ObjectState> _stateModuleList = new List<ObjectState>();
+        static void InitStateModuleList()
+        {
+            _stateModuleList.Add(new ObjectIdle());
+            _stateModuleList.Add(new ObjectMove());
+        }
+
+        public static List<ObjectState> GetAllStateModule(this UnitFactory factory)
+        {
+            if (_stateModuleList.Count == 0)
+            {
+                InitStateModuleList();
+            }
+
+            return _stateModuleList;
         }
 
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
@@ -92,6 +110,8 @@ namespace Game.ObjectTest.Factory
         static void AttachControlData(GUnit unit)
         {
             var controlStateData = unit.AddData<ObjectControlStateData>();
+            controlStateData.stateType.Value = ObjectControlStateType.Start;
+
             var controlDataList = controlStateData.controlDataList;
 
             var controlData = Pool.Get<ObjectControlData>();
@@ -128,10 +148,25 @@ namespace Game.ObjectTest.Factory
 
         static void AttachStateData(GUnit unit)
         {
-            unit.AddData<ObjectStateProcessData>();
+            var stateProcessData = unit.AddData<ObjectStateProcessData>();
 
-            unit.AddData<ObjectMoveStateData>();
-            unit.AddData<ObjectIdleStateData>();
+            var stateData = Pool.Get<IndependentObjectStateData>();
+            stateData.id = ObjectTestConstant.STATE_IDLE;
+            stateData.isDefault = true;
+            stateData.isLoop = true;
+            stateData.priority = 0;
+            stateProcessData.stateDataList.Add(stateData);
+
+            stateData = Pool.Get<IndependentObjectStateData>();
+            stateData.id = ObjectTestConstant.STATE_MOVE;
+            stateData.isLoop = true;
+            stateData.priority = 1;
+            stateProcessData.stateDataList.Add(stateData);
+
+            unit.AddData<ObjectMoveParamData>();
+
+            var stateModuleList = WorldManager.Instance.Factory.GetAllStateModule();
+            stateProcessData.stateModuleList.AddRange(stateModuleList);
         }
 
         static void AttachAttributeData(GUnit unit)
