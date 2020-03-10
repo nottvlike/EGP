@@ -66,15 +66,11 @@ namespace ECS.Object.Data
     public class ObjectStateProcessData : IData, IPoolObject
     {
         public IndependentObjectStateData currentState;
-        public List<ObjectStateData> stateDataList = new List<ObjectStateData>();
-        public List<ObjectState> stateModuleList = new List<ObjectState>();
 
         public bool IsInUse { get; set; }
         public void Clear()
         {
             currentState = null;
-            stateDataList.Clear();
-            stateModuleList.Clear();
         }
     }
 }

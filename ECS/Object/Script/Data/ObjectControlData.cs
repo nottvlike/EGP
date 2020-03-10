@@ -104,16 +104,10 @@ namespace ECS.Object.Data
     {
         public ReactiveProperty<ObjectControlStateType> stateType = new ReactiveProperty<ObjectControlStateType>();
 
-        public List<ObjectControlData> controlDataList = new List<ObjectControlData>();
-        public List<ObjectControl> controlModuleList = new List<ObjectControl>();
-
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
             stateType.Value = ObjectControlStateType.None;
-
-            controlDataList.Clear();
-            controlModuleList.Clear();
         }
     }
 }

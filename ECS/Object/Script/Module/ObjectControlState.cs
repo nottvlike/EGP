@@ -3,6 +3,7 @@ namespace ECS.Object.Module
     using GUnit = ECS.Unit.Unit;
     using ECS.Module;
     using ECS.Object.Data;
+    using ECS.Common;
     using UnityEngine;
     using System;
 
@@ -21,18 +22,13 @@ namespace ECS.Object.Module
 
         protected override void OnAdd(GUnit unit)
         {
-            var controlStateData = unit.GetData<ObjectControlStateData>();
-            foreach (var controlData in controlStateData.controlDataList)
+            var controlDataList = ObjectControlDataDict.Get(unit);
+            foreach (var controlData in controlDataList)
             {
-                foreach (var controlModule in controlStateData.controlModuleList)
-                {
-                    if (controlModule.ControlType == controlData.controlType)
-                    {
-                        controlData.objectControl = controlModule;
-                    }
-                }
+                var controlModule = ObjectControlModuleDict.Get(controlData.controlType);
+                controlData.objectControl = controlModule;
 
-                SetControlState(unit, controlData.controlType, KeyStateType.None);
+                ObjectControlStateTypeDict.Set(unit, controlData.controlType, KeyStateType.None);
             }
         }
 
@@ -41,23 +37,20 @@ namespace ECS.Object.Module
             var controlStateData = unit.GetData<ObjectControlStateData>();
             controlStateData.stateType.Value = ObjectControlStateType.Finish;
 
-            ControlStateDataServer.Clear(unit);
-        }
-
-        public static void SetControlState(GUnit unit, int controlType, KeyStateType stateType)
-        {
-            ControlStateDataServer.Set(unit, controlType, stateType);
-        }
-
-        public static KeyStateType GetControlState(GUnit unit, int controlType)
-        {
-            return ControlStateDataServer.Get(unit, controlType);
+            var controlDataList = ObjectControlDataDict.Get(unit);
+            foreach (var controlData in controlDataList)
+            {
+                Pool.Release(controlData);
+            }
+            ObjectControlDataDict.Clear(unit);
+            ObjectControlStateTypeDict.Clear(unit);
         }
 
         public static void CheckAllControl(GUnit unit, int controlType, ObjectControlStateData controlStateData,
             ObjectStateProcessData stateProcessData)
         {
-            foreach (var controlData in controlStateData.controlDataList)
+            var controlDataList = ObjectControlDataDict.Get(unit);
+            foreach (var controlData in controlDataList)
             {
                 if (!ContainsControlType(controlData.objectControl.ControlTypeList, controlType))
                 {

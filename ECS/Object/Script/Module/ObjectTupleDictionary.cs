@@ -6,7 +6,7 @@ namespace ECS.Object.Module
     using System.Linq;
     using System.Collections.Generic;
 
-    public abstract class DictionaryDataServer<T1,T2> : SingleModule
+    public abstract class ObjectTupleDictionary<T1,T2> : SingleModule
     {
         static Dictionary<ValueTuple<uint, T1>, T2> _dictionary = new Dictionary<(uint, T1), T2>();
 
@@ -20,6 +20,11 @@ namespace ECS.Object.Module
         {
             var keyValue = ValueTuple.Create(unit.UnitId, value1);
             return _dictionary[keyValue];
+        }
+
+        public static IEnumerable<T2> Get(GUnit unit)
+        {
+            return _dictionary.Where(_ => _.Key.Item1 == unit.UnitId).Select(_ => _.Value);
         }
 
         public static void Clear(GUnit unit)

@@ -3,6 +3,7 @@ namespace ECS.Object.Module
     using GUnit = ECS.Unit.Unit;
     using ECS.Module;
     using ECS.Object.Data;
+    using ECS.Common;
     using UniRx;
     using UnityEngine;
     using System;
@@ -23,44 +24,35 @@ namespace ECS.Object.Module
 
         protected override void OnAdd(GUnit unit)
         {
-            var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            foreach (var stateData in stateProcessData.stateDataList)
+            var stateDataList = ObjectStateDataDict.Get(unit);
+            foreach (var stateData in stateDataList)
             {
-                foreach (var stateModule in stateProcessData.stateModuleList)
-                {
-                    if (stateModule.Id == stateData.id)
-                    {
-                        stateData.objectState = stateModule;
+                var stateModule = ObjectStateModuleDict.Get(stateData.id);
+                stateData.objectState = stateModule;
 
-                        stateData.objectState.Init(unit, stateData);
-                    }
-                }
+                stateModule.Init(unit, stateData);
             }
         }
 
         protected override void OnRemove(GUnit unit)
         {
-            var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            foreach (var stateData in stateProcessData.stateDataList)
+            var stateDataList = ObjectStateDataDict.Get(unit);
+            foreach (var stateData in stateDataList)
             {
-                foreach (var stateModule in stateProcessData.stateModuleList)
-                {
-                    if (stateModule.Id == stateData.id)
-                    {
-                        stateData.objectState = stateModule;
+                stateData.objectState.Release(unit, stateData);
+                stateData.objectState = null;
 
-                        stateData.objectState.Release(unit, stateData);
-                        stateData.objectState = null;
-                    }
-                }
+                Pool.Release(stateData);
             }
+
+            ObjectStateDataDict.Clear(unit);
         }
 
 
         public static void Start(GUnit unit, int id, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
+            var stateData = ObjectStateDataDict.Get(unit, id);
 
             if (!stateData.objectState.CanStart(unit, stateProcessData, stateData, param))
             {
@@ -86,7 +78,7 @@ namespace ECS.Object.Module
         public static void Update(GUnit unit, int id, Vector3 param, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
+            var stateData = ObjectStateDataDict.Get(unit, id);
 
             if (!stateData.objectState.CanUpdate(unit, stateProcessData, stateData, param))
             {
@@ -111,7 +103,7 @@ namespace ECS.Object.Module
         public static void Finish(GUnit unit, int id, bool sync = true)
         {
             var stateProcessData = unit.GetData<ObjectStateProcessData>();
-            var stateData = stateProcessData.stateDataList.Where(_ => _.id == id).FirstOrDefault();
+            var stateData = ObjectStateDataDict.Get(unit, id);
 
             if (!stateData.objectState.CanFinish(unit, stateProcessData, stateData))
             {
@@ -190,11 +182,11 @@ namespace ECS.Object.Module
 
         static IndependentObjectStateData GetHighestPriorityState(GUnit unit, ObjectStateProcessData stateProcessData)
         {
-            var stateList = stateProcessData.stateDataList.Where(_ => _ is IndependentObjectStateData);
+            var stateDataList = ObjectStateDataDict.Get(unit).Where(_ => _ is IndependentObjectStateData);
 
             var minPriority = 0;
             IndependentObjectStateData result = null;
-            foreach (var stateData in stateList)
+            foreach (var stateData in stateDataList)
             {
                 if (stateData.stateTypeProperty.Value != ObjectStateType.Stop)
                 {
