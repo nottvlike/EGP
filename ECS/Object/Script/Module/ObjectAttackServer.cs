@@ -7,7 +7,7 @@
     using System;
     using UniRx;
 
-    public class ObjectAttackServer : Module
+    public class ObjectAttackServer : SingleModule
     {
         public override int Group { get; protected set; }
             = WorldManager.Instance.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME);

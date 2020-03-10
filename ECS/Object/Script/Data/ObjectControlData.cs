@@ -104,8 +104,6 @@ namespace ECS.Object.Data
     {
         public ReactiveProperty<ObjectControlStateType> stateType = new ReactiveProperty<ObjectControlStateType>();
 
-        public Dictionary<int, KeyStateType> keyStateDict = new Dictionary<int, KeyStateType>();
-
         public List<ObjectControlData> controlDataList = new List<ObjectControlData>();
         public List<ObjectControl> controlModuleList = new List<ObjectControl>();
 
@@ -113,8 +111,6 @@ namespace ECS.Object.Data
         public virtual void Clear()
         {
             stateType.Value = ObjectControlStateType.None;
-
-            keyStateDict.Clear();
 
             controlDataList.Clear();
             controlModuleList.Clear();

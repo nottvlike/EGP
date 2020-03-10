@@ -40,16 +40,16 @@ namespace ECS.Object.Module
                         {
                             if (Input.GetKeyDown(controlData.key))
                             {
-                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Down;
+                                ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.Down);
                                 ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
                                     stateProcessData);
                             }
                             else if (Input.GetKeyUp(controlData.key))
                             {
-                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Up;
+                                ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.Up);
                                 ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
                                     stateProcessData);
-                                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
+                                ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.None);
                             }
                         }
                     });

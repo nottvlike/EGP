@@ -1,5 +1,6 @@
 namespace ECS.Object.Module
 {
+    using GUnit = ECS.Unit.Unit;
     using ECS.Object.Data;
     using UnityEngine;
     using System;
@@ -10,13 +11,13 @@ namespace ECS.Object.Module
 
         public virtual int[] ControlTypeList { get; }
 
-        public ValueTuple<bool, Vector3> CheckControl(ObjectControlData controlData,
-            ObjectControlStateData controlStateDatata, ObjectStateProcessData stateProcessData)
+        public ValueTuple<bool, Vector3> CheckControl(GUnit unit, ObjectControlData controlData,
+            ObjectStateProcessData stateProcessData)
         {
-            return OnCheckControl(controlData, controlStateDatata, stateProcessData.currentState?.id);
+            return OnCheckControl(unit, controlData, stateProcessData.currentState?.id);
         }
 
-        protected abstract ValueTuple<bool, Vector3> OnCheckControl(ObjectControlData controlData,
-            ObjectControlStateData controlProcessData, int? currentStateId);
+        protected abstract ValueTuple<bool, Vector3> OnCheckControl(GUnit unit, ObjectControlData controlData,
+            int? currentStateId);
     }
 }

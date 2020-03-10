@@ -1,12 +1,10 @@
 namespace ECS.Object.Module
 {
     using GUnit = ECS.Unit.Unit;
-    using ECS.Data;
     using ECS.Module;
     using ECS.Object.Data;
     using UnityEngine;
     using System;
-    using UniRx;
 
     public sealed class ObjectControlState : Module
     {
@@ -34,7 +32,7 @@ namespace ECS.Object.Module
                     }
                 }
 
-                controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
+                SetControlState(unit, controlData.controlType, KeyStateType.None);
             }
         }
 
@@ -42,6 +40,18 @@ namespace ECS.Object.Module
         {
             var controlStateData = unit.GetData<ObjectControlStateData>();
             controlStateData.stateType.Value = ObjectControlStateType.Finish;
+
+            ControlStateDataServer.Clear(unit);
+        }
+
+        public static void SetControlState(GUnit unit, int controlType, KeyStateType stateType)
+        {
+            ControlStateDataServer.Set(unit, controlType, stateType);
+        }
+
+        public static KeyStateType GetControlState(GUnit unit, int controlType)
+        {
+            return ControlStateDataServer.Get(unit, controlType);
         }
 
         public static void CheckAllControl(GUnit unit, int controlType, ObjectControlStateData controlStateData,
@@ -55,7 +65,7 @@ namespace ECS.Object.Module
                 }
 
                 var controlModule = controlData.objectControl;
-                var result = controlModule.CheckControl(controlData, controlStateData, stateProcessData);
+                var result = controlModule.CheckControl(unit, controlData, stateProcessData);
                 if (result.Item1)
                 {
                     DoState(unit, controlData, result.Item2);

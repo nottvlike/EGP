@@ -38,17 +38,17 @@ namespace ECS.Object.Module
                     {
                         controlData.controlHelper.ObservePointerDown().Subscribe(_ =>
                         {
-                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Down;
+                            ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.Down);
                             ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
                                 stateProcessData);
                         }).AddTo(controlProcessData.checkDispose);
 
                         controlData.controlHelper.ObservePointerUp().Subscribe(_ =>
                         {
-                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.Up;
+                            ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.Up);
                             ObjectControlState.CheckAllControl(unit, controlData.controlType, controlStateData,
                                 stateProcessData);
-                            controlStateData.keyStateDict[controlData.controlType] = KeyStateType.None;
+                            ObjectControlState.SetControlState(unit, controlData.controlType, KeyStateType.None);
                         }).AddTo(controlProcessData.checkDispose);
                     }
                 }
