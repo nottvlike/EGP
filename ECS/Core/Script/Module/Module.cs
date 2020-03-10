@@ -12,6 +12,11 @@
 
         public virtual int Group { get; protected set; } = 0;
 
+        public Module()
+        {
+            _unitIdList = new List<uint>();
+        }
+
         public bool IsMeet(IEnumerable<Data.IData> dataList)
         {
             var typeList = dataList.Select(_ => _.GetType());
@@ -24,7 +29,7 @@
             return _unitIdList.IndexOf(unitId) != -1;
         }
 
-        List<uint> _unitIdList = new List<uint>();
+        List<uint> _unitIdList;
         public IReadOnlyList<uint> UnitIdList => _unitIdList;
 
         public void Add(GUnit unit)
