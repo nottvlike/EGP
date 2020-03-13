@@ -7,7 +7,8 @@
 
 ## Demo
 
-[Platform2d](https://gitee.com/penglai/EGP_Unity_Platform2D)
+* [Platform2d](https://gitee.com/penglai/EGP_Unity_Platform2D)
+* [2DGameKit](https://gitee.com/penglai/EGP_Unity_2DGameKit.git)
 
 ## 注意
 libAssetManager.dll用到了学习版本的Obfuscator 2.3.4插件混淆，暂时没有购买正式版本的计划。
