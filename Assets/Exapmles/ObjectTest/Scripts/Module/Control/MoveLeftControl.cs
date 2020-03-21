@@ -2,9 +2,9 @@ namespace Game.ObjectTest.Module.Control
 {
     using ECS.Object.Data;
     using ECS.Object.Module;
+    using GUnit = ECS.Unit.Unit;
     using UnityEngine;
     using System;
-    using System.Collections.Generic;
 
     public sealed class MoveLeftControl : ObjectControl
     {
@@ -16,19 +16,19 @@ namespace Game.ObjectTest.Module.Control
             ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE
         };
 
-        protected override ValueTuple<bool, Vector3> OnCheckControl(ObjectControlData cocntrolData,
-            ObjectControlStateData cocntrolStateData, int? currentStateId)
+        protected override ValueTuple<bool, Vector3> OnCheckControl(GUnit unit, ObjectControlData controlData,
+            int? currentStateId)
         {
             var param = Vector3.zero;
-            var leftState = cocntrolStateData.keyStateDict[ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE];
+            var leftState = ObjectControlStateTypeDict.Get(unit, ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE);
             if (leftState == KeyStateType.Down)
             {
-                cocntrolData.stateType = ObjectStateType.Start;
+                controlData.stateType = ObjectStateType.Start;
                 param = Vector3.left;
             }
             else if (leftState == KeyStateType.Up)
             {
-                cocntrolData.stateType = ObjectStateType.Finish;
+                controlData.stateType = ObjectStateType.Finish;
             }
 
             return ValueTuple.Create(leftState != KeyStateType.None, param);

@@ -40,7 +40,12 @@ public class PlayerControlTest : GameStart
         moduleMgr.Register(new ObjectBuffProcess());
         moduleMgr.Register(new ObjectStateProcess());
         moduleMgr.Register(new ObjectControlState());
+#if UNITY_EDITOR || UNITY_STANDALONE
         moduleMgr.Register(new ObjectKeyboardControlProcess());
+#endif
+#if UNITY_ANDROID || UNITY_IPHONE
+        moduleMgr.Register(new ObjectUIControlProcess());
+#endif
 
         moduleMgr.Register(new SlowDownTrap());
     }

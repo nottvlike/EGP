@@ -34,38 +34,32 @@ namespace Game.ObjectTest.Factory
             return _buffModuleList;
         }
 
-        static List<ObjectControl> _controlModuleList = new List<ObjectControl>();
-        static void InitControlModuleList()
+        public static void InitObjectControlModule(this UnitFactory factory)
         {
-            _controlModuleList.Add(new MoveLeftControl());
-            _controlModuleList.Add(new MoveRightControl());
-        }
-
-        public static List<ObjectControl> GetAllKeyboardControlModule(this UnitFactory factory)
-        {
-            if (_controlModuleList.Count == 0)
+            if (ObjectControlModuleDict.Count() > 0)
             {
-                InitControlModuleList();
+                return;
             }
 
-            return _controlModuleList;
+            var moveLeftControl = new MoveLeftControl();
+            ObjectControlModuleDict.Set(moveLeftControl.ControlType, moveLeftControl);
+
+            var moveRightControl = new MoveRightControl();
+            ObjectControlModuleDict.Set(moveRightControl.ControlType, moveRightControl);
         }
 
-        static List<ObjectState> _stateModuleList = new List<ObjectState>();
-        static void InitStateModuleList()
+        public static void InitObjectStateModule(this UnitFactory factory)
         {
-            _stateModuleList.Add(new ObjectIdle());
-            _stateModuleList.Add(new ObjectMove());
-        }
-
-        public static List<ObjectState> GetAllStateModule(this UnitFactory factory)
-        {
-            if (_stateModuleList.Count == 0)
+            if (ObjectStateModuleDict.Count() > 0)
             {
-                InitStateModuleList();
+                return;
             }
 
-            return _stateModuleList;
+            var idleState = new ObjectIdle();
+            ObjectStateModuleDict.Set(idleState.Id, idleState);
+
+            var moveState = new ObjectMove();
+            ObjectStateModuleDict.Set(moveState.Id, moveState);
         }
 
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
@@ -112,26 +106,24 @@ namespace Game.ObjectTest.Factory
             var controlStateData = unit.AddData<ObjectControlStateData>();
             controlStateData.stateType.Value = ObjectControlStateType.Start;
 
-            var controlDataList = controlStateData.controlDataList;
-
             var controlData = Pool.Get<ObjectControlData>();
             controlData.controlType = ObjectTestConstant.MOVE_LEFT_CONTROL_TYPE;
             controlData.stateId = ObjectTestConstant.STATE_MOVE;
             controlData.stateType = ObjectStateType.Start;
-            controlDataList.Add(controlData);
+            ObjectControlDataDict.Set(unit, controlData.controlType, controlData);
 
             controlData = Pool.Get<ObjectControlData>();
             controlData.controlType = ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE;
             controlData.stateId = ObjectTestConstant.STATE_MOVE;
             controlData.stateType = ObjectStateType.Start;
-            controlDataList.Add(controlData);
+            ObjectControlDataDict.Set(unit, controlData.controlType, controlData);
 
-            var factory = WorldManager.Instance.Factory;
-            controlStateData.controlModuleList.AddRange(factory.GetAllKeyboardControlModule());
+            WorldManager.Instance.Factory.InitObjectControlModule();
         }
 
         static void AttachKeyboardControlData(GUnit unit)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
             var controlProcessData = unit.AddData<ObjectKeyboardControlProcessData>();
             var controlDataList = controlProcessData.controlDataList;
 
@@ -144,29 +136,29 @@ namespace Game.ObjectTest.Factory
             controlData.controlType = ObjectTestConstant.MOVE_RIGHT_CONTROL_TYPE;
             controlData.key = KeyCode.D;
             controlDataList.Add(controlData);
+#endif
         }
 
         static void AttachStateData(GUnit unit)
         {
-            var stateProcessData = unit.AddData<ObjectStateProcessData>();
+            unit.AddData<ObjectStateProcessData>();
 
             var stateData = Pool.Get<IndependentObjectStateData>();
             stateData.id = ObjectTestConstant.STATE_IDLE;
             stateData.isDefault = true;
             stateData.isLoop = true;
             stateData.priority = 0;
-            stateProcessData.stateDataList.Add(stateData);
+            ObjectStateDataDict.Set(unit, stateData.id, stateData);
 
             stateData = Pool.Get<IndependentObjectStateData>();
             stateData.id = ObjectTestConstant.STATE_MOVE;
             stateData.isLoop = true;
             stateData.priority = 1;
-            stateProcessData.stateDataList.Add(stateData);
+            ObjectStateDataDict.Set(unit, stateData.id, stateData);
 
             unit.AddData<ObjectMoveParamData>();
 
-            var stateModuleList = WorldManager.Instance.Factory.GetAllStateModule();
-            stateProcessData.stateModuleList.AddRange(stateModuleList);
+            WorldManager.Instance.Factory.InitObjectStateModule();
         }
 
         static void AttachAttributeData(GUnit unit)
