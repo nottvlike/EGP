@@ -16,9 +16,9 @@
         protected override void OnAdd(GUnit unit)
         {
             var unitData = unit.GetData<UnitData>();
+            var paramData = unit.GetData<PanelParamData>();
             var panelData = unit.GetData<PanelData>();
-            var panel = unit.GetData<Panel>();
-            panelData.stateTypeProperty.Subscribe(state => 
+            paramData.stateTypeProperty.Subscribe(state => 
             {
                 if (state == PanelStateType.Preload)
                 {
@@ -28,29 +28,29 @@
                     {
                         DataPool.Release(taskData);
 
-                        UIManagerInstance.Instance.ShowImmediate(panelData.assetPath);
+                        UIManagerInstance.Instance.ShowImmediate(paramData.assetPath);
                     });
                 }
                 else if (state == PanelStateType.Show)
                 {
-                    Show(unit, panel, panelData);
+                    Show(unit, panelData, paramData);
                 }
                 else if (state == PanelStateType.Hide)
                 {
-                    Hide(unit, panel);
+                    Hide(unit, panelData);
                 }
             }).AddTo(unitData.disposable);
             
-            Init(unit, panel);
+            Init(unit, panelData);
         }
 
         protected virtual void OnPreload(GUnit unit, List<IObservable<Unit>> taskList) { }
 
         protected virtual void OnInit(GUnit unit) { }
-        protected virtual void OnShow(GUnit unit, Panel panel, params object[] args) { }
-        protected virtual void OnHide(GUnit unit, Panel panel) { }
+        protected virtual void OnShow(GUnit unit, PanelData panel, params object[] args) { }
+        protected virtual void OnHide(GUnit unit, PanelData panel) { }
 
-        void Init(GUnit unit, Panel panel)
+        void Init(GUnit unit, PanelData panel)
         {
             panel.transform.SetSiblingIndex(panel.Order);
             panel.gameObject.SetActive(false);
@@ -58,21 +58,21 @@
             OnInit(unit);
         }
 
-        void Show(GUnit unit, Panel panel, PanelData panelData)
+        void Show(GUnit unit, PanelData panelData, PanelParamData paramData)
         {
-            panel.gameObject.SetActive(true);
-            OnShow(unit, panel, panelData.paramsList.ToArray());
-            if (panel.AnimationType == UIAnimationType.Animation)
+            panelData.gameObject.SetActive(true);
+            OnShow(unit, panelData, paramData.paramsList.ToArray());
+            if (panelData.AnimationType == UIAnimationType.Animation)
             {
-                panel.AnimationProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
+                panelData.AnimationProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
             }
-            else if (panel.AnimationType == UIAnimationType.Tween)
+            else if (panelData.AnimationType == UIAnimationType.Tween)
             {
-                panel.TweenProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
+                panelData.TweenProcessor?.Play(UIConstant.OPEN_TWEEN_NAME);
             }
         }
 
-        void Hide(GUnit unit, Panel panel)
+        void Hide(GUnit unit, PanelData panel)
         {
             Action hideAction = () => 
             {

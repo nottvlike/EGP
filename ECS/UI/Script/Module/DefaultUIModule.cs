@@ -8,8 +8,8 @@ namespace ECS.UI.Module
         public DefaultUIModule()
         {
             RequiredDataList = new Type[]{
-                typeof(DefaultPanel),
-                typeof(PanelData),
+                typeof(DefaultPanelData),
+                typeof(PanelParamData),
             };
         }
     }

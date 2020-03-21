@@ -36,20 +36,20 @@ namespace ECS.UI.Factory
             {
                 if (_ == UnitStateType.Destroy)
                 {
-                    var panelData1 = unit.GetData<PanelData>();   
-                    uiData.unitDict.Remove(panelData1.assetPath);
-                    uiData.showedList.Remove(panelData1.assetPath);
+                    var paramData1 = unit.GetData<PanelParamData>();   
+                    uiData.unitDict.Remove(paramData1.assetPath);
+                    uiData.showedList.Remove(paramData1.assetPath);
                 }
             }).AddTo(unitData.disposable);
 
-            var panel = assetData.GetComponent<Panel>();
-            unit.AddData(panel, typeof(Panel));
+            var panelData = assetData.GetComponent<PanelData>();
+            unit.AddData(panelData, typeof(PanelData));
 
-            var panelData = unit.AddData<PanelData>();
-            panelData.assetPath = assetPath;
-            if (panelData.stateTypeProperty == null)
+            var paramData = unit.AddData<PanelParamData>();
+            paramData.assetPath = assetPath;
+            if (paramData.stateTypeProperty == null)
             {
-                panelData.stateTypeProperty = new ReactiveProperty<PanelStateType>(PanelStateType.None);
+                paramData.stateTypeProperty = new ReactiveProperty<PanelStateType>(PanelStateType.None);
             }
 
             uiData.unitDict.Add(assetPath, unit);

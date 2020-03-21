@@ -22,7 +22,7 @@
         Hide,
     }
 
-    public class PanelData : IData, IPoolObject
+    public class PanelParamData : IData, IPoolObject
     {
         public ReactiveProperty<PanelStateType> stateTypeProperty;
         public List<object> paramsList = new List<object>();

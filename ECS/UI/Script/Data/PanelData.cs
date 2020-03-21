@@ -12,7 +12,7 @@
         Animation,
     }
 
-    public abstract class Panel : MonoBehaviour, IData
+    public abstract class PanelData : MonoBehaviour, IData
     {
         [SerializeField]
         PanelMode _panelMode;

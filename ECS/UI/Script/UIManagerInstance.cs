@@ -75,11 +75,11 @@ namespace ECS.UI
         public void Show(string assetPath, bool forceUpdateWhenShowed, params object[] args)
         {
             var unit = _uiData.unitDict[assetPath];
-            var panelData = unit.GetData<PanelData>();
-            panelData.paramsList.Clear();
+            var paramData = unit.GetData<PanelParamData>();
+            paramData.paramsList.Clear();
             if (args != null)
             {
-                panelData.paramsList.AddRange(args);
+                paramData.paramsList.AddRange(args);
             }
 
 #if DEBUG
@@ -89,18 +89,18 @@ namespace ECS.UI
                 return;
             }
 #endif
-            panelData.stateTypeProperty.Value = PanelStateType.Preload;
+            paramData.stateTypeProperty.Value = PanelStateType.Preload;
         }
 
         public void ShowImmediate(string assetPath)
         {
             var unit = _uiData.unitDict[assetPath];
-            var panel = unit.GetData<Panel>();
             var panelData = unit.GetData<PanelData>();
+            var paramData = unit.GetData<PanelParamData>();
 
-            if (panel.PanelMode != PanelMode.Alone)
+            if (panelData.PanelMode != PanelMode.Alone)
             {
-                ShowImpl(assetPath, panelData);
+                ShowImpl(assetPath, paramData);
             }
             else
             {
@@ -112,21 +112,21 @@ namespace ECS.UI
 
                 TaskModule.Start(_taskData, () =>
                 {
-                    ShowImpl(assetPath, panelData);
+                    ShowImpl(assetPath, paramData);
                 });
             }
         }
 
-        void ShowImpl(string assetPath, PanelData panelData)
+        void ShowImpl(string assetPath, PanelParamData paramData)
         {
             if (_uiData.showedList.IndexOf(assetPath) !=-1)
             {
-                panelData.stateTypeProperty.SetValueAndForceNotify(PanelStateType.Show);
+                paramData.stateTypeProperty.SetValueAndForceNotify(PanelStateType.Show);
             }
             else
             {
                 _uiData.showedList.Add(assetPath);
-                panelData.stateTypeProperty.Value = PanelStateType.Show;
+                paramData.stateTypeProperty.Value = PanelStateType.Show;
             }
         }
 
@@ -155,8 +155,8 @@ namespace ECS.UI
             _uiData.showedList.Remove(assetPath);
 
             var unit = _uiData.unitDict[assetPath];
-            var panelData = unit.GetData<PanelData>();
-            panelData.stateTypeProperty.Value = PanelStateType.Hide;
+            var paramData = unit.GetData<PanelParamData>();
+            paramData.stateTypeProperty.Value = PanelStateType.Hide;
         }
     }
 }
