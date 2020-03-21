@@ -13,13 +13,13 @@ namespace Game.UI
         {
             RequiredDataList = new Type[]{
                 typeof(UITestPanelData),
-                typeof(PanelData),
+                typeof(PanelParamData),
             };
         }
 
         protected override void OnInit(GUnit unit)
         {
-            var uiTestPanelData = unit.GetData<Panel>() as UITestPanelData;
+            var uiTestPanelData = unit.GetData<PanelData>() as UITestPanelData;
             uiTestPanelData.showSimpleTipsPanelButton.onClick.RemoveAllListeners();
             uiTestPanelData.showSimpleTipsPanelButton.onClick.AddListener(ShowSimpleTipsPanel);
         }

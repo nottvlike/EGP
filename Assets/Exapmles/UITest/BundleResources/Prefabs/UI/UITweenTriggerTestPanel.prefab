@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 7732705312813239862}
   - component: {fileID: 9212039701309120203}
   - component: {fileID: 1851329851181754284}
-  - component: {fileID: 5473657951320778135}
+  - component: {fileID: 1105296583486245084}
   m_Layer: 5
   m_Name: UITweenTriggerTestPanel
   m_TagString: Untagged
@@ -466,7 +466,7 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
---- !u!114 &5473657951320778135
+--- !u!114 &1105296583486245084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -475,11 +475,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3273039307321647532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1666829396, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: 1402783924, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panelMode: 1
-  _order: 0
+  _order: 300
   _destroyWhenHide: 0
   _animationType: 1
   _animationProcessor: {fileID: 0}

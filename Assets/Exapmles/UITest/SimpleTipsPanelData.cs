@@ -3,7 +3,7 @@
     using ECS.UI.Data;
     using UnityEngine.UI;
 
-    public class SimpleTipsPanelData : Panel
+    public class SimpleTipsPanelData : PanelData
     {
         public Text message;
     }

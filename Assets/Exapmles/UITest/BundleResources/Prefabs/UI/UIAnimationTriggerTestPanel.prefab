@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 3124833455842977483}
   - component: {fileID: 3173377855790599627}
   - component: {fileID: 1676799072835531205}
-  - component: {fileID: 3965183860607088352}
+  - component: {fileID: 2486142952976490158}
   m_Layer: 5
   m_Name: UIAnimationTriggerTestPanel
   m_TagString: Untagged
@@ -904,7 +904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationTriggerList:
   - {fileID: 8019696641794927596}
---- !u!114 &3965183860607088352
+--- !u!114 &2486142952976490158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -913,14 +913,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4430023566840614461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1666829396, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: 1402783924, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panelMode: 1
-  _order: 0
+  _order: 5
   _destroyWhenHide: 0
   _animationType: 0
-  _animationProcessor: {fileID: 0}
+  _animationProcessor: {fileID: 1676799072835531205}
   _tweenProcessor: {fileID: 0}
 --- !u!1 &4436210407474678526
 GameObject:

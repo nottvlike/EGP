@@ -15,7 +15,7 @@ namespace Game.UI
         {
             RequiredDataList = new Type[]{
                 typeof(UIPreloadTestPanelData),
-                typeof(PanelData),
+                typeof(PanelParamData),
             };
         }
         
@@ -27,7 +27,7 @@ namespace Game.UI
             }).AsUnitObservable());
         }
 
-        protected override void OnShow(GUnit unit, Panel panel, params object[] args)
+        protected override void OnShow(GUnit unit, PanelData panel, params object[] args)
         {
             var preloadPanelData = panel as UIPreloadTestPanelData;
             var asset = AssetManager.Get<GameObject>("Prefabs/UI/PreloadItem");
@@ -38,7 +38,7 @@ namespace Game.UI
             }
         }
 
-        protected override void OnHide(GUnit unit, Panel panel)
+        protected override void OnHide(GUnit unit, PanelData panel)
         {
             var preloadPanelData = panel as UIPreloadTestPanelData;
             foreach (var preloadItem in preloadPanelData.preloadItemList)

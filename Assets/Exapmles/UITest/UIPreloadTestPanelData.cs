@@ -5,7 +5,7 @@ namespace Game.UI
     using UnityEngine.UI;
     using System.Collections.Generic;
 
-    public class UIPreloadTestPanelData : Panel
+    public class UIPreloadTestPanelData : PanelData
     {
         public GridLayoutGroup grid;
         [HideInInspector]

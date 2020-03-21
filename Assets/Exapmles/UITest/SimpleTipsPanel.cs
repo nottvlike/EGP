@@ -11,19 +11,19 @@
         {
             RequiredDataList = new Type[]{
                 typeof(SimpleTipsPanelData),
-                typeof(PanelData),
+                typeof(PanelParamData),
             };
         }
         
-        protected override void OnShow(GUnit unit, Panel panel, params object[] args)
+        protected override void OnShow(GUnit unit, PanelData panel, params object[] args)
         {
             base.OnShow(unit, panel, args);
 
-            var simpleTipsPanelData = unit.GetData<Panel>() as SimpleTipsPanelData;
+            var simpleTipsPanelData = unit.GetData<PanelData>() as SimpleTipsPanelData;
             simpleTipsPanelData.message.text = (string)args[0] ?? string.Empty;
         }
 
-        protected override void OnHide(GUnit unit, Panel panel)
+        protected override void OnHide(GUnit unit, PanelData panel)
         {
             base.OnHide(unit, panel);
         }
