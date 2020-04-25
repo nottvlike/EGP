@@ -2,7 +2,7 @@
  Easy Game Maker
 
 ## 文档
- [Wiki](https://github.com/nottvlike/EGP/wiki/简介)
+ [Wiki](https://github.com/nottvlike/EGP/wiki)
 
 ## Demo
 
