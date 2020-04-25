@@ -3,8 +3,10 @@
 
 ## 文档
  [Wiki](https://github.com/nottvlike/EGP/wiki)
- [API](https://nottvlike.github.io/EGP-API-Documents/html/index.html)
- [API src](https://github.com/nottvlike/EGP-API-Documents.git)
+ 
+ [Online API](https://nottvlike.github.io/EGP-API-Documents/html/index.html)
+ 
+ [API Project](https://github.com/nottvlike/EGP-API-Documents.git)
 
 ## Demo
 
