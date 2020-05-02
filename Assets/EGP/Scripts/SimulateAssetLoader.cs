@@ -1,13 +1,14 @@
 #if UNITY_EDITOR
 
-namespace AssetEditor
+namespace ECS.Helper
 {
     using UnityEditor;
     using UnityEngine;
     using UObject = UnityEngine.Object;
     using System;
     using UniRx;
-    using Asset;
+    using ECS;
+    using ECS.Config;
     using ECS.Common;
     
     public class SimulateAssetLoader : IAssetLoader

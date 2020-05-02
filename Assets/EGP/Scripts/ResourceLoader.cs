@@ -1,4 +1,4 @@
-namespace Asset
+namespace ECS.Helper
 {
     using UnityEngine;
     using UObject = UnityEngine.Object;
