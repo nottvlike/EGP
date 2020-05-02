@@ -1,20 +1,19 @@
-namespace Helper
+namespace ECS.Helper
 {
     using UnityEngine;
     using UnityEditor;
-    using ECS.UI;
-    using UniRx;
+    using ECS.Module;
 
-    public sealed class UIManagerHelper : MonoBehaviour
+    public sealed class UIProcessorHelper : MonoBehaviour
     {
         public void Show(string assetPath)
         {
-            UIManager.Show(assetPath);
+            UIProcessor.Show(assetPath);
         }
 
         public void Hide(string assetPath)
         {
-            UIManager.Hide(assetPath);
+            UIProcessor.Hide(assetPath);
         }
 
         public void Exit()

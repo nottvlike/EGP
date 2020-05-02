@@ -1,4 +1,4 @@
-namespace UIAnimation 
+namespace UIAnimation
 {
     using UnityEngine;
     using UnityEngine.Events;

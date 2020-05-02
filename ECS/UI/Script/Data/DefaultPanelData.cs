@@ -1,4 +1,4 @@
-namespace ECS.UI.Data
+namespace ECS.Data
 {
     public sealed class DefaultPanelData : PanelData
     {}

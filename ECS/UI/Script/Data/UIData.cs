@@ -1,11 +1,10 @@
-﻿namespace ECS.UI.Data
+﻿namespace ECS.Data
 {
     using System.Collections.Generic;
     using UnityEngine;
     using ECS.Common;
     using UniRx;
     using GUnit = ECS.Unit.Unit;
-    using ECS.Data;
 
     public class UIData : IData
     {

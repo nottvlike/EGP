@@ -1,9 +1,8 @@
-﻿namespace ECS.UI.Data
+﻿namespace ECS.Data
 {
     using UnityEngine;
     using Tween;
     using UIAnimation;
-    using ECS.Data;
 
     public enum UIAnimationType
     {

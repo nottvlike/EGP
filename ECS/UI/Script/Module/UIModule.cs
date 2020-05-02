@@ -1,10 +1,8 @@
-﻿namespace ECS.UI.Module
+﻿namespace ECS.Module
 {
     using UniRx;
     using GUnit = ECS.Unit.Unit;
-    using ECS.Module;
     using ECS.Data;
-    using ECS.UI.Data;
     using System;
     using System.Collections.Generic;
 
@@ -28,7 +26,7 @@
                     {
                         DataPool.Release(taskData);
 
-                        UIManagerInstance.Instance.ShowImmediate(paramData.assetPath);
+                        UIProcessor.ShowImmediate(paramData.assetPath);
                     });
                 }
                 else if (state == PanelStateType.Show)

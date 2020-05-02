@@ -1,17 +1,30 @@
-namespace ECS.UI.Factory
+namespace ECS.Factory
 {
     using UniRx;
+    using ECS;
     using ECS.Data;
     using UnityEngine;
-    using ECS.UI;
-    using ECS.UI.Data;
-    using ECS.Factory;
-    using Asset;
-    using Asset.Factory;
-    using Asset.Data;
 
     public static class UIFactory
     {
+        public static void CreateUICore(this UnitFactory factory)
+        {
+            var moduleMgr = WorldManager.Instance.Module;
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME) 
+                | moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
+            var unit = factory.CreateUnit(requiredModuleGroup);
+
+            unit.AddData<UIData>();
+            unit.AddData<TaskData>();
+
+            var unitData = unit.GetData<UnitData>();
+            var unitMgr = WorldManager.Instance.Unit;
+            unitData.unitType = unitMgr.TagToUnitType(UIConstant.UI_UNIT_TYPE_NAME);
+            unitData.tag = UIConstant.UI_CORE_UNIT_NAME;
+
+            unitData.stateTypeProperty.Value = UnitStateType.Init;
+        }
+
         public static void CreateUI(this UnitFactory factory, string assetPath,
              GameObject asset, UIData uiData = null)
         {

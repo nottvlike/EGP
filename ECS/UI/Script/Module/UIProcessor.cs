@@ -1,78 +1,86 @@
-namespace ECS.UI
+namespace ECS.Module
 {
-    using ECS.Common;
+    using GUnit = ECS.Unit.Unit;
     using ECS.Data;
-    using ECS.Module;
-    using ECS.UI.Factory;
-    using ECS.UI.Data;
+    using ECS.Common;
+    using ECS.Factory;
     using UniRx;
     using System;
-    using Asset;
     using UnityEngine;
-    
-    internal class UIManagerInstance : Singleton<UIManagerInstance>
+
+    public class UIProcessor : SingleModule
     {
-        UIData _uiData { get; set; }
-        TaskData _taskData { get; set; }
+        public override int Group { get; protected set; } 
+            = WorldManager.Instance.Module.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
 
-        WorldManager worldMgr => WorldManager.Instance;
-
-        void InitUICore()
+        public UIProcessor()
         {
-            var requiredModuleGroup = worldMgr.Module.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME) 
-                | worldMgr.Module.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
-            var unit = worldMgr.Factory.CreateUnit(requiredModuleGroup);
-
-            _uiData = unit.AddData<UIData>();
-            _taskData = unit.AddData<TaskData>();
-
-            var unitData = unit.GetData<UnitData>();
-            unitData.unitType = worldMgr.Unit.TagToUnitType(UIConstant.UI_UNIT_TYPE_NAME);
-            unitData.tag = UIConstant.UI_CORE_UNIT_NAME;
-
-            unitData.stateTypeProperty.Value = UnitStateType.Init;
+            RequiredDataList = new Type[]{
+                typeof(UIData)
+            };
         }
 
-        public void Init()
+        static UIData _uiData;
+        static TaskData _taskData;
+
+        protected override void OnAdd(GUnit unit)
         {
-            InitUICore();
+            _uiData = unit.GetData<UIData>();
+            _taskData = unit.GetData<TaskData>();
         }
 
-        public IObservable<Unit> LoadUIRoot()
+        protected override void OnRemove(GUnit unit)
+        {
+            _uiData = null;
+            _taskData = null;
+        }
+
+        static IObservable<Unit> LoadUIRoot()
         {
             if (_uiData.uiRoot != null)
             {
                 return Observable.ReturnUnit();
             }
 
-            return AssetManager.Load<GameObject>(UIConstant.UI_ROOT_ASSET_NAME).Do(root => 
+            return AssetProcessor.Load<GameObject>(UIConstant.UI_ROOT_ASSET_NAME).Do(root => 
             {
                 _uiData.uiRoot = root.Spawn();
                 GameObject.DontDestroyOnLoad(_uiData.uiRoot);
             }).AsUnitObservable();
         }
 
-        public IObservable<Unit> LoadUI(string assetPath)
+        static IObservable<Unit> LoadUI(string assetPath)
         {
             if (_uiData.unitDict.ContainsKey(assetPath))
             {
                 return Observable.ReturnUnit();
             }
 
-            return AssetManager.Load<GameObject>(assetPath)
+            return AssetProcessor.Load<GameObject>(assetPath)
             .Do(asset => 
             {
-                worldMgr.Factory.CreateUI(assetPath, asset, _uiData);
+                WorldManager.Instance.Factory.CreateUI(assetPath, asset, _uiData);
             })
             .AsUnitObservable();
         }
 
-        public bool IsShowed(string assetPath)
+        public static bool IsShowed(string assetPath)
         {
             return _uiData.showedList.IndexOf(assetPath) != -1;
         }
 
-        public void Show(string assetPath, bool forceUpdateWhenShowed, params object[] args)
+        public static IObservable<Unit> ShowAsObservable(string assetPath, bool forceUpdateWhenShowed = false, params object[] args)
+        {
+            return LoadUIRoot().ContinueWith(_ => LoadUI(assetPath))
+                .Do(_ => Preload(assetPath, forceUpdateWhenShowed, args));
+        }
+
+        public static void Show(string assetPath, bool forceUpdateWhenShowed = false, params object[] args)
+        {
+            ShowAsObservable(assetPath, forceUpdateWhenShowed, args).Subscribe();
+        }
+
+        static void Preload(string assetPath, bool forceUpdateWhenShowed, params object[] args)
         {
             var unit = _uiData.unitDict[assetPath];
             var paramData = unit.GetData<PanelParamData>();
@@ -92,7 +100,7 @@ namespace ECS.UI
             paramData.stateTypeProperty.Value = PanelStateType.Preload;
         }
 
-        public void ShowImmediate(string assetPath)
+        public static void ShowImmediate(string assetPath)
         {
             var unit = _uiData.unitDict[assetPath];
             var panelData = unit.GetData<PanelData>();
@@ -117,7 +125,7 @@ namespace ECS.UI
             }
         }
 
-        void ShowImpl(string assetPath, PanelParamData paramData)
+        static void ShowImpl(string assetPath, PanelParamData paramData)
         {
             if (_uiData.showedList.IndexOf(assetPath) !=-1)
             {
@@ -130,7 +138,7 @@ namespace ECS.UI
             }
         }
 
-        public void Hide(string assetPath)
+        public static void Hide(string assetPath)
         {
 #if DEBUG
             if (_uiData.uiRoot == null)
@@ -150,7 +158,7 @@ namespace ECS.UI
             TaskModule.Start(_taskData);
         }
 
-        void HideImpl(string assetPath)
+        static void HideImpl(string assetPath)
         {
             _uiData.showedList.Remove(assetPath);
 

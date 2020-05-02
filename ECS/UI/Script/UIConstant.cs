@@ -1,4 +1,4 @@
-﻿namespace ECS.UI
+﻿namespace ECS
 {
     public enum PanelMode
     {
