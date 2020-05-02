@@ -1,12 +1,12 @@
 namespace Game.UI
 {
-    using ECS.UI.Data;
-    using ECS.UI.Module;
+    using ECS.Data;
+    using ECS.Module;
+    using Game.UI.Data;
     using System;
     using System.Collections.Generic;
     using GUnit = ECS.Unit.Unit;
     using UniRx;
-    using Asset;
     using UnityEngine;
 
     public class UIPreloadTestPanel : UIModule
@@ -21,7 +21,7 @@ namespace Game.UI
         
         protected override void OnPreload(GUnit unit, List<IObservable<Unit>> taskList)
         {
-            taskList.Add(AssetManager.Load<GameObject>("Prefabs/UI/PreloadItem").Do(asset => 
+            taskList.Add(AssetProcess.Load<GameObject>("Prefabs/UI/PreloadItem").Do(asset => 
             {
                 asset.Prespawn(10);
             }).AsUnitObservable());
@@ -30,7 +30,7 @@ namespace Game.UI
         protected override void OnShow(GUnit unit, PanelData panel, params object[] args)
         {
             var preloadPanelData = panel as UIPreloadTestPanelData;
-            var asset = AssetManager.Get<GameObject>("Prefabs/UI/PreloadItem");
+            var asset = AssetProcess.Get<GameObject>("Prefabs/UI/PreloadItem");
             for (var i = 0; i < 10; i++)
             {
                 var preloadItem = asset.Spawn();

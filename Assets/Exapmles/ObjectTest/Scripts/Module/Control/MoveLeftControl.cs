@@ -1,7 +1,7 @@
-namespace Game.ObjectTest.Module.Control
+namespace Game.ObjectTest.Module
 {
-    using ECS.Object.Data;
-    using ECS.Object.Module;
+    using ECS.Data;
+    using ECS.Module;
     using GUnit = ECS.Unit.Unit;
     using UnityEngine;
     using System;

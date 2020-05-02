@@ -2,17 +2,12 @@ namespace Game.ObjectTest.Factory
 {
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
-    using ECS.Object;
-    using ECS.Object.Data;
-    using ECS.Object.Module;
     using ECS.Factory;
+    using ECS.Module;
     using ECS.Common;
     using ECS;
-    using Asset.Factory;
     using Game.ObjectTest.Data;
-    using Game.ObjectTest.Module.Buff;
-    using Game.ObjectTest.Module.Control;
-    using Game.ObjectTest.Module.State;
+    using Game.ObjectTest.Module;
     using UnityEngine;
     using System.Collections.Generic;
 

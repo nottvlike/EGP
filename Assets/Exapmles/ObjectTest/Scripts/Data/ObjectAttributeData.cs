@@ -1,6 +1,6 @@
 namespace Game.ObjectTest.Data
 {
-    using ECS.Object.Data;
+    using ECS.Data;
     using Game;
     
     public class ObjectMoveSpeedData : ObjectAttributeData

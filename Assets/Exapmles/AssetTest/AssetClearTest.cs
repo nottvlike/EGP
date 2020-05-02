@@ -1,5 +1,5 @@
 using ECS.Common;
-using Asset;
+using ECS.Module;
 using UniRx;
 using System;
 using System.Collections.Generic;
@@ -18,12 +18,12 @@ public class AssetClearTest : GameStart
     protected override void StartGame() 
     {
         // spawn / despwn 接口只能用 asset资源（不能是实例化出来的资源）调用，为了统一管理资源！
-        AssetManager.Load<GameObject>("Prefabs/Actor/Plane1").Subscribe(asset => 
+        AssetProcess.Load<GameObject>("Prefabs/Actor/Plane1").Subscribe(asset => 
         {
             asset.Spawn();
         });
 
-        AssetManager.Load<GameObject>("Prefabs/Actor/Cube1").Subscribe(asset => 
+        AssetProcess.Load<GameObject>("Prefabs/Actor/Cube1").Subscribe(asset => 
         {
             var cubeList = new List<GameObject>();
             for (var i = 0; i < 15; i++)
@@ -41,7 +41,7 @@ public class AssetClearTest : GameStart
             }
 
             var cubeArray = cubeList.ToArray();
-            AssetManager.ClearUnusedAsset();
+            AssetProcess.ClearUnusedAsset();
             Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(_ => 
             {     
                 Log.I("Cube list fter clear unused asset!");
@@ -50,7 +50,7 @@ public class AssetClearTest : GameStart
                     Log.I("cube {0}", cube);
                 }
 
-                AssetManager.ClearByAssetPrefix("Prefabs/Actor");
+                AssetProcess.ClearByAssetPrefix("Prefabs/Actor");
                 Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(time => 
                 {
                     Log.I("Cube list fter clear asset by prefix {0}!", "Prefabs/Actor");

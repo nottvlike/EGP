@@ -1,5 +1,6 @@
+using ECS;
+using ECS.Data;
 using ECS.Common;
-using Asset;
 using UniRx;
 
 public class AssetManifestTest : GameStart
@@ -13,7 +14,10 @@ public class AssetManifestTest : GameStart
 
     protected override void StartGame() 
     {
-        var manifest = AssetManager.Manifest;
+        var assetCoreUnit = WorldManager.Instance.Unit.GetUnit(AssetConstant.ASSET_CORE_UNIT_NAME);
+        var processData = assetCoreUnit.GetData<AssetProcessData>();
+
+        var manifest = processData.Manifest;
         var assetBundleNameList = manifest.GetAllAssetBundles();
         foreach (var assetBundleName in assetBundleNameList)
         {

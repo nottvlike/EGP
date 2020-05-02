@@ -1,8 +1,8 @@
-namespace Game.UI
+namespace Game.UI.Module
 {
-    using ECS.UI;
-    using ECS.UI.Data;
-    using ECS.UI.Module;
+    using ECS.Data;
+    using ECS.Module;
+    using Game.UI.Data;
     using System;
     using GUnit = ECS.Unit.Unit;
     using UniRx;
@@ -26,10 +26,10 @@ namespace Game.UI
         
         void ShowSimpleTipsPanel()
         {
-            UIManager.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!");
+            UIProcess.Show("Prefabs/UI/SimpleTipsPanel", false, "This is a test!");
             Observable.Timer(TimeSpan.FromSeconds(6)).Subscribe(_ =>
             {
-                UIManager.Hide("Prefabs/UI/SimpleTipsPanel");
+                UIProcess.Hide("Prefabs/UI/SimpleTipsPanel");
             });
         }
     }

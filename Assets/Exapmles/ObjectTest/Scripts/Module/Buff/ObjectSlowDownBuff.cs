@@ -1,6 +1,6 @@
-namespace Game.ObjectTest.Module.Buff
+namespace Game.ObjectTest.Module
 {
-    using ECS.Object.Module;
+    using ECS.Module;
     using GUnit = ECS.Unit.Unit;
     using Game.ObjectTest.Data;
     using System;

@@ -1,6 +1,6 @@
 namespace Game.ObjectTest.Data
 {
-    using ECS.Object.Data;
+    using ECS.Data;
     
     public class ObjectSlowDownBuffData : ObjectBuffData
     {}

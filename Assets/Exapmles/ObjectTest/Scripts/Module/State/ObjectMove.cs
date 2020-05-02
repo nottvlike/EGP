@@ -1,11 +1,10 @@
-namespace Game.ObjectTest.Module.State
+namespace Game.ObjectTest.Module
 {
-    using ECS.Object.Module;
-    using ECS.Object.Data;
+    using ECS.Module;
+    using ECS.Data;
     using GUnit = ECS.Unit.Unit;
     using Game.ObjectTest.Data;
     using UnityEngine;
-    using Asset.Data;
     using UniRx;
 
     public sealed class ObjectMove : ObjectState

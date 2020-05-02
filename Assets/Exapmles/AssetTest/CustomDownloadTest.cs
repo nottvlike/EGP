@@ -4,9 +4,11 @@ using System.IO;
 using System;
 using UnityEngine;
 using UnityEngine.Networking;
-using Asset;
 using UniRx;
+using ECS;
+using ECS.Data;
 using ECS.Common;
+using ECS.Helper;
 
 public class CustomDownloadHandler : DownloadHandler<AssetBundle>
 {
@@ -64,10 +66,13 @@ public class CustomDownloadTest : GameStart
 
     protected override void StartGame() 
     {
+        var assetCoreUnit = WorldManager.Instance.Unit.GetUnit(AssetConstant.ASSET_CORE_UNIT_NAME);
+        var processData = assetCoreUnit.GetData<AssetProcessData>();
+
         var assetDownList = assetBundleList.Where(_ => !ContainsAssetName(_));
         foreach (var assetName in assetDownList)
         {
-            var assetUrl = Path.Combine(AssetManager.CDN, assetName);
+            var assetUrl = Path.Combine(processData.CDN, assetName);
             assetDownloadHandlerList.Add(new CustomDownloadHandler(assetName, assetUrl));
         }
 

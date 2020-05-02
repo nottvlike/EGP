@@ -1,13 +1,10 @@
 using ECS;
-using ECS.Object.Data;
-using ECS.Object.Module;
-using ECS.Object;
-using Game.ObjectTest.Module.State;
-using Game.ObjectTest.Module.Trap;
+using ECS.Data;
+using ECS.Module;
+using Game.ObjectTest.Module;
 using Game.ObjectTest.Factory;
 using UnityEngine;
 using UniRx;
-using Asset;
 
 public class PlayerControlTest : GameStart
 {
@@ -24,7 +21,7 @@ public class PlayerControlTest : GameStart
         var slowDownTrapObject = GameObject.Find("Ground/SlowDownTrap");
         factory.CreateSlowDownTrap(slowDownTrapObject);
 
-        AssetManager.Load<GameObject>("Prefabs/Cube").Subscribe(asset => 
+        AssetProcess.Load<GameObject>("Prefabs/Cube").Subscribe(asset => 
         {
             factory.CreatePlayer(asset);
             syncServerData.enable.Value = true;

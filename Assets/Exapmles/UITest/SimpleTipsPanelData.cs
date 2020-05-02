@@ -1,6 +1,6 @@
-﻿namespace Game.UI
+﻿namespace Game.UI.Data
 {
-    using ECS.UI.Data;
+    using ECS.Data;
     using UnityEngine.UI;
 
     public class SimpleTipsPanelData : PanelData

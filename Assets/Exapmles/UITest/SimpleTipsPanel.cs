@@ -1,7 +1,8 @@
-﻿namespace Game.UI
+﻿namespace Game.UI.Module
 {
-    using ECS.UI.Data;
-    using ECS.UI.Module;
+    using ECS.Data;
+    using ECS.Module;
+    using Game.UI.Data;
     using System;
     using GUnit = ECS.Unit.Unit;
 

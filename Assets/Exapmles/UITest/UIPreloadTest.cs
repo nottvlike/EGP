@@ -1,14 +1,13 @@
 using ECS;
-using ECS.UI;
-using ECS.UI.Module;
-using UniRx;
+using ECS.Module;
+using Game.UI.Module;
 using Game.UI;
 
 public class UIPreloadTest : GameStart
 {
     protected override void StartGame() 
     {
-        UIManager.Show("Prefabs/UI/UIPreloadTestPanel", false, null);
+        UIProcess.Show("Prefabs/UI/UIPreloadTestPanel", false, null);
     }
 
     protected override void RegisterGameModule()

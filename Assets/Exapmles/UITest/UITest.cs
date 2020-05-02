@@ -1,14 +1,12 @@
 using ECS;
-using ECS.UI;
-using ECS.UI.Module;
-using UniRx;
-using Game.UI;
+using ECS.Module;
+using Game.UI.Module;
 
 public class UITest : GameStart
 {
     protected override void StartGame() 
     {
-        UIManager.Show("Prefabs/UI/UITestPanel", false, null);
+        UIProcess.Show("Prefabs/UI/UITestPanel", false, null);
     }
 
     protected override void RegisterGameModule()

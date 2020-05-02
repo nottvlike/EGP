@@ -1,13 +1,9 @@
-namespace Game.ObjectTest.Module.Trap
+namespace Game.ObjectTest.Module
 {
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
     using ECS.Module;
-    using ECS.Object;
-    using ECS.Object.Data;
-    using ECS.Object.Module;
     using ECS;
-    using Asset.Data;
     using Game.ObjectTest.Data;
     using System;
     using UniRx;

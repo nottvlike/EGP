@@ -1,9 +1,8 @@
-namespace Game.ObjectTest.Module.State
+namespace Game.ObjectTest.Module
 {
-    using ECS.Object.Module;
-    using ECS.Object.Data;
+    using ECS.Module;
+    using ECS.Data;
     using GUnit = ECS.Unit.Unit;
-    using Asset.Data;
     using UnityEngine;
 
     public sealed class ObjectIdle : ObjectState

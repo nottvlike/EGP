@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Asset;
 using UniRx;
+using ECS;
+using ECS.Data;
 using ECS.Common;
+using ECS.Helper;
 
 public class AssetDownloadTest : GameStart
 {
@@ -20,10 +22,13 @@ public class AssetDownloadTest : GameStart
 
     protected override void StartGame() 
     {
+        var assetCoreUnit = WorldManager.Instance.Unit.GetUnit(AssetConstant.ASSET_CORE_UNIT_NAME);
+        var processData = assetCoreUnit.GetData<AssetProcessData>();
+
         var assetDownList = assetBundleList.Where(_ => !ContainsAssetName(_));
         foreach (var assetName in assetDownList)
         {
-            var assetUrl = Path.Combine(AssetManager.CDN, assetName);
+            var assetUrl = Path.Combine(processData.CDN, assetName);
             assetDownloadHandlerList.Add(new AssetDownloadHandler(assetName, assetUrl));
         }
 
