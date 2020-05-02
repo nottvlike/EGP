@@ -1,7 +1,7 @@
 ﻿namespace ECS.Helper
 {
     using UnityEngine;
-    using Asset;
+    using ECS.Module;
     using System;
     using UniRx;
 
