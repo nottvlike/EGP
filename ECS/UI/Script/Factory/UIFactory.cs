@@ -7,14 +7,14 @@ namespace ECS.Factory
 
     public static class UIFactory
     {
-        public static void CreateUICore(this UnitFactory factory)
+        public static void CreateUIProcess(this UnitFactory factory)
         {
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.SYSTEM_MODULE_GROUP_NAME) 
                 | moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
             var unit = factory.CreateUnit(requiredModuleGroup);
 
-            unit.AddData<UIData>();
+            unit.AddData<UIProcessData>();
             unit.AddData<TaskData>();
 
             var unitData = unit.GetData<UnitData>();
@@ -26,7 +26,7 @@ namespace ECS.Factory
         }
 
         public static void CreateUI(this UnitFactory factory, string assetPath,
-             GameObject asset, UIData uiData = null)
+             GameObject asset, UIProcessData uiData = null)
         {
             var moduleMgr = WorldManager.Instance.Module;
             var requiredModuleGroup = moduleMgr.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME) 
@@ -37,7 +37,7 @@ namespace ECS.Factory
             if (uiData == null)
             {
                 var uiCore = unitMgr.GetUnit(UIConstant.UI_CORE_UNIT_NAME);
-                uiData = uiCore.GetData<UIData>();
+                uiData = uiCore.GetData<UIProcessData>();
             }
 
             var assetData = unit.GetData<AssetData>();

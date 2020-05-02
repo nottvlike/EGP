@@ -4,16 +4,16 @@ namespace ECS.Helper
     using UnityEditor;
     using ECS.Module;
 
-    public sealed class UIProcessorHelper : MonoBehaviour
+    public sealed class UIProcessHelper : MonoBehaviour
     {
         public void Show(string assetPath)
         {
-            UIProcessor.Show(assetPath);
+            UIProcess.Show(assetPath);
         }
 
         public void Hide(string assetPath)
         {
-            UIProcessor.Hide(assetPath);
+            UIProcess.Hide(assetPath);
         }
 
         public void Exit()

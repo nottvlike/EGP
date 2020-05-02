@@ -26,7 +26,7 @@
                     {
                         DataPool.Release(taskData);
 
-                        UIProcessor.ShowImmediate(paramData.assetPath);
+                        UIProcess.ShowImmediate(paramData.assetPath);
                     });
                 }
                 else if (state == PanelStateType.Show)

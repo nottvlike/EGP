@@ -8,24 +8,24 @@ namespace ECS.Module
     using System;
     using UnityEngine;
 
-    public class UIProcessor : SingleModule
+    public class UIProcess : SingleModule
     {
         public override int Group { get; protected set; } 
             = WorldManager.Instance.Module.TagToModuleGroupType(UIConstant.UI_MODULE_GROUP_NAME);
 
-        public UIProcessor()
+        public UIProcess()
         {
             RequiredDataList = new Type[]{
-                typeof(UIData)
+                typeof(UIProcessData)
             };
         }
 
-        static UIData _uiData;
+        static UIProcessData _uiData;
         static TaskData _taskData;
 
         protected override void OnAdd(GUnit unit)
         {
-            _uiData = unit.GetData<UIData>();
+            _uiData = unit.GetData<UIProcessData>();
             _taskData = unit.GetData<TaskData>();
         }
 
@@ -42,7 +42,7 @@ namespace ECS.Module
                 return Observable.ReturnUnit();
             }
 
-            return AssetProcessor.Load<GameObject>(UIConstant.UI_ROOT_ASSET_NAME).Do(root => 
+            return AssetProcess.Load<GameObject>(UIConstant.UI_ROOT_ASSET_NAME).Do(root => 
             {
                 _uiData.uiRoot = root.Spawn();
                 GameObject.DontDestroyOnLoad(_uiData.uiRoot);
@@ -56,7 +56,7 @@ namespace ECS.Module
                 return Observable.ReturnUnit();
             }
 
-            return AssetProcessor.Load<GameObject>(assetPath)
+            return AssetProcess.Load<GameObject>(assetPath)
             .Do(asset => 
             {
                 WorldManager.Instance.Factory.CreateUI(assetPath, asset, _uiData);
@@ -100,7 +100,7 @@ namespace ECS.Module
             paramData.stateTypeProperty.Value = PanelStateType.Preload;
         }
 
-        public static void ShowImmediate(string assetPath)
+        internal static void ShowImmediate(string assetPath)
         {
             var unit = _uiData.unitDict[assetPath];
             var panelData = unit.GetData<PanelData>();
