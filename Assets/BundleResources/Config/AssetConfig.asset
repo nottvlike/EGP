@@ -13,10 +13,160 @@ MonoBehaviour:
   m_Name: AssetConfig
   m_EditorClassIdentifier: 
   assetInfoList:
-  - assetPath: 
-    fullPath: 
+  - assetPath: DOTweenSettings
+    fullPath: Assets/EGP/Resources/DOTweenSettings.asset
     assetName: 
     bundleName: 
     isFromBundle: 0
+  - assetPath: Config/ModuleGroupTypeConfig
+    fullPath: Assets/EGP/Resources/Config/ModuleGroupTypeConfig.asset
+    assetName: 
+    bundleName: 
+    isFromBundle: 0
+  - assetPath: Config/UnitTypeConfig
+    fullPath: Assets/EGP/Resources/Config/UnitTypeConfig.asset
+    assetName: 
+    bundleName: 
+    isFromBundle: 0
+  - assetPath: Prefabs/UI/UIRoot
+    fullPath: Assets/EGP/Resources/Prefabs/UI/UIRoot.prefab
+    assetName: 
+    bundleName: 
+    isFromBundle: 0
+  - assetPath: Prefabs/Actor/Cube1
+    fullPath: 
+    assetName: Cube1
+    bundleName: prefabs_actor_cube1
+    isFromBundle: 1
+  - assetPath: Prefabs/Actor/Plane1
+    fullPath: 
+    assetName: Plane1
+    bundleName: prefabs_actor_plane1
+    isFromBundle: 1
+  - assetPath: Prefabs/Actor/Sphere1
+    fullPath: 
+    assetName: Sphere1
+    bundleName: prefabs_actor_sphere1
+    isFromBundle: 1
+  - assetPath: Textures/Square
+    fullPath: 
+    assetName: Square
+    bundleName: textures_square
+    isFromBundle: 1
+  - assetPath: Textures/Actor/Triangle
+    fullPath: 
+    assetName: Triangle
+    bundleName: textures_actor_triangle
+    isFromBundle: 1
+  - assetPath: Animation/Cube
+    fullPath: 
+    assetName: Cube
+    bundleName: animation_cube
+    isFromBundle: 1
+  - assetPath: Animation/Idle
+    fullPath: 
+    assetName: Idle
+    bundleName: animation_idle
+    isFromBundle: 1
+  - assetPath: Animation/Move
+    fullPath: 
+    assetName: Move
+    bundleName: animation_move
+    isFromBundle: 1
+  - assetPath: Prefabs/Cube
+    fullPath: 
+    assetName: Cube
+    bundleName: prefabs_cube
+    isFromBundle: 1
+  - assetPath: Prefabs/Ground
+    fullPath: 
+    assetName: Ground
+    bundleName: prefabs_ground
+    isFromBundle: 1
+  - assetPath: Animations/Test1Close
+    fullPath: 
+    assetName: Test1Close
+    bundleName: animations_test1close
+    isFromBundle: 1
+  - assetPath: Animations/Test1Initial
+    fullPath: 
+    assetName: Test1Initial
+    bundleName: animations_test1initial
+    isFromBundle: 1
+  - assetPath: Animations/Test1Open
+    fullPath: 
+    assetName: Test1Open
+    bundleName: animations_test1open
+    isFromBundle: 1
+  - assetPath: Animations/Test2Close
+    fullPath: 
+    assetName: Test2Close
+    bundleName: animations_test2close
+    isFromBundle: 1
+  - assetPath: Animations/Test2Initial
+    fullPath: 
+    assetName: Test2Initial
+    bundleName: animations_test2initial
+    isFromBundle: 1
+  - assetPath: Animations/Test2Open
+    fullPath: 
+    assetName: Test2Open
+    bundleName: animations_test2open
+    isFromBundle: 1
+  - assetPath: Animations/Test3Close
+    fullPath: 
+    assetName: Test3Close
+    bundleName: animations_test3close
+    isFromBundle: 1
+  - assetPath: Animations/Test3Initial
+    fullPath: 
+    assetName: Test3Initial
+    bundleName: animations_test3initial
+    isFromBundle: 1
+  - assetPath: Animations/Test3Open
+    fullPath: 
+    assetName: Test3Open
+    bundleName: animations_test3open
+    isFromBundle: 1
+  - assetPath: Animations/TestController
+    fullPath: 
+    assetName: TestController
+    bundleName: animations_testcontroller
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/PreloadItem
+    fullPath: 
+    assetName: PreloadItem
+    bundleName: prefabs_ui_preloaditem
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/SimpleTipsPanel
+    fullPath: 
+    assetName: SimpleTipsPanel
+    bundleName: prefabs_ui_simpletipspanel
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/UIAnimationTriggerTestPanel
+    fullPath: 
+    assetName: UIAnimationTriggerTestPanel
+    bundleName: prefabs_ui_uianimationtriggertestpanel
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/UIPreloadItemPanel
+    fullPath: 
+    assetName: UIPreloadItemPanel
+    bundleName: prefabs_ui_uipreloaditempanel
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/UIPreloadTestPanel
+    fullPath: 
+    assetName: UIPreloadTestPanel
+    bundleName: prefabs_ui_uipreloadtestpanel
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/UITestPanel
+    fullPath: 
+    assetName: UITestPanel
+    bundleName: prefabs_ui_uitestpanel
+    isFromBundle: 1
+  - assetPath: Prefabs/UI/UITweenTriggerTestPanel
+    fullPath: 
+    assetName: UITweenTriggerTestPanel
+    bundleName: prefabs_ui_uitweentriggertestpanel
+    isFromBundle: 1
   indvAssetPathList:
   - Assets/Examples/ObjectTest/BundleResources/Animation
