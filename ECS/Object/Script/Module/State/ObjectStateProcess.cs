@@ -1,8 +1,7 @@
-namespace ECS.Object.Module
+namespace ECS.Module
 {
     using GUnit = ECS.Unit.Unit;
-    using ECS.Module;
-    using ECS.Object.Data;
+    using ECS.Data;
     using ECS.Common;
     using UniRx;
     using UnityEngine;

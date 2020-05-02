@@ -1,6 +1,5 @@
-﻿namespace ECS.Object.Helper
+﻿namespace ECS.Helper
 {
-    using ECS.Object.Data;
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UniRx;

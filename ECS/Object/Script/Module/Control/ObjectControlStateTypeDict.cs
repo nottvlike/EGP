@@ -1,6 +1,6 @@
-namespace ECS.Object.Module
+namespace ECS.Module
 {
-    using ECS.Object.Data;
+    using ECS.Data;
 
     public class ObjectControlStateTypeDict : ObjectTupleDictionary<int, KeyStateType>
     {

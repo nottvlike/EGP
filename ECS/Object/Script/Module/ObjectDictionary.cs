@@ -1,6 +1,5 @@
-namespace ECS.Object.Module
+namespace ECS.Module
 {
-    using ECS.Module;
     using System.Collections.Generic;
 
     public abstract class ObjectDictionary<T1,T2> : SingleModule

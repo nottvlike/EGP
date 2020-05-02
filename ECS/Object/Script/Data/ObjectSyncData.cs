@@ -1,6 +1,5 @@
-namespace ECS.Object.Data
+namespace ECS.Data
 {
-    using ECS.Data;
     using ECS.Common;
     using UniRx;
     using UnityEngine;

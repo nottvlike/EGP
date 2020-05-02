@@ -1,8 +1,7 @@
-namespace ECS.Object.Data
+namespace ECS.Data
 {
-    using ECS.Data;
     using ECS.Common;
-    using ECS.Object.Module;
+    using ECS.Module;
     using System.Collections.Generic;
     using UniRx;
 

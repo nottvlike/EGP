@@ -1,4 +1,4 @@
-namespace ECS.Object
+namespace ECS
 {
     public sealed class ObjectConstant
     {

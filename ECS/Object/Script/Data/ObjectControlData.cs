@@ -1,9 +1,8 @@
-namespace ECS.Object.Data
+namespace ECS.Data
 {
-    using ECS.Data;
     using ECS.Common;
-    using ECS.Object.Module;
-    using ECS.Object.Helper;
+    using ECS.Module;
+    using ECS.Helper;
     using UnityEngine;
     using System;
     using System.Collections.Generic;

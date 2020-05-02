@@ -1,4 +1,4 @@
-﻿namespace ECS.Object.Helper
+﻿namespace ECS.Helper
 {
     using UnityEngine;
     using Asset;
