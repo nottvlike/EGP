@@ -1,7 +1,8 @@
 ﻿using ECS;
+using ECS.Module;
 using ECS.Config;
-using ECS.UI;
-using Asset;
+using ECS.Helper;
+using ECS.Factory;
 using UnityEngine;
 using UniRx;
 
@@ -25,22 +26,30 @@ public abstract class GameStart : MonoBehaviour
 
         worldMgr.Unit.Init(unitTypeConfig);
 
+        RegisterECSModule();
+
         IAssetLoader customLoader = null;
 #if UNITY_EDITOR
         if (isSimulate)
         {
-            customLoader = new AssetEditor.SimulateAssetLoader();
+            customLoader = new SimulateAssetLoader();
         }
 #endif
+        worldMgr.Factory.CreateAssetProcess("http://localhost:8000/AssetBundles");
+        await AssetProcess.Init(customLoader);
 
-        AssetManager.CDN = "http://localhost:8000/AssetBundles";
-        await AssetManager.Init(customLoader);
-
-        UIManager.Init();
+        worldMgr.Factory.CreateUICore();
 
         RegisterGameModule();
         
         StartGame();
+    }
+
+    void RegisterECSModule()
+    {
+        var module = WorldManager.Instance.Module;
+        module.Register(new UIProcess());
+        module.Register(new AssetProcess());
     }
 
     protected virtual void StartGame() {}
