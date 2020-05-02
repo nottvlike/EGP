@@ -279,7 +279,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2089243709055323724}
+      - m_Target: {fileID: 5763415013404862840}
         m_MethodName: Hide
         m_Mode: 5
         m_Arguments:
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 4016501073965545406}
   - component: {fileID: 5909895935502479425}
   - component: {fileID: 9039583323362989348}
-  - component: {fileID: 2089243709055323724}
+  - component: {fileID: 5763415013404862840}
   m_Layer: 5
   m_Name: UIPreloadItemPanel
   m_TagString: Untagged
@@ -498,7 +498,7 @@ MonoBehaviour:
   _tweenProcessor: {fileID: 0}
   grid: {fileID: 7304196085003740125}
   preloadItemList: []
---- !u!114 &2089243709055323724
+--- !u!114 &5763415013404862840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -507,6 +507,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6707373663496267104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1106683727, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1358498063, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

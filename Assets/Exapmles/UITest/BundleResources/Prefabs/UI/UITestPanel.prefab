@@ -471,7 +471,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2406986598496918310}
+      - m_Target: {fileID: 8427749232535261730}
         m_MethodName: Show
         m_Mode: 5
         m_Arguments:
@@ -600,7 +600,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2406986598496918310}
+      - m_Target: {fileID: 8427749232535261730}
         m_MethodName: Show
         m_Mode: 5
         m_Arguments:
@@ -624,11 +624,11 @@ GameObject:
   - component: {fileID: 4588077555537207410}
   - component: {fileID: 5475258785910508242}
   - component: {fileID: 4334498785018514497}
-  - component: {fileID: 2406986598496918310}
   - component: {fileID: 3025194349872422445}
   - component: {fileID: 1541337008475185863}
   - component: {fileID: 1023377811562339618}
   - component: {fileID: 6293414059396240646}
+  - component: {fileID: 8427749232535261730}
   m_Layer: 5
   m_Name: UITestPanel
   m_TagString: Untagged
@@ -695,18 +695,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &2406986598496918310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8777245518000086665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1106683727, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3025194349872422445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,3 +795,15 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+--- !u!114 &8427749232535261730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777245518000086665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1358498063, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

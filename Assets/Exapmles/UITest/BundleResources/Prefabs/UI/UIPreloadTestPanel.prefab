@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8545292320568607207}
   - component: {fileID: 7733256157473156401}
   - component: {fileID: 4975138438300155401}
-  - component: {fileID: 9127711371384449892}
-  - component: {fileID: 8154662109364976573}
+  - component: {fileID: 1309339915474105740}
+  - component: {fileID: 2691922823301195084}
   m_Layer: 5
   m_Name: UIPreloadTestPanel
   m_TagString: Untagged
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &9127711371384449892
+--- !u!114 &1309339915474105740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,10 +86,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 860128704925249079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1106683727, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1358498063, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8154662109364976573
+--- !u!114 &2691922823301195084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 860128704925249079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1402783924, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
+  m_Script: {fileID: -1700461132, guid: 0dcc791d7cfc142d99582b616c07aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panelMode: 1
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9127711371384449892}
+      - m_Target: {fileID: 1309339915474105740}
         m_MethodName: Show
         m_Mode: 5
         m_Arguments:
