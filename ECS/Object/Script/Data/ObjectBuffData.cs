@@ -5,44 +5,25 @@ namespace ECS.Data
     using System.Collections.Generic;
     using UniRx;
 
-    public enum BuffStateType
+    public interface IBuffData : IPoolObject
     {
-        None,
-        Start,
-        Stop
+        int id { get; set; }
     }
 
-    public abstract class ObjectBuffData : IPoolObject
+    public interface IOverlayBuffData : IBuffData
     {
-        public float value;
-        public float duration;
-        public int maxOverlay = 1;
-        
-        public bool IsInUse { get; set; }
-        public virtual void Clear()
-        {
-            value = 0;
-            duration = 0f;
-            maxOverlay = 1;
-        }
+        int overlay { get; set; }
+        int maxOverlay { get; set; }
     }
-
 
     public class ObjectBuffProcessData : IData, IPoolObject
     {
-        public ReactiveCollection<ObjectBuffData> currentBuffList = new ReactiveCollection<ObjectBuffData>();
-        public List<IObjectBuff> allBuffModuleList = new List<IObjectBuff>();
+        public List<IBuffData> currentBuffDataList = new List<IBuffData>();
 
         public bool IsInUse { get; set; }
         public virtual void Clear()
         {
-            foreach (var buffData in currentBuffList)
-            {
-                Pool.Release(buffData);
-            }
-            currentBuffList.Clear();
-            
-            allBuffModuleList.Clear();
+            currentBuffDataList.Clear();
         }
     }
 }

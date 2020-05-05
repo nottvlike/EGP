@@ -2,9 +2,8 @@ namespace ECS.Module
 {
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
+    using ECS.Common;
     using System;
-    using System.Linq;
-    using UniRx;
 
     public sealed class ObjectBuffProcess : Module
     {
@@ -18,25 +17,40 @@ namespace ECS.Module
             };
         }
 
-        protected override void OnAdd(GUnit unit)
+        protected override void OnRemove(GUnit unit)
         {
-            var unitData = unit.GetData<UnitData>();
             var processData = unit.GetData<ObjectBuffProcessData>();
-            processData.currentBuffList.ObserveAdd().Subscribe(buffData =>
+            foreach (var buffData in processData.currentBuffDataList)
             {
-                var buffName = buffData.Value.GetType().ToString();
-                var buffModule = processData.allBuffModuleList.Where(_ => _.Name == buffName).FirstOrDefault();
-                if (buffModule != null)
-                {
-                    buffModule.Start(unit, buffData.Value);
-                }
-            }).AddTo(unitData.disposable);
+                Pool.Release(buffData);
+            }
+            processData.currentBuffDataList.Clear();
         }
 
-        public static void AddBuff(GUnit unit, ObjectBuffData buffData)
+        public static void AddBuff(GUnit unit, IBuffData buffData)
         {
             var processData = unit.GetData<ObjectBuffProcessData>();
-            processData.currentBuffList.Add(buffData);
+            var currentBuffDataList = processData.currentBuffDataList;
+
+            var buffModule = ObjectBuffModuleDict.Get(buffData.id);
+
+            var index = currentBuffDataList.IndexOf(buffData);
+            if (index != -1)
+            {
+                buffModule.Update(unit, processData, buffData);
+            }
+            else
+            {
+                currentBuffDataList.Add(buffData);
+                buffModule.Start(unit, processData, buffData);
+            }
+        }
+
+        public static void RemoveBuff(GUnit unit, IBuffData buffData)
+        {
+            var buffModule = ObjectBuffModuleDict.Get(buffData.id);
+            var processData = unit.GetData<ObjectBuffProcessData>();
+            buffModule.Finish(unit, processData, buffData);
         }
     }
 }

@@ -3,32 +3,38 @@ namespace ECS.Module
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
 
-    public interface IObjectBuff
+    public abstract class ObjectBuff
     {
-        string Name { get; }
-        void Start(GUnit unit, ObjectBuffData buffData);
-        void Stop(GUnit unit, ObjectBuffData buffData);
-    }
+        public virtual int Id { get; }
 
-    public abstract class ObjectBuff<T> : IObjectBuff where T : ObjectBuffData
-    {
-        public string Name { get { return typeof(T).ToString(); } }
-
-        public void Start(GUnit unit, ObjectBuffData buffData)
+        public void Start(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
         {
-            OnStart(unit, buffData as T);
+            processData.currentBuffDataList.Add(buffData);
+
+            OnStart(unit, buffData);
         }
 
-        public void Stop(GUnit unit, ObjectBuffData buffData)
+        public void Update(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
         {
-            OnStop(unit, buffData as T);
+            OnUpdate(unit, buffData);
+        }
 
-            var processData = unit.GetData<ObjectBuffProcessData>();
-            processData.currentBuffList.Remove(buffData);
+        public void Stop(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
+        {
+            OnStop(unit, buffData);
+        }
+
+        public void Finish(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData) 
+        {
+            OnFinish(unit, buffData);
+
+            processData.currentBuffDataList.Remove(buffData);
             DataPool.Release(buffData);
         }
 
-        protected abstract void OnStart(GUnit unit, T buffData);
-        protected abstract void OnStop(GUnit unit, T buffData);
+        protected void OnStart(GUnit unit, IBuffData buffData) {}
+        protected void OnUpdate(GUnit unit, IBuffData buffData) {}
+        protected void OnStop(GUnit unit, IBuffData buffData) {}
+        protected void OnFinish(GUnit unit, IBuffData buffData) {}
     }
 }
