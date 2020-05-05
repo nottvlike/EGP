@@ -85,11 +85,17 @@
 
         public static void Damage(DamageInfo damageInfo)
         {
+#if DEBUG
+            if (damageInfo == null)
+            {
+                Log.I("Damage failed, damage should not be null!");
+                return;
+            }
+#endif
+
             _attackServerData.onBeforeDamage.OnNext(damageInfo);
             _attackServerData.onDamage.OnNext(damageInfo);
             _attackServerData.onAfterDamage.OnNext(damageInfo);
-
-            Pool.Release(damageInfo);
         }
     }
 }
