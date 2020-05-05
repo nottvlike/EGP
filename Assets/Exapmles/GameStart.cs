@@ -38,7 +38,7 @@ public abstract class GameStart : MonoBehaviour
         worldMgr.Factory.CreateAssetProcess("http://localhost:8000/AssetBundles");
         await AssetProcess.Init(customLoader);
 
-        worldMgr.Factory.CreateUICore();
+        worldMgr.Factory.CreateUIProcess();
 
         RegisterGameModule();
         

@@ -9,24 +9,18 @@ namespace Game.ObjectTest.Factory
     using Game.ObjectTest.Data;
     using Game.ObjectTest.Module;
     using UnityEngine;
-    using System.Collections.Generic;
 
     public static class ObjectTestFactory
     {
-        static List<IObjectBuff> _buffModuleList = new List<IObjectBuff>();
-        static void InitBuffModuleList()
+        public static void InitBuffModuleList(this UnitFactory factory)
         {
-            _buffModuleList.Add(new ObjectSlowDownBuff());
-        }
-
-        public static List<IObjectBuff> GetAllBuffModule(this UnitFactory factory)
-        {
-            if (_buffModuleList.Count == 0)
+            if (ObjectBuffModuleDict.Count() > 0)
             {
-                InitBuffModuleList();
+                return;
             }
 
-            return _buffModuleList;
+            var slowDownBuff = new ObjectSlowDownBuff();
+            ObjectBuffModuleDict.Set(slowDownBuff.Id, slowDownBuff);
         }
 
         public static void InitObjectControlModule(this UnitFactory factory)
@@ -68,10 +62,7 @@ namespace Game.ObjectTest.Factory
             var unit = factory.CreateAsset(requiredModuleGroup, gameObject);
             unit.AddData<ObjectSyncData>();
 
-            if (_buffModuleList.Count == 0)
-            {
-                InitBuffModuleList();
-            }
+            factory.InitBuffModuleList();
 
             AttachStateData(unit);
             AttachAttributeData(unit);
@@ -165,9 +156,8 @@ namespace Game.ObjectTest.Factory
 
         static void AttachBuffData(GUnit unit)
         {
-            var buffProcessData = unit.AddData<ObjectBuffProcessData>();
-            var factory = WorldManager.Instance.Factory;
-            buffProcessData.allBuffModuleList.AddRange(factory.GetAllBuffModule());
+            unit.AddData<ObjectBuffProcessData>();
+            WorldManager.Instance.Factory.InitBuffModuleList();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Game.ObjectTest.Module
 
     public sealed class ObjectSlowDownBuff : ObjectBuff<ObjectSlowDownBuffData>
     {
-        protected override void OnStart(GUnit unit, ObjectSlowDownBuffData buffData)
+        protected override void OnStart(GUnit unit, ObjectSlowDownBuffData buffData, bool removeWhenFinish)
         {
             var moveSpeedData = unit.GetData<ObjectMoveSpeedData>();
             moveSpeedData.basePercent -= buffData.value;
@@ -20,12 +20,12 @@ namespace Game.ObjectTest.Module
                 {
                     delayDispose?.Dispose();
 
-                    Stop(unit, buffData);
+                    Finish(unit, buffData);
                 });
             }
         }
 
-        protected override void OnStop(GUnit unit, ObjectSlowDownBuffData buffData)
+        protected override void OnFinish(GUnit unit, ObjectSlowDownBuffData buffData)
         {
             var moveSpeedData = unit.GetData<ObjectMoveSpeedData>();
             moveSpeedData.basePercent += buffData.value;
