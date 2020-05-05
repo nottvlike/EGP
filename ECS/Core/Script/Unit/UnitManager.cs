@@ -50,13 +50,26 @@
 
         public Unit GetUnit(uint unitId)
         {
-            Unit unit;
-            if (!_unitDictionary.TryGetValue(unitId, out unit))
+#if DEBUG
+            if (!_unitDictionary.ContainsKey(unitId))
             {
-                Log.E("Failed to find Unit {0}", unitId);
+                Log.E("GetUnit failed, cannot find unit {0}", unitId);
             }
+#endif
 
-            return unit;
+            return _unitDictionary[unitId];
+        }
+
+        public T GetData<T>(uint unitId) where T : class, IData
+        {
+#if DEBUG
+            if (!_unitDictionary.ContainsKey(unitId))
+            {
+                Log.E("GetData failed, cannot find unit {0}", unitId);
+                return null;
+            }
+#endif
+            return WorldManager.Instance.Data.GetData(unitId, typeof(T)) as T;
         }
 
         internal void AddUnit(uint unitId, Unit unit, bool replace = false)
@@ -64,7 +77,7 @@
 #if DEBUG
             if (_unitDictionary.ContainsKey(unitId) && !replace)
             {
-                Log.E("Unit {0} has been added!", unitId);
+                Log.E("AddUnit failed, unit {0} has been added!", unitId);
                 return;
             }
 #endif
@@ -77,7 +90,7 @@
 #if DEBUG
             if (!_unitDictionary.ContainsKey(unitId))
             {
-                Log.E("Unit {0} not exist!", unitId);
+                Log.E("RemoveUnit failed, unit {0} not exist!", unitId);
                 return;
             }
 #endif
@@ -93,21 +106,40 @@
 
         public Unit GetUnit(string tag)
         {
-            Unit unit;
-            if (!_unitCacheDictionary.TryGetValue(tag, out unit))
+#if DEBUG
+            if (!_unitCacheDictionary.ContainsKey(tag))
             {
-                Log.E("Unit named {0} doesn't cached!", tag);
+                Log.E("GetUnit failed, unit named {0} doesn't cached!", tag);
             }
+#endif
 
-            return unit;
+            return _unitCacheDictionary[tag];
+        }
+
+        public T GetData<T>(string tag) where T : class, IData
+        {
+#if DEBUG
+            if (!_unitCacheDictionary.ContainsKey(tag))
+            {
+                Log.E("GetData failed, unit named {0} doesn't cached!", tag);
+                return null;
+            }
+#endif
+
+            return GetData<T>(_unitCacheDictionary[tag].UnitId);
         }
 
         internal void ClearCache(string tag)
         {
-            if (_unitCacheDictionary.ContainsKey(tag))
+#if DEBUG
+            if (!_unitCacheDictionary.ContainsKey(tag))
             {
-                _unitCacheDictionary.Remove(tag);
+                Log.E("ClearCache failed, unit named {0} doesn't cached!", tag);
+                return;
             }
+#endif
+
+            _unitCacheDictionary.Remove(tag);
         }
 
         internal void AddCache(string tag, Unit unit)
@@ -115,7 +147,7 @@
 #if DEBUG
             if (_unitCacheDictionary.ContainsKey(tag))
             {
-                Log.E("Unit named {0} has been cached!", tag);
+                Log.E("AddCache failed, unit named {0} has been cached!", tag);
                 return;
             }
 #endif
