@@ -5,11 +5,7 @@ namespace ECS.Data
     using System.Collections.Generic;
     using UniRx;
 
-    public interface IBuffData : IPoolObject
-    {
-        int id { get; set; }
-    }
-
+    public interface IBuffData : IPoolObject {}
     public interface IOverlayBuffData : IBuffData
     {
         int overlay { get; set; }

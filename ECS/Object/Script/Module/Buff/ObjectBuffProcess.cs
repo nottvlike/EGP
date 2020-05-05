@@ -27,30 +27,16 @@ namespace ECS.Module
             processData.currentBuffDataList.Clear();
         }
 
-        public static void AddBuff(GUnit unit, IBuffData buffData)
+        public static void AddBuff(GUnit unit, IBuffData buffData, bool removeWhenFinish = true)
         {
-            var processData = unit.GetData<ObjectBuffProcessData>();
-            var currentBuffDataList = processData.currentBuffDataList;
-
-            var buffModule = ObjectBuffModuleDict.Get(buffData.id);
-
-            var index = currentBuffDataList.IndexOf(buffData);
-            if (index != -1)
-            {
-                buffModule.Update(unit, processData, buffData);
-            }
-            else
-            {
-                currentBuffDataList.Add(buffData);
-                buffModule.Start(unit, processData, buffData);
-            }
+            var buffModule = ObjectBuffModuleDict.Get(buffData.GetType().GetHashCode());
+            buffModule.Start(unit, buffData, removeWhenFinish);
         }
 
         public static void RemoveBuff(GUnit unit, IBuffData buffData)
         {
-            var buffModule = ObjectBuffModuleDict.Get(buffData.id);
-            var processData = unit.GetData<ObjectBuffProcessData>();
-            buffModule.Finish(unit, processData, buffData);
+            var buffModule = ObjectBuffModuleDict.Get(buffData.GetType().GetHashCode());
+            buffModule.Finish(unit, buffData);
         }
     }
 }

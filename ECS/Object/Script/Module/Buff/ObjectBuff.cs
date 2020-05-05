@@ -3,38 +3,49 @@ namespace ECS.Module
     using GUnit = ECS.Unit.Unit;
     using ECS.Data;
 
-    public abstract class ObjectBuff
+    public interface IObjectBuff
     {
-        public virtual int Id { get; }
+        int Id { get; }
+        void Start(GUnit unit, IBuffData buffData, bool removeWhenFinish);
+        void Stop(GUnit unit, IBuffData buffData);
+        void Finish(GUnit unit, IBuffData buffData);
+    }
 
-        public void Start(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
+    public abstract class ObjectBuff<T> : IObjectBuff where T: class, IBuffData
+    {
+        public int Id { get; } = typeof(T).GetHashCode();
+
+        public void Start(GUnit unit, IBuffData buffData, bool removeWhenFinish)
         {
-            processData.currentBuffDataList.Add(buffData);
-
-            OnStart(unit, buffData);
+            var processData = unit.GetData<ObjectBuffProcessData>();
+            if (processData.currentBuffDataList.IndexOf(buffData) == -1)
+            {
+                processData.currentBuffDataList.Add(buffData);
+                OnStart(unit, buffData as T, removeWhenFinish);
+            }
+            else
+            {
+                OnUpdate(unit, buffData as T);
+            }
         }
 
-        public void Update(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
+        public void Stop(GUnit unit, IBuffData buffData)
         {
-            OnUpdate(unit, buffData);
+            OnStop(unit, buffData as T);
         }
 
-        public void Stop(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData)
+        public void Finish(GUnit unit, IBuffData buffData) 
         {
-            OnStop(unit, buffData);
-        }
+            OnFinish(unit, buffData as T);
 
-        public void Finish(GUnit unit, ObjectBuffProcessData processData, IBuffData buffData) 
-        {
-            OnFinish(unit, buffData);
-
+            var processData = unit.GetData<ObjectBuffProcessData>();
             processData.currentBuffDataList.Remove(buffData);
             DataPool.Release(buffData);
         }
 
-        protected void OnStart(GUnit unit, IBuffData buffData) {}
-        protected void OnUpdate(GUnit unit, IBuffData buffData) {}
-        protected void OnStop(GUnit unit, IBuffData buffData) {}
-        protected void OnFinish(GUnit unit, IBuffData buffData) {}
+        protected virtual void OnStart(GUnit unit, T buffData, bool removeWhenFinish) {}
+        protected virtual void OnUpdate(GUnit unit, T buffData) {}
+        protected virtual void OnStop(GUnit unit, T buffData) {}
+        protected virtual void OnFinish(GUnit unit, T buffData) {}
     }
 }
