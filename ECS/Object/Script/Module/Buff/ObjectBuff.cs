@@ -34,7 +34,7 @@ namespace ECS.Module
             OnStop(unit, buffData as T);
         }
 
-        public void Finish(GUnit unit, IBuffData buffData, bool removeFromBuffDataList) 
+        public void Finish(GUnit unit, IBuffData buffData, bool removeFromBuffDataList = true) 
         {
             OnFinish(unit, buffData as T);
 
