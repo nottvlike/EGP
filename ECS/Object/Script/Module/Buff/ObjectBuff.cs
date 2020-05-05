@@ -8,7 +8,7 @@ namespace ECS.Module
         int Id { get; }
         void Start(GUnit unit, IBuffData buffData, bool removeWhenFinish);
         void Stop(GUnit unit, IBuffData buffData);
-        void Finish(GUnit unit, IBuffData buffData);
+        void Finish(GUnit unit, IBuffData buffData, bool removeFromBuffDataList);
     }
 
     public abstract class ObjectBuff<T> : IObjectBuff where T: class, IBuffData
@@ -34,12 +34,15 @@ namespace ECS.Module
             OnStop(unit, buffData as T);
         }
 
-        public void Finish(GUnit unit, IBuffData buffData) 
+        public void Finish(GUnit unit, IBuffData buffData, bool removeFromBuffDataList) 
         {
             OnFinish(unit, buffData as T);
 
-            var processData = unit.GetData<ObjectBuffProcessData>();
-            processData.currentBuffDataList.Remove(buffData);
+            if (removeFromBuffDataList)
+            {
+                var processData = unit.GetData<ObjectBuffProcessData>();
+                processData.currentBuffDataList.Remove(buffData);
+            }
             DataPool.Release(buffData);
         }
 

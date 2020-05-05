@@ -22,7 +22,7 @@ namespace ECS.Module
             var processData = unit.GetData<ObjectBuffProcessData>();
             foreach (var buffData in processData.currentBuffDataList)
             {
-                Pool.Release(buffData);
+                RemoveBuff(unit, buffData, false);
             }
             processData.currentBuffDataList.Clear();
         }
@@ -33,10 +33,10 @@ namespace ECS.Module
             buffModule.Start(unit, buffData, removeWhenFinish);
         }
 
-        public static void RemoveBuff(GUnit unit, IBuffData buffData)
+        public static void RemoveBuff(GUnit unit, IBuffData buffData, bool removeFromBuffDataList = true)
         {
             var buffModule = ObjectBuffModuleDict.Get(buffData.GetType().GetHashCode());
-            buffModule.Finish(unit, buffData);
+            buffModule.Finish(unit, buffData, removeFromBuffDataList);
         }
     }
 }
