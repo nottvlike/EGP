@@ -1,5 +1,5 @@
 ## EGP
- Easy Game Maker
+ Easy Game Platform
 
 ## 文档
  [Wiki](https://github.com/nottvlike/EGP/wiki)
