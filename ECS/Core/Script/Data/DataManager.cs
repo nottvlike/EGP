@@ -26,7 +26,7 @@ namespace ECS.Data
             _dataDictionary.Add(ValueTuple.Create(unitId, type), data);
         }
 
-        public void RemoveData(uint unitId, IData data)
+        public void RemoveData(uint unitId, IData data, bool realRemoveWhenDestroy = true)
         {
             var type = data.GetType();
 #if DEBUG
@@ -39,7 +39,10 @@ namespace ECS.Data
 #endif
 
             var dataKey = ValueTuple.Create(unitId, type);
-            _removedDataDictionary.Add(dataKey, data);
+            if (realRemoveWhenDestroy)
+            {
+                _removedDataDictionary.Add(dataKey, data);
+            }
             _dataDictionary.Remove(dataKey);
         }
 

@@ -26,15 +26,15 @@
             dataMgr.AddData(UnitId, data, key);
         }
 
-        public void RemoveData(IData data)
+        public void RemoveData(IData data, bool realRemoveWhenDestroy = true)
         {
-            dataMgr.RemoveData(UnitId, data);
+            dataMgr.RemoveData(UnitId, data, realRemoveWhenDestroy);
         }
 
-        public void RemoveData(Type type)
+        public void RemoveData(Type type, bool realRemoveWhenDestroy = true)
         {
             var data = GetData(type);
-            RemoveData(data);
+            RemoveData(data, realRemoveWhenDestroy);
         }
 
         public IData GetData(Type type, bool includeDeleted = true)
@@ -54,9 +54,9 @@
             return data;
         }
 
-        public void RemoveData<T>() where T : IData
+        public void RemoveData<T>(bool realRemoveWhenDestroy = true) where T : IData
         {
-            RemoveData(typeof(T));
+            RemoveData(typeof(T), realRemoveWhenDestroy);
         }
 
         public T GetData<T>(bool includeDeleted = true) where T : IData
