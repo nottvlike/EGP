@@ -13,7 +13,7 @@ namespace Game.ObjectTest.Module
     public sealed class SlowDownTrap : Module
     {
         public override int Group { get; protected set; } 
-            = WorldManager.Instance.Module.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME);
+            = WorldManager.Instance.Module.TagToModuleGroupType(Constant.OBJECT_MODULE_GROUP_NAME);
 
         public SlowDownTrap()
         {

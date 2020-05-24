@@ -14,7 +14,7 @@ public class AssetManifestTest : GameStart
 
     protected override void StartGame() 
     {
-        var assetCoreUnit = WorldManager.Instance.Unit.GetUnit(AssetConstant.ASSET_CORE_UNIT_NAME);
+        var assetCoreUnit = WorldManager.Instance.Unit.GetUnit(Constant.ASSET_CORE_UNIT_NAME);
         var processData = assetCoreUnit.GetData<AssetProcessData>();
 
         var manifest = processData.Manifest;

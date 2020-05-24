@@ -54,10 +54,10 @@ namespace Game.ObjectTest.Factory
         public static void CreatePlayer(this UnitFactory factory, GameObject gameObject)
         {
             var moduleMgr = WorldManager.Instance.Module;
-            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME)
-                | moduleMgr.TagToModuleGroupType(ObjectConstant.CONTROL_MODULE_GROUP_NAME)
-                | moduleMgr.TagToModuleGroupType(ObjectConstant.STATE_MODULE_GROUP_NAME)
-                | moduleMgr.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME);
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.OBJECT_MODULE_GROUP_NAME)
+                | moduleMgr.TagToModuleGroupType(Constant.CONTROL_MODULE_GROUP_NAME)
+                | moduleMgr.TagToModuleGroupType(Constant.STATE_MODULE_GROUP_NAME)
+                | moduleMgr.TagToModuleGroupType(Constant.SYNC_MODULE_GROUP_NAME);
 
             var unit = factory.CreateAsset(requiredModuleGroup, gameObject);
             unit.AddData<ObjectSyncData>();
@@ -78,7 +78,7 @@ namespace Game.ObjectTest.Factory
         public static void CreateSlowDownTrap(this UnitFactory factory, GameObject gameObject)
         {
             var moduleMgr = WorldManager.Instance.Module;
-            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(ObjectConstant.OBJECT_MODULE_GROUP_NAME);
+            var requiredModuleGroup = moduleMgr.TagToModuleGroupType(Constant.OBJECT_MODULE_GROUP_NAME);
             
             var unit = factory.CreateAsset(requiredModuleGroup, gameObject, false);
             unit.AddData<SlowDownTrapData>();

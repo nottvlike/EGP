@@ -12,7 +12,7 @@ public class PlayerControlTest : GameStart
     {
         var moduleMgr = WorldManager.Instance.Module;
         var gameCore = WorldManager.Instance.Unit.GetUnit(Constant.GAME_CORE_UNIT_NAME);
-        gameCore.UpdateRequiredModuleGroup(moduleMgr.TagToModuleGroupType(ObjectConstant.SYNC_MODULE_GROUP_NAME));
+        gameCore.UpdateRequiredModuleGroup(moduleMgr.TagToModuleGroupType(Constant.SYNC_MODULE_GROUP_NAME));
         var syncServerData = gameCore.AddData<ObjectSyncServerData>();
         gameCore.UpdateMeetModuleList();
 

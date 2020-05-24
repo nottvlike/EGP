@@ -15,17 +15,16 @@ public abstract class GameStart : MonoBehaviour
 
     protected async void LoadGame(bool isSimulate = true)
     {
-        var moduleGroupTypeConfigPath = AssetPath.GetAssetPathFromResourcePath(AssetConstant.MODULE_GROUP_TYPE_CONFIG_PATH);
+        var moduleGroupTypeConfigPath = AssetPath.GetAssetPathFromResourcePath(Constant.MODULE_GROUP_TYPE_CONFIG_PATH);
         var moduleGroupTypeConfig = Resources.Load<LayerMaskConfig>(moduleGroupTypeConfigPath);
         
         var worldMgr = WorldManager.Instance;
         worldMgr.Module.Init(moduleGroupTypeConfig);
         
-        var unitTypeConfigPath = AssetPath.GetAssetPathFromResourcePath(AssetConstant.UNIT_TYPE_CONFIG_PATH);
+        var unitTypeConfigPath = AssetPath.GetAssetPathFromResourcePath(Constant.UNIT_TYPE_CONFIG_PATH);
         var unitTypeConfig = Resources.Load<LayerConfig>(unitTypeConfigPath);
 
         worldMgr.Unit.Init(unitTypeConfig);
-
         RegisterECSModule();
 
         IAssetLoader customLoader = null;

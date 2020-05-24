@@ -28,7 +28,7 @@ namespace ECS.Helper
         IObservable<AssetConfig> LoadAssetConfig()
         {
             var assetFullPath = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(
-                AssetConstant.ASSET_CONFIG_BUNDLE_NAME, AssetConstant.ASSET_CONFIG_ASSET_NAME);
+                Constant.ASSET_CONFIG_BUNDLE_NAME, Constant.ASSET_CONFIG_ASSET_NAME);
             return Observable.Return(AssetDatabase.LoadAssetAtPath<AssetConfig>(assetFullPath[0]),
                     Scheduler.MainThreadIgnoreTimeScale);
         }
