@@ -26,7 +26,7 @@ namespace ECS.Data
             _dataDictionary.Add(ValueTuple.Create(unitId, type), data);
         }
 
-        public void RemoveData(uint unitId, IData data, bool realRemoveWhenDestroy = true)
+        public void RemoveData(uint unitId, IData data, bool cacheData = false)
         {
             var type = data.GetType();
 #if DEBUG
@@ -39,19 +39,19 @@ namespace ECS.Data
 #endif
 
             var dataKey = ValueTuple.Create(unitId, type);
-            if (realRemoveWhenDestroy)
+            if (cacheData)
             {
                 _removedDataDictionary.Add(dataKey, data);
             }
             _dataDictionary.Remove(dataKey);
         }
 
-        public IData GetData(uint unitId, Type type, bool includeDeleted = true)
+        public IData GetData(uint unitId, Type type, bool includeCachedData = false)
         {
             var dataKey = ValueTuple.Create(unitId, type);
             IData data = null;
             if (!_dataDictionary.TryGetValue(dataKey, out data)
-                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+                && (includeCachedData && !_removedDataDictionary.TryGetValue(dataKey, out data)))
             {
                 Log.W("Get data {0} failed, data doesn't exist in unit id : {1}!", type, unitId);
             }
@@ -59,12 +59,12 @@ namespace ECS.Data
             return data;
         }
 
-        public IData TryGetData(uint unitId, Type type, bool includeDeleted = true)
+        public IData TryGetData(uint unitId, Type type, bool includeCachedData = false)
         {
             var dataKey = ValueTuple.Create(unitId, type);
             IData data = null;
             if (!_dataDictionary.TryGetValue(dataKey, out data)
-                && (includeDeleted && !_removedDataDictionary.TryGetValue(dataKey, out data)))
+                && (includeCachedData && !_removedDataDictionary.TryGetValue(dataKey, out data)))
             {
                 return null;
             }
@@ -72,7 +72,7 @@ namespace ECS.Data
             return data;
         }
 
-        public void ClearData(uint unitId)
+        public void ClearDataToCached(uint unitId)
         {
             var dataKeyList = _dataDictionary.Where(_ => _.Key.Item1 == unitId)
                 .Select(_ => _.Key).ToArray();
@@ -83,13 +83,15 @@ namespace ECS.Data
             }
         }
 
-        public void ClearRemovedData(uint unitId)
+        public void ClearCachedData(uint unitId)
         {
             var removedDataKeyList = _removedDataDictionary.Where(_ => _.Key.Item1 == unitId)
                 .Select(_ => _.Key).ToArray();
             foreach (var dataKey in removedDataKeyList)
+
             {
                 var poolObject = _removedDataDictionary[dataKey] as IPoolObject;
+
                 if (poolObject != null)
                 {
                     Pool.Release(poolObject);

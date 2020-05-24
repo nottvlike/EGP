@@ -26,25 +26,25 @@
             dataMgr.AddData(UnitId, data, key);
         }
 
-        public void RemoveData(IData data, bool realRemoveWhenDestroy = true)
+        public void RemoveData(IData data, bool cacheData = false)
         {
-            dataMgr.RemoveData(UnitId, data, realRemoveWhenDestroy);
+            dataMgr.RemoveData(UnitId, data, cacheData);
         }
 
-        public void RemoveData(Type type, bool realRemoveWhenDestroy = true)
+        public void RemoveData(Type type, bool cacheData = false)
         {
             var data = GetData(type);
-            RemoveData(data, realRemoveWhenDestroy);
+            RemoveData(data, cacheData);
         }
 
-        public IData GetData(Type type, bool includeDeleted = true)
+        public IData GetData(Type type, bool includeCacheData = false)
         {
-            return dataMgr.GetData(UnitId, type, includeDeleted);;
+            return dataMgr.GetData(UnitId, type, includeCacheData);;
         }
 
-        public IData TryGetData(Type type, bool includeDeleted = true)
+        public IData TryGetData(Type type, bool includeCacheData = false)
         {
-            return dataMgr.TryGetData(UnitId, type, includeDeleted);;
+            return dataMgr.TryGetData(UnitId, type, includeCacheData);;
         }
 
         public T AddData<T>() where T : IData
@@ -54,19 +54,19 @@
             return data;
         }
 
-        public void RemoveData<T>(bool realRemoveWhenDestroy = true) where T : IData
+        public void RemoveData<T>(bool cacheData = false) where T : IData
         {
-            RemoveData(typeof(T), realRemoveWhenDestroy);
+            RemoveData(typeof(T), cacheData);
         }
 
-        public T GetData<T>(bool includeDeleted = true) where T : IData
+        public T GetData<T>(bool includeCacheData = false) where T : IData
         {
-            return (T)GetData(typeof(T), includeDeleted);
+            return (T)GetData(typeof(T), includeCacheData);
         }
 
-        public T TryGetData<T>(bool includeDeleted = true) where T : IData
+        public T TryGetData<T>(bool includeCacheData = false) where T : IData
         {
-            return (T)TryGetData(typeof(T), includeDeleted);
+            return (T)TryGetData(typeof(T), includeCacheData);
         }
 
         public IEnumerable<IData> GetAllData()

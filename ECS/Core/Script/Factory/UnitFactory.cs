@@ -25,7 +25,7 @@ namespace ECS.Factory
         {
             var unitData = unit.GetData<UnitData>();
 
-            dataMgr.ClearData(unit.UnitId);
+            dataMgr.ClearDataToCached(unit.UnitId);
             unit.UpdateMeetModuleList();
 
             unitData.disposable?.Dispose();
@@ -36,7 +36,7 @@ namespace ECS.Factory
                 unitMgr.ClearCache(unitData.tag);
             }
             
-            dataMgr.ClearRemovedData(unit.UnitId);
+            dataMgr.ClearCachedData(unit.UnitId);
             unitMgr.RemoveUnit(unit.UnitId);
         }
 
