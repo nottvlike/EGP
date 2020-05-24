@@ -6,6 +6,7 @@ export ECS_SRC=
 export ECS_REFERENCES=-r:$UNITY_PATH/Contents/Managed/UnityEngine.dll,\
 $UNITY_PATH/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll,\
 $UNITY_PATH/Contents/Managed/UnityEditor.dll,\
+$UNITY_PATH/Contents/Managed/Unity.Cecil.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libUniRx.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libECSCore.dll
 
@@ -32,10 +33,10 @@ function search_path()
 
 search_path $CURENT_DIR/Editor
 
-#cd $UNITY_PATH/Contents/Mono/bin
+cd $UNITY_PATH/Contents/Mono/bin
 
-#mcs $ECS_REFERENCES $ECS_DEFINES -sdk:4.7.1 -target:library $ECS_SRC -out:$CURENT_DIR/libECSCoreEditor.dll
+mcs $ECS_REFERENCES $ECS_DEFINES -sdk:4.7.1 -target:library $ECS_SRC -out:$CURENT_DIR/libECSCoreEditor.dll
 
-#cd $CURENT_DIR
+cd $CURENT_DIR
 
-#mv libECSCoreEditor.dll ../../Assets/EGP/Editor/libECSCoreEditor.dll
+mv libECSCoreEditor.dll ../../Assets/EGP/Editor/libECSCoreEditor.dll
