@@ -25,10 +25,11 @@ namespace Game.ObjectTest.Module
             }
         }
 
-        protected override void OnFinish(GUnit unit, ObjectSlowDownBuffData buffData)
+        protected override bool OnFinish(GUnit unit, ObjectSlowDownBuffData buffData)
         {
             var moveSpeedData = unit.GetData<ObjectMoveSpeedData>();
             moveSpeedData.basePercent += buffData.value;
+            return true;
         }
     }
 }
