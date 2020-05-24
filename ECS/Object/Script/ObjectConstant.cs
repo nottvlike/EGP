@@ -1,6 +1,9 @@
 namespace ECS
 {
-    public sealed class ObjectConstant
+    using ECS.Common;
+
+    [MergeConstant]
+    internal class ObjectConstant
     {
         public const string OBJECT_UNIT_TYPE_NAME = "Object";
         public const string OBJECT_MODULE_GROUP_NAME = "Object";

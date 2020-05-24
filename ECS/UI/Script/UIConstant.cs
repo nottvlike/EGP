@@ -1,5 +1,7 @@
 ﻿namespace ECS
 {
+    using ECS.Common;
+
     public enum PanelMode
     {
         None = 0,
@@ -7,7 +9,8 @@
         Popup
     }
 
-    public class UIConstant
+    [MergeConstant]
+    internal class UIConstant
     {
         public const string UI_CORE_UNIT_NAME = "UICore";
 
