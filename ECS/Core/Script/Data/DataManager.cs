@@ -88,7 +88,6 @@ namespace ECS.Data
             var removedDataKeyList = _removedDataDictionary.Where(_ => _.Key.Item1 == unitId)
                 .Select(_ => _.Key).ToArray();
             foreach (var dataKey in removedDataKeyList)
-
             {
                 var poolObject = _removedDataDictionary[dataKey] as IPoolObject;
 

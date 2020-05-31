@@ -37,14 +37,14 @@
             RemoveData(data, cacheData);
         }
 
-        public IData GetData(Type type, bool includeCacheData = false)
+        public IData GetData(Type type, bool includeCachedData = true)
         {
-            return dataMgr.GetData(UnitId, type, includeCacheData);;
+            return dataMgr.GetData(UnitId, type, includeCachedData);;
         }
 
-        public IData TryGetData(Type type, bool includeCacheData = false)
+        public IData TryGetData(Type type, bool includeCachedData = true)
         {
-            return dataMgr.TryGetData(UnitId, type, includeCacheData);;
+            return dataMgr.TryGetData(UnitId, type, includeCachedData);;
         }
 
         public T AddData<T>() where T : IData
@@ -59,14 +59,14 @@
             RemoveData(typeof(T), cacheData);
         }
 
-        public T GetData<T>(bool includeCacheData = false) where T : IData
+        public T GetData<T>(bool includeCachedData = true) where T : IData
         {
-            return (T)GetData(typeof(T), includeCacheData);
+            return (T)GetData(typeof(T), includeCachedData);
         }
 
-        public T TryGetData<T>(bool includeCacheData = false) where T : IData
+        public T TryGetData<T>(bool includeCachedData = true) where T : IData
         {
-            return (T)TryGetData(typeof(T), includeCacheData);
+            return (T)TryGetData(typeof(T), includeCachedData);
         }
 
         public IEnumerable<IData> GetAllData()
