@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export UNITY_PATH="/Volumes/ExtremeSSD/Applications/UnityApp/2018.4.0f1/Unity.app"
+export UNITY_PATH="/Volumes/ExtremeSSD/Applications/UnityApp/2018.4.17f1/Unity.app"
 
 export productType=$2
 
