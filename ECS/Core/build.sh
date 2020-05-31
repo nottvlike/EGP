@@ -50,3 +50,5 @@ mcs $ECS_REFERENCES $ECS_DEFINES -sdk:4.7.1 -target:library $ECS_SRC -out:$CUREN
 cd $CURENT_DIR
 
 mv libECSCore.dll ../../Assets/EGP/Plugins/libECSCore.dll
+
+./MergeConstant/MergeConstant -projectRoot:/Users/nottvlike/Documents/github/EGP -target:Assets/EGP/Plugins/libECSCore.dll -source:Assets/EGP/Plugins/libECSUI.dll -source:Assets/EGP/Plugins/libECSObject.dll -source:Assets/EGP/Plugins/libAssetManager.dll
