@@ -8,7 +8,10 @@ $UNITY_PATH/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll,\
 $UNITY_PATH/Contents/Managed/UnityEditor.dll,\
 $UNITY_PATH/Contents/Managed/Unity.Cecil.dll,\
 $CURENT_DIR/../../Assets/EGP/Plugins/libUniRx.dll,\
-$CURENT_DIR/../../Assets/EGP/Plugins/libECSCore.dll
+$CURENT_DIR/../../Assets/EGP/Plugins/libECSCore.dll,\
+$CURENT_DIR/../../Assets/EGP/Plugins/libECSObject.dll,\
+$CURENT_DIR/../../Assets/EGP/Plugins/libECSUI.dll,\
+$CURENT_DIR/../../Assets/EGP/Plugins/libAssetManager.dll
 
 export ECS_DEFINES="-d:DEBUG;UNITY_EDITOR;UNITY_EDITOR_64"
 
@@ -31,12 +34,12 @@ function search_path()
     done
 }
 
-search_path $CURENT_DIR/Editor
+search_path $CURENT_DIR/Script
 
 cd $UNITY_PATH/Contents/Mono/bin
 
-mcs $ECS_REFERENCES $ECS_DEFINES -sdk:4.7.1 -target:library $ECS_SRC -out:$CURENT_DIR/libECSCoreEditor.dll
+mcs $ECS_REFERENCES $ECS_DEFINES -sdk:4.7.1 -target:library $ECS_SRC -out:$CURENT_DIR/libECSEditor.dll
 
 cd $CURENT_DIR
 
-mv libECSCoreEditor.dll ../../Assets/EGP/Editor/libECSCoreEditor.dll
+mv libECSEditor.dll ../../Assets/EGP/Editor/libECSEditor.dll
