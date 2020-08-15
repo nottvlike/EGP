@@ -20,7 +20,8 @@ if [ $inputPath == "All" ]; then
 	build_dir UI
 	build_dir Object
 	build_dir Core
+	build_dir Asset
 	build_dir Editor
-elif [[ $inputPath == "Core" || $inputPath == "UI" || $inputPath == "Object" ]]; then
+elif [[ $inputPath == "Core" || $inputPath == "UI" || $inputPath == "Object" || $inputPath == "Asset" ]]; then
     build_dir $inputPath
 fi
